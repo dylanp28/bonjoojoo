@@ -1,20 +1,27 @@
 import Stripe from 'stripe';
 import { formatAmountForStripe } from './client';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not set');
+/**
+ * Lazy-initialized Stripe client — only throws when actually used without a key,
+ * so builds succeed without STRIPE_SECRET_KEY set.
+ */
+function getStripe(): Stripe {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not set');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2023-10-16',
+    typescript: true,
+    appInfo: {
+      name: 'Bonjoojoo Luxury Jewelry',
+      version: '1.0.0',
+    },
+  });
 }
 
-/**
- * Server-side Stripe client for processing payments
- * Configured for luxury jewelry transactions
- */
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16',
-  typescript: true,
-  appInfo: {
-    name: 'Bonjoojoo Luxury Jewelry',
-    version: '1.0.0',
+export const stripe = new Proxy({} as Stripe, {
+  get(_, prop) {
+    return (getStripe() as any)[prop];
   },
 });
 
