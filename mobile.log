@@ -1,0 +1,324 @@
+
+> bonjoojoo-jewelry@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.15
+  - Local:        http://localhost:3002
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 636ms
+ ✓ Compiled /middleware in 146ms (74 modules)
+Security event: request {
+  type: 'request',
+  path: '/',
+  method: 'GET',
+  clientIP: '::ffff:192.168.86.102',
+  userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3.1 Mobile/23D8133 Safari/604.1',
+  country: 'UNKNOWN',
+  allowed: true,
+  timestamp: '2026-03-17T09:47:00.292Z'
+}
+Failed to log security event: [TypeError: Failed to parse URL from /api/security/log]
+ ○ Compiling / ...
+ ✓ Compiled / in 1017ms (773 modules)
+ GET / 200 in 1132ms
+ ✓ Compiled in 87ms (388 modules)
+ ✓ Compiled /_not-found in 56ms (749 modules)
+ GET /js/critical.js 404 in 83ms
+ GET /css/critical.css 404 in 49ms
+Security event: request {
+  type: 'request',
+  path: '/',
+  method: 'HEAD',
+  clientIP: '::ffff:127.0.0.1',
+  userAgent: 'curl/8.7.1',
+  country: 'UNKNOWN',
+  allowed: true,
+  timestamp: '2026-03-17T09:47:08.463Z'
+}
+Failed to log security event: [TypeError: Failed to parse URL from /api/security/log]
+ HEAD / 200 in 30ms
+ ✓ Compiled in 313ms (388 modules)
+ ✓ Compiled in 72ms (388 modules)
+ ✓ Compiled in 90ms (388 modules)
+ ✓ Compiled in 215ms (388 modules)
+ ✓ Compiled in 81ms (388 modules)
+ ✓ Compiled in 122ms (388 modules)
+ ✓ Compiled in 100ms (388 modules)
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `EnterpriseErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <EnterpriseErrorBoundary level="page">
+    : [31;1m     ^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ✓ Compiled in 523ms (689 modules)
+ ✓ Compiled in 94ms (689 modules)
+ ✓ Compiled in 92ms (689 modules)
+ ✓ Compiled in 126ms (683 modules)
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `PageErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <PageErrorBoundary>
+    : [31;1m     ^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `PageErrorBoundary`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:49:1]
+ [2m49[0m |   ]
+ [2m50[0m | 
+ [2m51[0m |   return (
+ [2m52[0m |     <PageErrorBoundary>
+    : [31;1m     ^^^^^^^^^^^^^^^^^[0m
+ [2m53[0m |       <div className="min-h-screen bg-white">
+ [2m54[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m55[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ✓ Compiled in 125ms (689 modules)
+ ✓ Compiled in 115ms (683 modules)
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+    ,-[[36;1;4m/Users/dylanbot/.openclaw/workspace/bonjoojoo/src/app/page.tsx[0m:48:1]
+ [2m48[0m |   ]
+ [2m49[0m | 
+ [2m50[0m |   return (
+ [2m51[0m |     <div className="min-h-screen bg-white">
+    : [31;1m     ^^^[0m
+ [2m52[0m |         {/* HEADER - EXACT PANDORA STRUCTURE */}
+ [2m53[0m |         <header className="bg-white sticky top-0 z-50 backdrop-blur-md bg-white/95 border-b border-gray-100">
+ [2m54[0m |           <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ✓ Compiled in 141ms (683 modules)
+ ✓ Compiled in 97ms (683 modules)
+ ✓ Compiled in 88ms (683 modules)
+ ✓ Compiled in 145ms (386 modules)
+ ✓ Compiled in 90ms (386 modules)
+ ✓ Compiled in 85ms (386 modules)
+Security event: request {
+  type: 'request',
+  path: '/',
+  method: 'GET',
+  clientIP: '::ffff:192.168.86.102',
+  userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3.1 Mobile/23D8133 Safari/604.1',
+  country: 'UNKNOWN',
+  allowed: true,
+  timestamp: '2026-03-17T10:31:53.969Z'
+}
+Failed to log security event: [TypeError: Failed to parse URL from /api/security/log]
+ ✓ Compiled / in 322ms (370 modules)
+ GET / 200 in 385ms
+ ✓ Compiled /_not-found in 249ms (745 modules)
+ GET /js/critical.js 404 in 275ms
+ GET /css/critical.css 404 in 248ms
+[?25h

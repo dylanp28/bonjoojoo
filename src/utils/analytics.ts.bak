@@ -1,0 +1,407 @@
+// Analytics tracking for lab-grown diamond optimization
+import React from 'react'
+
+interface AnalyticsEvent {
+  action: string
+  category: string
+  label?: string
+  value?: number
+  customParameters?: Record<string, any>
+}
+
+interface LabGrownAnalytics {
+  // Conversion tracking
+  trackLabGrownEducationView: (section: string) => void
+  trackLabGrownProductView: (productId: string, productType: string) => void
+  trackAddToCart: (productId: string, isLabGrown: boolean, value: number) => void
+  trackCheckoutStep: (step: number, isLabGrownOrder: boolean) => void
+  trackPurchase: (orderId: string, value: number, labGrownProducts: any[]) => void
+  
+  // Engagement tracking
+  trackEducationEngagement: (contentType: string, timeSpent: number) => void
+  trackComparisonTool: (comparisonType: string, result: string) => void
+  trackCertificationView: (certificationType: 'IGI' | 'GIA') => void
+  trackSustainabilityImpactView: (impactType: string) => void
+  
+  // Content tracking
+  trackFAQInteraction: (question: string, category: string) => void
+  trackVideoEngagement: (videoId: string, watchTime: number) => void
+  trackBlogEngagement: (slug: string, readTime: number) => void
+  
+  // Trust signal tracking
+  trackTrustSignalClick: (signalType: string, location: string) => void
+  trackGuaranteeView: (guaranteeType: string) => void
+  trackReviewInteraction: (action: string, productId: string) => void
+}
+
+class LabGrownAnalyticsService implements LabGrownAnalytics {
+  private isEnabled: boolean = true
+
+  constructor() {
+    this.isEnabled = typeof window !== 'undefined' && !!window.gtag
+  }
+
+  private track(event: AnalyticsEvent) {
+    if (!this.isEnabled) return
+
+    // Google Analytics 4
+    if (window.gtag) {
+      window.gtag('event', event.action, {
+        event_category: event.category,
+        event_label: event.label,
+        value: event.value,
+        ...event.customParameters
+      })
+    }
+
+    // Custom analytics (for advanced tracking)
+    if (window.bonjoojooAnalytics) {
+      window.bonjoojooAnalytics.track(event)
+    }
+
+    // Console log for development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📊 Analytics Event:', event)
+    }
+  }
+
+  // Conversion Tracking
+  trackLabGrownEducationView(section: string) {
+    this.track({
+      action: 'view_lab_grown_education',
+      category: 'Education',
+      label: section,
+      customParameters: {
+        content_type: 'lab_grown_education',
+        section_name: section
+      }
+    })
+  }
+
+  trackLabGrownProductView(productId: string, productType: string) {
+    this.track({
+      action: 'view_product',
+      category: 'Product',
+      label: productId,
+      customParameters: {
+        product_type: productType,
+        is_lab_grown: true,
+        currency: 'USD'
+      }
+    })
+  }
+
+  trackAddToCart(productId: string, isLabGrown: boolean, value: number) {
+    this.track({
+      action: 'add_to_cart',
+      category: 'Ecommerce',
+      label: productId,
+      value: value,
+      customParameters: {
+        is_lab_grown: isLabGrown,
+        currency: 'USD',
+        product_category: isLabGrown ? 'Lab-Grown Diamond' : 'Traditional'
+      }
+    })
+  }
+
+  trackCheckoutStep(step: number, isLabGrownOrder: boolean) {
+    this.track({
+      action: 'checkout_progress',
+      category: 'Ecommerce',
+      label: `step_${step}`,
+      value: step,
+      customParameters: {
+        checkout_step: step,
+        contains_lab_grown: isLabGrownOrder
+      }
+    })
+  }
+
+  trackPurchase(orderId: string, value: number, labGrownProducts: any[]) {
+    const labGrownValue = labGrownProducts.reduce((sum, product) => sum + product.price, 0)
+    const labGrownPercentage = (labGrownValue / value) * 100
+
+    this.track({
+      action: 'purchase',
+      category: 'Ecommerce',
+      label: orderId,
+      value: value,
+      customParameters: {
+        transaction_id: orderId,
+        currency: 'USD',
+        lab_grown_value: labGrownValue,
+        lab_grown_percentage: labGrownPercentage,
+        lab_grown_count: labGrownProducts.length,
+        environmental_impact_saved: this.calculateEnvironmentalImpact(labGrownProducts)
+      }
+    })
+  }
+
+  // Engagement Tracking
+  trackEducationEngagement(contentType: string, timeSpent: number) {
+    this.track({
+      action: 'education_engagement',
+      category: 'Engagement',
+      label: contentType,
+      value: timeSpent,
+      customParameters: {
+        content_type: contentType,
+        time_spent_seconds: timeSpent,
+        engagement_level: timeSpent > 60 ? 'high' : timeSpent > 20 ? 'medium' : 'low'
+      }
+    })
+  }
+
+  trackComparisonTool(comparisonType: string, result: string) {
+    this.track({
+      action: 'comparison_tool_usage',
+      category: 'Tools',
+      label: comparisonType,
+      customParameters: {
+        comparison_type: comparisonType,
+        user_choice: result,
+        tool_effectiveness: result === 'lab_grown' ? 'converted' : 'educated'
+      }
+    })
+  }
+
+  trackCertificationView(certificationType: 'IGI' | 'GIA') {
+    this.track({
+      action: 'certification_view',
+      category: 'Trust',
+      label: certificationType,
+      customParameters: {
+        certification_type: certificationType,
+        trust_signal_type: 'certification'
+      }
+    })
+  }
+
+  trackSustainabilityImpactView(impactType: string) {
+    this.track({
+      action: 'sustainability_impact_view',
+      category: 'Sustainability',
+      label: impactType,
+      customParameters: {
+        impact_type: impactType,
+        sustainability_focus: true
+      }
+    })
+  }
+
+  // Content Tracking
+  trackFAQInteraction(question: string, category: string) {
+    this.track({
+      action: 'faq_interaction',
+      category: 'Content',
+      label: question,
+      customParameters: {
+        faq_category: category,
+        question_text: question,
+        content_type: 'faq'
+      }
+    })
+  }
+
+  trackVideoEngagement(videoId: string, watchTime: number) {
+    this.track({
+      action: 'video_engagement',
+      category: 'Content',
+      label: videoId,
+      value: watchTime,
+      customParameters: {
+        video_id: videoId,
+        watch_time_seconds: watchTime,
+        engagement_rate: watchTime > 30 ? 'high' : 'low'
+      }
+    })
+  }
+
+  trackBlogEngagement(slug: string, readTime: number) {
+    this.track({
+      action: 'blog_engagement',
+      category: 'Content',
+      label: slug,
+      value: readTime,
+      customParameters: {
+        blog_slug: slug,
+        read_time_seconds: readTime,
+        content_type: 'blog'
+      }
+    })
+  }
+
+  // Trust Signal Tracking
+  trackTrustSignalClick(signalType: string, location: string) {
+    this.track({
+      action: 'trust_signal_click',
+      category: 'Trust',
+      label: signalType,
+      customParameters: {
+        signal_type: signalType,
+        location: location,
+        trust_building: true
+      }
+    })
+  }
+
+  trackGuaranteeView(guaranteeType: string) {
+    this.track({
+      action: 'guarantee_view',
+      category: 'Trust',
+      label: guaranteeType,
+      customParameters: {
+        guarantee_type: guaranteeType,
+        trust_signal_type: 'guarantee'
+      }
+    })
+  }
+
+  trackReviewInteraction(action: string, productId: string) {
+    this.track({
+      action: 'review_interaction',
+      category: 'Social Proof',
+      label: `${action}_${productId}`,
+      customParameters: {
+        interaction_type: action,
+        product_id: productId,
+        social_proof_type: 'review'
+      }
+    })
+  }
+
+  // Utility Methods
+  private calculateEnvironmentalImpact(labGrownProducts: any[]) {
+    // Calculate environmental savings based on lab-grown products
+    const totalCarats = labGrownProducts.reduce((sum, product) => sum + (product.carats || 1), 0)
+    return {
+      carbon_saved_tons: totalCarats * 56.972, // Approximate savings per carat
+      water_saved_gallons: totalCarats * 108,
+      energy_saved_kwh: totalCarats * 288.5
+    }
+  }
+
+  // Conversion Funnel Tracking
+  trackConversionFunnel(step: string, data?: Record<string, any>) {
+    const funnelSteps = [
+      'awareness',
+      'education_started',
+      'product_viewed',
+      'comparison_used',
+      'cart_added',
+      'checkout_started',
+      'purchase_completed'
+    ]
+
+    const stepIndex = funnelSteps.indexOf(step)
+    
+    this.track({
+      action: 'conversion_funnel',
+      category: 'Funnel',
+      label: step,
+      value: stepIndex,
+      customParameters: {
+        funnel_step: step,
+        step_index: stepIndex,
+        ...data
+      }
+    })
+  }
+
+  // A/B Testing Tracking
+  trackABTest(testName: string, variant: string, action: string) {
+    this.track({
+      action: 'ab_test_interaction',
+      category: 'Experimentation',
+      label: `${testName}_${variant}`,
+      customParameters: {
+        test_name: testName,
+        variant: variant,
+        interaction: action,
+        ab_testing: true
+      }
+    })
+  }
+
+  // Heat Map Data Collection
+  trackUserBehavior(elementType: string, elementId: string, action: string) {
+    this.track({
+      action: 'user_behavior',
+      category: 'UX',
+      label: `${elementType}_${action}`,
+      customParameters: {
+        element_type: elementType,
+        element_id: elementId,
+        user_action: action,
+        page_section: this.getCurrentPageSection()
+      }
+    })
+  }
+
+  private getCurrentPageSection(): string {
+    // Determine current page section based on scroll position
+    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+    
+    if (scrollPercent < 20) return 'hero'
+    if (scrollPercent < 40) return 'education'
+    if (scrollPercent < 60) return 'products'
+    if (scrollPercent < 80) return 'trust_signals'
+    return 'footer'
+  }
+}
+
+// Initialize analytics service
+export const labGrownAnalytics = new LabGrownAnalyticsService()
+
+// React hooks for analytics
+export const useAnalytics = () => {
+  return labGrownAnalytics
+}
+
+// Higher-order component for page tracking
+export const withPageTracking = (WrappedComponent: React.ComponentType<any>, pageName: string) => {
+  return function TrackedComponent(props: any) {
+    React.useEffect(() => {
+      labGrownAnalytics.track({
+        action: 'page_view',
+        category: 'Navigation',
+        label: pageName,
+        customParameters: {
+          page_name: pageName,
+          timestamp: new Date().toISOString()
+        }
+      });
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+// Declare global types
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void
+    bonjoojooAnalytics: {
+      track: (event: AnalyticsEvent) => void
+    }
+  }
+}
+
+// Export key metrics for dashboard
+export const LabGrownMetrics = {
+  CONVERSION_GOALS: {
+    EDUCATION_COMPLETION: 'education_completion_rate',
+    LAB_GROWN_CART_RATE: 'lab_grown_cart_conversion',
+    SUSTAINABILITY_ENGAGEMENT: 'sustainability_content_engagement',
+    CERTIFICATION_TRUST: 'certification_view_to_purchase',
+    MOBILE_CONVERSION: 'mobile_purchase_completion'
+  },
+  
+  SUCCESS_THRESHOLDS: {
+    EDUCATION_TIME: 120, // seconds
+    HIGH_INTENT_SCROLL: 75, // percentage
+    TRUST_SIGNAL_CLICKS: 3,
+    COMPARISON_TOOL_USAGE: 1
+  }
+}

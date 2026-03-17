@@ -1,0 +1,63 @@
+<svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="emailHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="50%" style="stop-color:#E8F4F8"/>
+      <stop offset="100%" style="stop-color:#F5E6E8"/>
+    </linearGradient>
+    <radialGradient id="logoSparkle" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="50%" style="stop-color:#D4AF37"/>
+      <stop offset="100%" style="stop-color:#87A96B"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Header background -->
+  <rect width="600" height="150" fill="url(#emailHeader)"/>
+  
+  <!-- Brand logo area -->
+  <g transform="translate(300, 75)">
+    <!-- Logo diamond icon -->
+    <g transform="translate(-80, 0)">
+      <polygon points="0,-15 -10,-5 -5,10 5,10 10,-5" fill="url(#logoSparkle)"/>
+      <polygon points="0,-15 -5,-8 0,-5 5,-8" fill="#ffffff" opacity="0.9"/>
+      <circle cx="-2" cy="-10" r="1" fill="#ffffff"/>
+    </g>
+    
+    <!-- Brand name -->
+    <text x="0" y="5" font-family="'Playfair Display', serif" font-size="32" fill="#2C2C2C" font-weight="600" text-anchor="middle">
+      bonjoojoo
+    </text>
+    <text x="0" y="22" font-family="'Montserrat', sans-serif" font-size="12" fill="#87A96B" text-anchor="middle" font-weight="300">
+      CONSCIOUS LUXURY
+    </text>
+    
+    <!-- Decorative elements -->
+    <circle cx="-120" cy="0" r="2" fill="#D4AF37" opacity="0.6"/>
+    <circle cx="120" cy="0" r="2" fill="#D4AF37" opacity="0.6"/>
+    <circle cx="-100" cy="-10" r="1" fill="#E8F4F8" opacity="0.7"/>
+    <circle cx="100" cy="10" r="1" fill="#E8F4F8" opacity="0.7"/>
+  </g>
+  
+  <!-- Navigation links -->
+  <g transform="translate(300, 120)">
+    <text x="-150" y="0" font-family="'Montserrat', sans-serif" font-size="10" fill="#2C2C2C" text-anchor="middle" font-weight="400">
+      RINGS
+    </text>
+    <text x="-75" y="0" font-family="'Montserrat', sans-serif" font-size="10" fill="#2C2C2C" text-anchor="middle" font-weight="400">
+      NECKLACES
+    </text>
+    <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="10" fill="#2C2C2C" text-anchor="middle" font-weight="400">
+      EARRINGS
+    </text>
+    <text x="75" y="0" font-family="'Montserrat', sans-serif" font-size="10" fill="#2C2C2C" text-anchor="middle" font-weight="400">
+      BRACELETS
+    </text>
+    <text x="150" y="0" font-family="'Montserrat', sans-serif" font-size="10" fill="#2C2C2C" text-anchor="middle" font-weight="400">
+      COLLECTIONS
+    </text>
+  </g>
+  
+  <!-- Subtle border -->
+  <rect width="600" height="150" fill="none" stroke="#87A96B" stroke-width="1" opacity="0.3"/>
+</svg>

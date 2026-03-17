@@ -1,0 +1,21 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Primary Logo Design - Minimalist Geometric Diamond -->
+  <defs>
+    <linearGradient id="diamondGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8B4B8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Diamond Icon -->
+  <g id="diamond-icon">
+    <polygon points="40,15 50,25 40,45 30,25" fill="url(#diamondGradient)" stroke="#2C2C2C" stroke-width="0.5"/>
+    <polygon points="40,15 45,20 40,25 35,20" fill="#FFFFFF" opacity="0.6"/>
+  </g>
+  
+  <!-- Brand Name -->
+  <text x="65" y="35" font-family="Playfair Display, serif" font-size="24" font-weight="400" fill="#2C2C2C">bonjoojoo</text>
+  
+  <!-- Tagline -->
+  <text x="65" y="50" font-family="Montserrat, sans-serif" font-size="10" font-weight="300" fill="#6B8A6B" letter-spacing="1px">CONSCIOUS LUXURY</text>
+</svg>

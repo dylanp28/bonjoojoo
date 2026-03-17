@@ -1,0 +1,60 @@
+<svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Trust Badges and Certifications -->
+  <rect width="600" height="300" fill="#F8F6F0"/>
+  
+  <!-- Title -->
+  <text x="20" y="30" font-family="Playfair Display, serif" font-size="20" font-weight="600" fill="#2C2C2C">Trust Badges & Certifications</text>
+  
+  <!-- Lab-Grown Certified Badge -->
+  <g transform="translate(20, 50)">
+    <rect width="150" height="80" rx="10" fill="#FFFFFF" stroke="#87A96B" stroke-width="2"/>
+    <circle cx="75" cy="70" r="8" fill="#87A96B"/>
+    <text x="75" y="75" font-family="Montserrat, sans-serif" font-size="8" font-weight="600" fill="#FFFFFF" text-anchor="middle">✓</text>
+    <text x="75" y="95" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#2C2C2C" text-anchor="middle">LAB-GROWN</text>
+    <text x="75" y="110" font-family="Montserrat, sans-serif" font-size="10" fill="#6B8A6B" text-anchor="middle">CERTIFIED</text>
+  </g>
+  
+  <!-- Conflict-Free Badge -->
+  <g transform="translate(190, 50)">
+    <rect width="150" height="80" rx="10" fill="#FFFFFF" stroke="#E8B4B8" stroke-width="2"/>
+    <circle cx="75" cy="70" r="8" fill="#E8B4B8"/>
+    <text x="75" y="75" font-family="Montserrat, sans-serif" font-size="8" font-weight="600" fill="#FFFFFF" text-anchor="middle">✓</text>
+    <text x="75" y="95" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#2C2C2C" text-anchor="middle">CONFLICT-FREE</text>
+    <text x="75" y="110" font-family="Montserrat, sans-serif" font-size="10" fill="#6B8A6B" text-anchor="middle">GUARANTEED</text>
+  </g>
+  
+  <!-- Sustainability Badge -->
+  <g transform="translate(360, 50)">
+    <rect width="150" height="80" rx="10" fill="#FFFFFF" stroke="#D4AF37" stroke-width="2"/>
+    <circle cx="75" cy="70" r="8" fill="#D4AF37"/>
+    <text x="75" y="75" font-family="Montserrat, sans-serif" font-size="8" font-weight="600" fill="#FFFFFF" text-anchor="middle">🌱</text>
+    <text x="75" y="95" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#2C2C2C" text-anchor="middle">SUSTAINABLE</text>
+    <text x="75" y="110" font-family="Montserrat, sans-serif" font-size="10" fill="#6B8A6B" text-anchor="middle">LUXURY</text>
+  </g>
+  
+  <!-- Quality Guarantee -->
+  <g transform="translate(20, 160)">
+    <rect width="150" height="80" rx="10" fill="#FFFFFF" stroke="#2C2C2C" stroke-width="2"/>
+    <polygon points="75,60 85,70 75,85 65,70" fill="#D4AF37"/>
+    <text x="75" y="100" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#2C2C2C" text-anchor="middle">LIFETIME</text>
+    <text x="75" y="115" font-family="Montserrat, sans-serif" font-size="10" fill="#6B8A6B" text-anchor="middle">WARRANTY</text>
+  </g>
+  
+  <!-- Secure Shopping -->
+  <g transform="translate(190, 160)">
+    <rect width="150" height="80" rx="10" fill="#FFFFFF" stroke="#6B8A6B" stroke-width="2"/>
+    <rect x="70" y="65" width="10" height="15" rx="2" fill="#6B8A6B"/>
+    <path d="M 68 75 L 82 75 L 82 85 L 68 85 Z" fill="#6B8A6B"/>
+    <text x="75" y="100" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#2C2C2C" text-anchor="middle">SECURE</text>
+    <text x="75" y="115" font-family="Montserrat, sans-serif" font-size="10" fill="#6B8A6B" text-anchor="middle">CHECKOUT</text>
+  </g>
+  
+  <!-- Free Returns -->
+  <g transform="translate(360, 160)">
+    <rect width="150" height="80" rx="10" fill="#FFFFFF" stroke="#E8B4B8" stroke-width="2"/>
+    <circle cx="75" cy="75" r="10" fill="transparent" stroke="#E8B4B8" stroke-width="2"/>
+    <path d="M 70 75 L 75 70 L 80 75" stroke="#E8B4B8" stroke-width="2" fill="none"/>
+    <text x="75" y="100" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" fill="#2C2C2C" text-anchor="middle">30-DAY</text>
+    <text x="75" y="115" font-family="Montserrat, sans-serif" font-size="10" fill="#6B8A6B" text-anchor="middle">RETURNS</text>
+  </g>
+</svg>

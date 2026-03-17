@@ -1,0 +1,130 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldenhour" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="30%" style="stop-color:#F5E6E8"/>
+      <stop offset="70%" style="stop-color:#E8F4F8"/>
+      <stop offset="100%" style="stop-color:#87A96B"/>
+    </linearGradient>
+    <radialGradient id="softLight" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8"/>
+      <stop offset="60%" style="stop-color:#F8F6F0;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#87A96B;stop-opacity:0.2"/>
+    </radialGradient>
+    <radialGradient id="ringSparkle" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#87A96B;stop-opacity:0.3"/>
+    </radialGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background - California golden hour ambiance -->
+  <rect width="1200" height="800" fill="url(#goldenhour)"/>
+  
+  <!-- Soft lighting overlay -->
+  <rect width="1200" height="800" fill="url(#softLight)"/>
+  
+  <!-- Stylized couple silhouettes -->
+  <g transform="translate(600, 400)">
+    
+    <!-- Female figure (left) -->
+    <g transform="translate(-120, 0)">
+      <!-- Head -->
+      <circle cx="0" cy="-120" r="40" fill="#2C2C2C" opacity="0.7"/>
+      <!-- Hair -->
+      <path d="M-35,-140 Q-50,-120 -30,-100 Q0,-110 30,-100 Q50,-120 35,-140 Q0,-160 -35,-140" fill="#2C2C2C" opacity="0.6"/>
+      <!-- Body -->
+      <ellipse cx="0" cy="-40" rx="35" ry="60" fill="#2C2C2C" opacity="0.7"/>
+      <!-- Arms -->
+      <ellipse cx="-25" cy="-30" rx="12" ry="40" fill="#2C2C2C" opacity="0.7" transform="rotate(-20)"/>
+      <ellipse cx="25" cy="-30" rx="12" ry="40" fill="#2C2C2C" opacity="0.7" transform="rotate(20)"/>
+      <!-- Legs -->
+      <ellipse cx="-15" cy="40" rx="15" ry="50" fill="#2C2C2C" opacity="0.7"/>
+      <ellipse cx="15" cy="40" rx="15" ry="50" fill="#2C2C2C" opacity="0.7"/>
+      
+      <!-- Her engagement ring (focus point) -->
+      <g transform="translate(35, -45)">
+        <circle cx="0" cy="0" r="8" fill="url(#ringSparkle)" filter="url(#softGlow)"/>
+        <circle cx="0" cy="0" r="5" fill="#ffffff" opacity="0.9"/>
+        <circle cx="-2" cy="-2" r="1.5" fill="#ffffff"/>
+        <!-- Sparkle effects -->
+        <path d="M-12,-8 L-8,-4 L-12,0 L-16,-4 Z" fill="#D4AF37" opacity="0.8"/>
+        <path d="M10,-6 L14,-2 L10,2 L6,-2 Z" fill="#ffffff" opacity="0.7"/>
+      </g>
+    </g>
+    
+    <!-- Male figure (right) -->
+    <g transform="translate(80, 0)">
+      <!-- Head -->
+      <circle cx="0" cy="-130" r="45" fill="#2C2C2C" opacity="0.7"/>
+      <!-- Hair -->
+      <path d="M-30,-150 Q0,-160 30,-150 Q35,-130 20,-115 Q0,-120 -20,-115 Q-35,-130 -30,-150" fill="#2C2C2C" opacity="0.6"/>
+      <!-- Body -->
+      <ellipse cx="0" cy="-45" rx="40" ry="70" fill="#2C2C2C" opacity="0.7"/>
+      <!-- Arms -->
+      <ellipse cx="-30" cy="-35" rx="15" ry="45" fill="#2C2C2C" opacity="0.7" transform="rotate(-15)"/>
+      <ellipse cx="30" cy="-35" rx="15" ry="45" fill="#2C2C2C" opacity="0.7" transform="rotate(15)"/>
+      <!-- Legs -->
+      <ellipse cx="-18" cy="45" rx="18" ry="55" fill="#2C2C2C" opacity="0.7"/>
+      <ellipse cx="18" cy="45" rx="18" ry="55" fill="#2C2C2C" opacity="0.7"/>
+    </g>
+    
+    <!-- Connected hands (romantic pose) -->
+    <g transform="translate(0, -20)">
+      <!-- Their hands touching -->
+      <ellipse cx="-20" cy="0" rx="8" ry="20" fill="#2C2C2C" opacity="0.7" transform="rotate(30)"/>
+      <ellipse cx="20" cy="0" rx="8" ry="20" fill="#2C2C2C" opacity="0.7" transform="rotate(-30)"/>
+    </g>
+  </g>
+  
+  <!-- Floating diamond sparkles around the couple -->
+  <g opacity="0.6">
+    <!-- Large sparkles -->
+    <path d="M200,150 L210,160 L200,170 L190,160 Z" fill="#D4AF37"/>
+    <path d="M1000,200 L1010,210 L1000,220 L990,210 Z" fill="#ffffff"/>
+    <path d="M150,600 L160,610 L150,620 L140,610 Z" fill="#E8F4F8"/>
+    <path d="M1050,550 L1060,560 L1050,570 L1040,560 Z" fill="#F5E6E8"/>
+    
+    <!-- Medium sparkles -->
+    <circle cx="300" cy="100" r="3" fill="#D4AF37" opacity="0.8"/>
+    <circle cx="900" cy="120" r="2.5" fill="#ffffff"/>
+    <circle cx="250" cy="650" r="3.5" fill="#E8F4F8" opacity="0.7"/>
+    <circle cx="950" cy="680" r="2" fill="#87A96B"/>
+    
+    <!-- Small ambient sparkles -->
+    <circle cx="180" cy="300" r="1.5" fill="#D4AF37"/>
+    <circle cx="1020" cy="350" r="1" fill="#ffffff"/>
+    <circle cx="120" cy="450" r="2" fill="#E8F4F8"/>
+    <circle cx="1100" cy="400" r="1.5" fill="#F5E6E8"/>
+    <circle cx="80" cy="250" r="1" fill="#87A96B"/>
+    <circle cx="1120" cy="600" r="1.5" fill="#D4AF37"/>
+  </g>
+  
+  <!-- Romantic text overlay -->
+  <g transform="translate(600, 100)" opacity="0.9">
+    <text x="0" y="0" font-family="'Allura', cursive" font-size="36" fill="#2C2C2C" text-anchor="middle" opacity="0.8">
+      Forever Begins Here
+    </text>
+  </g>
+  
+  <!-- Ethical message -->
+  <g transform="translate(600, 720)" opacity="0.8">
+    <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" text-anchor="middle">
+      Lab-Grown Diamonds • Conscious Choice • Endless Love
+    </text>
+  </g>
+  
+  <!-- Subtle brand elements -->
+  <g transform="translate(50, 750)" opacity="0.4">
+    <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="12" fill="#87A96B">
+      bonjoojoo
+    </text>
+  </g>
+</svg>

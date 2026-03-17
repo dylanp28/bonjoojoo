@@ -1,0 +1,18 @@
+<svg width="300" height="60" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Horizontal Logo Layout -->
+  <defs>
+    <linearGradient id="horizontalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8B4B8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Diamond Icon -->
+  <g id="diamond-icon">
+    <polygon points="30,15 40,25 30,45 20,25" fill="url(#horizontalGradient)" stroke="#2C2C2C" stroke-width="0.5"/>
+    <polygon points="30,15 35,20 30,25 25,20" fill="#FFFFFF" opacity="0.6"/>
+  </g>
+  
+  <!-- Brand Name -->
+  <text x="60" y="38" font-family="Playfair Display, serif" font-size="32" font-weight="400" fill="#2C2C2C">bonjoojoo</text>
+</svg>

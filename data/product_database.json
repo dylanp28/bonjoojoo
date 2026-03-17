@@ -1,0 +1,427 @@
+{
+  "products": [
+    {
+      "id": "RING-001",
+      "sku": "BJ-ENG-LG-SOL-001",
+      "name": "Ethical Brilliance Solitaire",
+      "category": "engagement-rings",
+      "subcategory": "solitaire",
+      "description": "A timeless lab-grown diamond solitaire engagement ring showcasing a brilliant-cut diamond in a classic 6-prong setting. Ethically created without compromise on beauty or quality.",
+      "short_description": "Classic lab-grown diamond solitaire in 14k gold",
+      "long_description": "The Ethical Brilliance Solitaire represents the pinnacle of sustainable luxury. Featuring a stunning lab-grown diamond with exceptional fire and brilliance, this ring is crafted for the conscious consumer who refuses to compromise on ethics or beauty. The classic 6-prong setting maximizes light performance while the sleek band creates a timeless silhouette that will never go out of style.",
+      "price": 1899,
+      "compare_at_price": 2499,
+      "cost": 950,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.0,
+          "cut": "round brilliant",
+          "color": "F",
+          "clarity": "VS1",
+          "certification": "IGI"
+        },
+        "setting": {
+          "style": "solitaire",
+          "prongs": 6,
+          "head_material": "14k white gold",
+          "band_width": "2mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-001-main.jpg",
+        "/images/products/rings/eng-001-side.jpg",
+        "/images/products/rings/eng-001-detail.jpg",
+        "/images/products/rings/eng-001-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 12,
+        "low_stock_threshold": 3,
+        "variants": {
+          "14k-white-size-6": 4,
+          "14k-yellow-size-6": 3,
+          "14k-rose-size-6": 2,
+          "14k-white-size-7": 3
+        }
+      },
+      "seo": {
+        "meta_title": "Lab-Grown Diamond Solitaire Engagement Ring | Ethical Luxury",
+        "meta_description": "Stunning 1ct lab-grown diamond solitaire engagement ring in 14k gold. Ethically created, IGI certified, and crafted for conscious luxury.",
+        "keywords": ["lab grown diamond ring", "ethical engagement ring", "solitaire ring", "sustainable diamond"]
+      },
+      "tags": ["bestseller", "ethical", "classic", "sustainable"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 5.2,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "RING-002", 
+      "sku": "BJ-ENG-LG-HALO-002",
+      "name": "Radiant Halo Dream",
+      "category": "engagement-rings",
+      "subcategory": "halo",
+      "description": "A captivating lab-grown diamond halo engagement ring featuring a round center stone surrounded by brilliant micro-pavé diamonds for maximum sparkle.",
+      "short_description": "Lab-grown diamond halo ring with micro-pavé band",
+      "long_description": "The Radiant Halo Dream transforms any moment into pure magic. The center lab-grown diamond is embraced by a perfect circle of smaller diamonds, creating an illusion of size while delivering breathtaking brilliance. The delicate micro-pavé band continues the sparkle journey, making this ring a true showstopper for the modern romantic.",
+      "price": 2299,
+      "compare_at_price": 2899,
+      "cost": 1150,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 0.75,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "VS2",
+          "certification": "IGI"
+        },
+        "accent_stones": {
+          "halo_diamonds": {
+            "quantity": 16,
+            "total_carat": 0.32,
+            "cut": "round brilliant",
+            "color": "G-H",
+            "clarity": "SI1"
+          },
+          "band_diamonds": {
+            "quantity": 22,
+            "total_carat": 0.18,
+            "cut": "round brilliant",
+            "color": "G-H",
+            "clarity": "SI1"
+          }
+        },
+        "setting": {
+          "style": "halo",
+          "prongs": 4,
+          "halo_diameter": "8mm",
+          "band_width": "2.2mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-002-main.jpg",
+        "/images/products/rings/eng-002-side.jpg", 
+        "/images/products/rings/eng-002-detail.jpg",
+        "/images/products/rings/eng-002-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 8,
+        "low_stock_threshold": 2,
+        "variants": {
+          "14k-white-size-6": 3,
+          "14k-yellow-size-6": 2,
+          "14k-rose-size-6": 1,
+          "14k-white-size-7": 2
+        }
+      },
+      "seo": {
+        "meta_title": "Lab-Grown Diamond Halo Engagement Ring | Radiant Sparkle",
+        "meta_description": "Stunning 0.75ct lab-grown diamond halo engagement ring with micro-pavé band. Maximum sparkle, ethical luxury, IGI certified.",
+        "keywords": ["diamond halo ring", "lab grown engagement ring", "micro pave", "sparkle ring"]
+      },
+      "tags": ["trending", "sparkle", "halo", "bestseller"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 4.8,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "RING-003",
+      "sku": "BJ-ENG-LG-VIN-003", 
+      "name": "Heritage Rose Vintage",
+      "category": "engagement-rings",
+      "subcategory": "vintage",
+      "description": "An enchanting vintage-inspired engagement ring featuring an oval lab-grown diamond with intricate milgrain detailing and rose gold accents.",
+      "short_description": "Vintage oval lab-grown diamond ring in rose gold",
+      "long_description": "The Heritage Rose Vintage captures the romance of bygone eras with modern ethical standards. The stunning oval lab-grown diamond sits gracefully in an Art Deco-inspired setting, complete with delicate milgrain work and vintage scrollwork. Crafted in warm rose gold, this ring tells a story of timeless love with contemporary consciousness.",
+      "price": 2199,
+      "compare_at_price": 2799,
+      "cost": 1099,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.2,
+          "cut": "oval",
+          "color": "E",
+          "clarity": "VVS2",
+          "certification": "IGI",
+          "dimensions": "8.0x6.0mm"
+        },
+        "accent_stones": {
+          "side_diamonds": {
+            "quantity": 12,
+            "total_carat": 0.15,
+            "cut": "round brilliant",
+            "color": "F-G",
+            "clarity": "VS1"
+          }
+        },
+        "setting": {
+          "style": "vintage",
+          "prongs": 6,
+          "details": "milgrain border, scrollwork",
+          "band_width": "2.5mm",
+          "head_height": "7mm"
+        },
+        "metal": {
+          "type": "14k rose gold",
+          "options": ["rose", "yellow", "white"],
+          "purity": "14k",
+          "rhodium_plated": false
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-003-main.jpg",
+        "/images/products/rings/eng-003-side.jpg",
+        "/images/products/rings/eng-003-detail.jpg",
+        "/images/products/rings/eng-003-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 6,
+        "low_stock_threshold": 2,
+        "variants": {
+          "14k-rose-size-6": 2,
+          "14k-rose-size-7": 2,
+          "14k-yellow-size-6": 1,
+          "14k-white-size-6": 1
+        }
+      },
+      "seo": {
+        "meta_title": "Vintage Oval Lab-Grown Diamond Ring | Art Deco Inspired",
+        "meta_description": "Stunning 1.2ct oval lab-grown diamond engagement ring with vintage milgrain detailing in rose gold. Ethically crafted luxury.",
+        "keywords": ["vintage engagement ring", "oval diamond ring", "art deco ring", "rose gold engagement ring"]
+      },
+      "tags": ["vintage", "romantic", "unique", "oval"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 5.8,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "NECKLACE-001",
+      "sku": "BJ-NECK-LG-SOL-001",
+      "name": "Essential Diamond Drop",
+      "category": "necklaces",
+      "subcategory": "pendants",
+      "description": "A delicate lab-grown diamond solitaire pendant necklace, perfect for everyday elegance or special occasions.",
+      "short_description": "Lab-grown diamond solitaire pendant necklace",
+      "long_description": "The Essential Diamond Drop embodies effortless sophistication. This minimalist pendant features a brilliant lab-grown diamond that captures light beautifully, suspended from a delicate chain that moves gracefully with every gesture. Versatile enough for daily wear yet elegant for special moments, this piece is a modern essential.",
+      "price": 599,
+      "compare_at_price": 799,
+      "cost": 299,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 0.25,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "VS2",
+          "certification": "IGI"
+        },
+        "chain": {
+          "type": "cable chain",
+          "length": "18 inches",
+          "adjustable": true,
+          "adjustment_range": "16-18 inches",
+          "width": "1.2mm"
+        },
+        "pendant": {
+          "setting": "4-prong",
+          "diameter": "4mm",
+          "bail_type": "hidden bail"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/necklaces/neck-001-main.jpg",
+        "/images/products/necklaces/neck-001-detail.jpg",
+        "/images/products/necklaces/neck-001-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 25,
+        "low_stock_threshold": 5,
+        "variants": {
+          "14k-white": 10,
+          "14k-yellow": 8,
+          "14k-rose": 7
+        }
+      },
+      "seo": {
+        "meta_title": "Lab-Grown Diamond Pendant Necklace | Essential Elegance",
+        "meta_description": "Delicate 0.25ct lab-grown diamond solitaire pendant necklace in 14k gold. Perfect for everyday luxury.",
+        "keywords": ["diamond pendant", "lab grown diamond necklace", "minimalist jewelry", "everyday diamond"]
+      },
+      "tags": ["minimalist", "everyday", "bestseller", "gift"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 3.2,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "EARRINGS-001",
+      "sku": "BJ-EAR-LG-STUD-001",
+      "name": "Classic Diamond Studs",
+      "category": "earrings", 
+      "subcategory": "studs",
+      "description": "Timeless lab-grown diamond stud earrings with 4-prong settings and secure screw backs for everyday luxury.",
+      "short_description": "Lab-grown diamond stud earrings with screw backs",
+      "long_description": "The Classic Diamond Studs are the foundation of every jewelry collection. These perfectly matched lab-grown diamonds are set in secure 4-prong mountings with comfortable screw backs for peace of mind. Whether worn alone for understated elegance or paired with other pieces for a curated look, these studs deliver timeless sophistication.",
+      "price": 899,
+      "compare_at_price": 1199,
+      "cost": 449,
+      "specifications": {
+        "stones": {
+          "type": "lab-grown diamond",
+          "total_carat": 1.0,
+          "per_stone_carat": 0.5,
+          "cut": "round brilliant",
+          "color": "F",
+          "clarity": "VS1", 
+          "certification": "IGI",
+          "matched_pair": true
+        },
+        "setting": {
+          "style": "4-prong",
+          "back_type": "screw back",
+          "post_diameter": "0.8mm",
+          "setting_diameter": "5.2mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/earrings/ear-001-main.jpg",
+        "/images/products/earrings/ear-001-detail.jpg",
+        "/images/products/earrings/ear-001-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 18,
+        "low_stock_threshold": 4,
+        "variants": {
+          "14k-white": 8,
+          "14k-yellow": 5,
+          "14k-rose": 5
+        }
+      },
+      "seo": {
+        "meta_title": "Lab-Grown Diamond Stud Earrings | Classic 1ct Total Weight",
+        "meta_description": "Brilliant 1ct total weight lab-grown diamond stud earrings with secure screw backs in 14k gold. Timeless elegance.",
+        "keywords": ["diamond studs", "lab grown diamond earrings", "classic earrings", "1 carat studs"]
+      },
+      "tags": ["classic", "everyday", "bestseller", "secure"],
+      "vendor": "BonJooJoo", 
+      "weight_grams": 2.1,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    }
+  ],
+  "categories": {
+    "engagement-rings": {
+      "name": "Engagement Rings",
+      "description": "Ethically crafted engagement rings featuring stunning lab-grown diamonds in timeless and contemporary designs.",
+      "subcategories": {
+        "solitaire": {
+          "name": "Solitaire",
+          "description": "Classic single-stone engagement rings that showcase the beauty of lab-grown diamonds."
+        },
+        "halo": {
+          "name": "Halo",
+          "description": "Brilliant center stones surrounded by sparkling diamond halos for maximum impact."
+        },
+        "vintage": {
+          "name": "Vintage",
+          "description": "Romantic vintage-inspired designs with intricate details and timeless appeal."
+        },
+        "three-stone": {
+          "name": "Three Stone",
+          "description": "Symbolic three-stone rings representing past, present, and future."
+        }
+      }
+    },
+    "necklaces": {
+      "name": "Necklaces",
+      "description": "Elegant lab-grown diamond necklaces from delicate pendants to statement pieces.",
+      "subcategories": {
+        "pendants": {
+          "name": "Pendants",
+          "description": "Beautiful diamond pendants for everyday elegance."
+        },
+        "tennis": {
+          "name": "Tennis Necklaces",
+          "description": "Continuous line of diamonds for ultimate luxury."
+        }
+      }
+    },
+    "earrings": {
+      "name": "Earrings",
+      "description": "Sparkling lab-grown diamond earrings from classic studs to dramatic drops.",
+      "subcategories": {
+        "studs": {
+          "name": "Stud Earrings",
+          "description": "Timeless diamond studs for everyday luxury."
+        },
+        "hoops": {
+          "name": "Hoop Earrings",
+          "description": "Diamond-set hoops for modern sophistication."
+        },
+        "drops": {
+          "name": "Drop Earrings",
+          "description": "Elegant dropping designs for special occasions."
+        }
+      }
+    },
+    "bracelets": {
+      "name": "Bracelets",
+      "description": "Luxurious lab-grown diamond bracelets and tennis bracelets.",
+      "subcategories": {
+        "tennis": {
+          "name": "Tennis Bracelets", 
+          "description": "Classic continuous line diamond bracelets."
+        },
+        "bangles": {
+          "name": "Bangles",
+          "description": "Elegant diamond-set bangle bracelets."
+        }
+      }
+    }
+  }
+}

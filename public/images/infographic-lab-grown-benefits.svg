@@ -1,0 +1,187 @@
+<svg viewBox="0 0 800 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#87A96B"/>
+      <stop offset="100%" style="stop-color:#D4AF37"/>
+    </linearGradient>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="100%" style="stop-color:#E8F4F8"/>
+    </linearGradient>
+    <radialGradient id="diamondIcon" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="50%" style="stop-color:#E8F4F8"/>
+      <stop offset="100%" style="stop-color:#D4AF37"/>
+    </radialGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="1200" fill="#ffffff"/>
+  
+  <!-- Header Section -->
+  <rect x="0" y="0" width="800" height="120" fill="url(#headerGrad)"/>
+  <text x="400" y="45" font-family="'Playfair Display', serif" font-size="28" fill="#ffffff" font-weight="600" text-anchor="middle">
+    Why Lab-Grown Diamonds?
+  </text>
+  <text x="400" y="80" font-family="'Montserrat', sans-serif" font-size="16" fill="#ffffff" opacity="0.9" text-anchor="middle">
+    The conscious choice for modern luxury
+  </text>
+  
+  <!-- Benefit 1: Environmental Impact -->
+  <g transform="translate(50, 160)">
+    <rect x="0" y="0" width="700" height="140" rx="10" fill="url(#cardBg)" filter="url(#shadow)"/>
+    
+    <!-- Earth icon -->
+    <g transform="translate(60, 70)">
+      <circle cx="0" cy="0" r="30" fill="#87A96B"/>
+      <circle cx="0" cy="0" r="25" fill="#A4C3A7"/>
+      <!-- Continents -->
+      <path d="M-15,-10 Q-5,-15 5,-10 Q15,-5 10,5 Q0,15 -10,10 Q-20,0 -15,-10" fill="#87A96B"/>
+      <path d="M-8,8 Q0,12 8,8 Q12,15 5,20 Q-5,18 -8,8" fill="#87A96B"/>
+    </g>
+    
+    <text x="140" y="45" font-family="'Playfair Display', serif" font-size="24" fill="#2C2C2C" font-weight="600">
+      99% Less Environmental Impact
+    </text>
+    <text x="140" y="75" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      No mining required means minimal ecosystem disruption
+    </text>
+    <text x="140" y="100" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      Significantly lower carbon footprint and water usage
+    </text>
+  </g>
+  
+  <!-- Benefit 2: Ethical Sourcing -->
+  <g transform="translate(50, 330)">
+    <rect x="0" y="0" width="700" height="140" rx="10" fill="url(#cardBg)" filter="url(#shadow)"/>
+    
+    <!-- Heart/Ethics icon -->
+    <g transform="translate(60, 70)">
+      <path d="M0,10 C-20,-10 -40,-10 -20,15 C0,30 0,30 0,30 C0,30 0,30 20,15 C40,-10 20,-10 0,10" fill="#E8B4B8"/>
+      <path d="M0,5 C-15,-8 -30,-8 -15,10 C0,22 0,22 0,22 C0,22 0,22 15,10 C30,-8 15,-8 0,5" fill="#F5E6E8"/>
+    </g>
+    
+    <text x="140" y="45" font-family="'Playfair Display', serif" font-size="24" fill="#2C2C2C" font-weight="600">
+      100% Conflict-Free
+    </text>
+    <text x="140" y="75" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      Complete transparency in sourcing and creation
+    </text>
+    <text x="140" y="100" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      Supporting ethical practices in the jewelry industry
+    </text>
+  </g>
+  
+  <!-- Benefit 3: Quality & Value -->
+  <g transform="translate(50, 500)">
+    <rect x="0" y="0" width="700" height="140" rx="10" fill="url(#cardBg)" filter="url(#shadow)"/>
+    
+    <!-- Diamond quality icon -->
+    <g transform="translate(60, 70)">
+      <polygon points="0,-25 -20,-5 -10,20 10,20 20,-5" fill="url(#diamondIcon)"/>
+      <polygon points="0,-25 -10,-10 0,-5 10,-10" fill="#ffffff" opacity="0.9"/>
+      <circle cx="-5" cy="-15" r="2" fill="#ffffff"/>
+      <circle cx="8" cy="-8" r="1.5" fill="#ffffff"/>
+    </g>
+    
+    <text x="140" y="45" font-family="'Playfair Display', serif" font-size="24" fill="#2C2C2C" font-weight="600">
+      Superior Quality & Value
+    </text>
+    <text x="140" y="75" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      Identical chemical composition to mined diamonds
+    </text>
+    <text x="140" y="100" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      30-40% more value for the same quality and brilliance
+    </text>
+  </g>
+  
+  <!-- Benefit 4: Innovation -->
+  <g transform="translate(50, 670)">
+    <rect x="0" y="0" width="700" height="140" rx="10" fill="url(#cardBg)" filter="url(#shadow)"/>
+    
+    <!-- Innovation/Technology icon -->
+    <g transform="translate(60, 70)">
+      <rect x="-25" y="-20" width="50" height="40" rx="5" fill="#87A96B"/>
+      <rect x="-20" y="-15" width="40" height="30" rx="3" fill="#A4C3A7"/>
+      <circle cx="-10" cy="-5" r="3" fill="#D4AF37"/>
+      <circle cx="10" cy="-5" r="3" fill="#E8F4F8"/>
+      <circle cx="0" cy="8" r="3" fill="#F5E6E8"/>
+      <!-- Tech lines -->
+      <line x1="-15" y1="0" x2="15" y2="0" stroke="#87A96B" stroke-width="1"/>
+      <line x1="-10" y1="5" x2="10" y2="5" stroke="#87A96B" stroke-width="1"/>
+    </g>
+    
+    <text x="140" y="45" font-family="'Playfair Display', serif" font-size="24" fill="#2C2C2C" font-weight="600">
+      Advanced Technology
+    </text>
+    <text x="140" y="75" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      Created using cutting-edge CVD and HPHT processes
+    </text>
+    <text x="140" y="100" font-family="'Montserrat', sans-serif" font-size="14" fill="#2C2C2C" opacity="0.8">
+      Consistent quality and customizable characteristics
+    </text>
+  </g>
+  
+  <!-- Comparison Section -->
+  <g transform="translate(50, 860)">
+    <rect x="0" y="0" width="700" height="200" rx="10" fill="#2C2C2C" opacity="0.05"/>
+    
+    <text x="350" y="30" font-family="'Playfair Display', serif" font-size="20" fill="#2C2C2C" font-weight="600" text-anchor="middle">
+      Lab-Grown vs. Mined Diamonds
+    </text>
+    
+    <!-- Lab-Grown Column -->
+    <g transform="translate(100, 60)">
+      <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="16" fill="#87A96B" font-weight="600">
+        Lab-Grown
+      </text>
+      <text x="0" y="25" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        ✓ Ethically created
+      </text>
+      <text x="0" y="45" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        ✓ Environmentally responsible
+      </text>
+      <text x="0" y="65" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        ✓ Better value
+      </text>
+      <text x="0" y="85" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        ✓ Identical quality
+      </text>
+      <text x="0" y="105" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        ✓ Customizable
+      </text>
+    </g>
+    
+    <!-- Mined Column -->
+    <g transform="translate(450, 60)">
+      <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="16" fill="#B8941F" font-weight="600">
+        Mined
+      </text>
+      <text x="0" y="25" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        × Ethical concerns
+      </text>
+      <text x="0" y="45" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        × High environmental impact
+      </text>
+      <text x="0" y="65" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        × Higher cost
+      </text>
+      <text x="0" y="85" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        ✓ Natural formation
+      </text>
+      <text x="0" y="105" font-family="'Montserrat', sans-serif" font-size="12" fill="#2C2C2C" opacity="0.8">
+        × Limited availability
+      </text>
+    </g>
+  </g>
+  
+  <!-- Footer -->
+  <g transform="translate(400, 1120)">
+    <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="14" fill="#87A96B" text-anchor="middle">
+      bonjoojoo • Conscious Luxury
+    </text>
+  </g>
+</svg>

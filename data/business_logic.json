@@ -1,0 +1,371 @@
+{
+  "shipping_rules": {
+    "domestic_us": {
+      "free_shipping_threshold": 0,
+      "standard_shipping": {
+        "cost": 0,
+        "delivery_time": "3-5 business days",
+        "carrier": "FedEx",
+        "tracking_included": true
+      },
+      "expedited_shipping": {
+        "cost": 25,
+        "delivery_time": "1-2 business days",
+        "carrier": "FedEx Express",
+        "tracking_included": true
+      },
+      "overnight_shipping": {
+        "cost": 45,
+        "delivery_time": "Next business day",
+        "carrier": "FedEx Overnight",
+        "tracking_included": true
+      }
+    },
+    "international": {
+      "available_countries": [
+        "Canada", "United Kingdom", "Australia", "Germany", "France", 
+        "Italy", "Spain", "Netherlands", "Switzerland", "Japan"
+      ],
+      "shipping_cost": 75,
+      "delivery_time": "7-14 business days",
+      "duties_taxes": "Customer responsibility",
+      "minimum_order": 500
+    },
+    "restrictions": {
+      "po_boxes": false,
+      "apo_fpo": true,
+      "signature_required": true,
+      "insurance_included": true,
+      "max_declared_value": 50000
+    }
+  },
+  "return_policy": {
+    "return_window": 30,
+    "condition_required": "unworn, original packaging",
+    "return_shipping": {
+      "cost": "free",
+      "prepaid_label": true,
+      "insurance_required": true
+    },
+    "refund_timeline": "3-5 business days after receipt",
+    "restocking_fee": 0,
+    "custom_items": {
+      "returnable": false,
+      "exceptions": "manufacturing defects only"
+    },
+    "excluded_items": [
+      "earrings (hygiene reasons)",
+      "custom engraved items",
+      "resized rings (unless defective)"
+    ]
+  },
+  "warranty_policy": {
+    "lifetime_warranty": {
+      "coverage": [
+        "Manufacturing defects",
+        "Setting looseness",
+        "Prong repair",
+        "Rhodium re-plating (once per year)"
+      ],
+      "exclusions": [
+        "Normal wear and tear",
+        "Damage from misuse",
+        "Lost stones due to impact",
+        "Scratches on metal"
+      ],
+      "claim_process": [
+        "Contact customer service",
+        "Provide photos of issue",
+        "Return item for evaluation",
+        "Repair or replacement within 7-10 days"
+      ]
+    },
+    "diamond_guarantee": {
+      "coverage": "Chipped or damaged lab-grown diamonds",
+      "timeline": "Lifetime",
+      "replacement": "Like-for-like or better",
+      "conditions": "Normal wear only"
+    }
+  },
+  "pricing_strategy": {
+    "markup_structure": {
+      "engagement_rings": {
+        "cost_multiplier": 2.2,
+        "minimum_margin": 0.55,
+        "premium_designs": 2.5
+      },
+      "earrings": {
+        "cost_multiplier": 2.4,
+        "minimum_margin": 0.58,
+        "premium_designs": 2.8
+      },
+      "necklaces": {
+        "cost_multiplier": 2.3,
+        "minimum_margin": 0.57,
+        "premium_designs": 2.6
+      },
+      "bracelets": {
+        "cost_multiplier": 2.1,
+        "minimum_margin": 0.52,
+        "premium_designs": 2.4
+      }
+    },
+    "promotional_pricing": {
+      "first_time_customer": 0.1,
+      "seasonal_sales": {
+        "black_friday": 0.2,
+        "valentines": 0.15,
+        "mothers_day": 0.12,
+        "holiday": 0.18
+      },
+      "bulk_discounts": {
+        "2_pieces": 0.05,
+        "3_plus_pieces": 0.08
+      },
+      "referral_discount": 0.1
+    },
+    "financing_options": {
+      "affirm": {
+        "minimum_purchase": 50,
+        "terms": ["3 months", "6 months", "12 months", "18 months"],
+        "apr_range": "0-30%",
+        "qualification_required": true
+      },
+      "klarna": {
+        "minimum_purchase": 35,
+        "terms": ["4 payments", "6 months", "12 months"],
+        "apr_range": "0-24.99%",
+        "qualification_required": true
+      },
+      "paypal_credit": {
+        "minimum_purchase": 99,
+        "promotional_terms": "6 months no interest",
+        "standard_apr": "19.99%"
+      }
+    }
+  },
+  "inventory_management": {
+    "stock_levels": {
+      "safety_stock_days": 30,
+      "reorder_trigger": "low_stock_threshold",
+      "lead_time_days": 14,
+      "seasonal_adjustments": {
+        "q4": 1.5,
+        "q1": 1.2,
+        "q2": 0.9,
+        "q3": 0.8
+      }
+    },
+    "product_lifecycle": {
+      "new_arrival": {
+        "duration_days": 90,
+        "boost_factor": 1.2
+      },
+      "bestseller": {
+        "criteria": "top_20_percent_sales",
+        "stock_multiplier": 1.5
+      },
+      "slow_mover": {
+        "criteria": "no_sales_90_days",
+        "action": "promotional_pricing"
+      },
+      "discontinued": {
+        "criteria": "no_sales_180_days",
+        "action": "clearance_sale"
+      }
+    },
+    "size_distribution": {
+      "engagement_rings": {
+        "size_4": 0.05,
+        "size_4_5": 0.08,
+        "size_5": 0.12,
+        "size_5_5": 0.15,
+        "size_6": 0.22,
+        "size_6_5": 0.18,
+        "size_7": 0.12,
+        "size_7_5": 0.05,
+        "size_8": 0.02,
+        "size_8_5": 0.01
+      }
+    }
+  },
+  "quality_control": {
+    "incoming_inspection": {
+      "diamond_verification": [
+        "IGI certification check",
+        "4C grading verification",
+        "Diamond type confirmation (CVD/HPHT)",
+        "Fluorescence assessment"
+      ],
+      "setting_inspection": [
+        "Prong security check",
+        "Polish and finish quality",
+        "Size accuracy verification",
+        "Weight confirmation"
+      ],
+      "metal_testing": [
+        "Karat verification",
+        "Alloy composition check",
+        "Rhodium plating quality",
+        "Hallmark verification"
+      ]
+    },
+    "final_inspection": {
+      "checklist": [
+        "Stone security test",
+        "Setting alignment check",
+        "Polish and cleaning",
+        "Packaging inspection",
+        "Certificate verification"
+      ],
+      "rejection_criteria": [
+        "Visible inclusions beyond grade",
+        "Color variation beyond tolerance",
+        "Setting defects or looseness",
+        "Finish quality below standard"
+      ]
+    },
+    "certification_requirements": {
+      "minimum_diamond_size": 0.30,
+      "accepted_labs": ["IGI", "GCAL", "GIA"],
+      "required_grades": ["Cut", "Color", "Clarity", "Carat"],
+      "additional_info": ["Fluorescence", "Origin", "Comments"]
+    }
+  },
+  "customer_service": {
+    "support_channels": {
+      "phone": {
+        "hours": "Mon-Fri 9AM-6PM PST",
+        "number": "+1-800-BON-JOOJ",
+        "average_wait_time": "< 2 minutes"
+      },
+      "email": {
+        "address": "hello@bonjoojoo.com",
+        "response_time": "< 4 hours",
+        "hours": "24/7"
+      },
+      "live_chat": {
+        "hours": "Mon-Fri 9AM-6PM PST",
+        "response_time": "< 1 minute",
+        "features": ["Screen sharing", "File upload"]
+      },
+      "video_consultation": {
+        "hours": "By appointment",
+        "platform": "Zoom",
+        "duration": "30 minutes",
+        "cost": "free"
+      }
+    },
+    "service_standards": {
+      "first_response_time": "1 hour",
+      "resolution_time": "24 hours",
+      "customer_satisfaction_target": 95,
+      "escalation_triggers": [
+        "Complaint about quality",
+        "Request for manager",
+        "Potential return/refund"
+      ]
+    },
+    "consultation_services": {
+      "ring_sizing": {
+        "method": "Ring sizer kit",
+        "cost": "free",
+        "shipping": "next day"
+      },
+      "style_consultation": {
+        "duration": "30 minutes",
+        "cost": "free",
+        "format": "phone or video"
+      },
+      "custom_design": {
+        "consultation_fee": 150,
+        "credited_on_purchase": true,
+        "timeline": "2-3 weeks"
+      }
+    }
+  },
+  "payment_processing": {
+    "accepted_methods": [
+      "Credit cards (Visa, MC, Amex, Discover)",
+      "PayPal",
+      "Apple Pay",
+      "Google Pay",
+      "Affirm financing",
+      "Klarna financing",
+      "Bank transfer (high value orders)"
+    ],
+    "security_measures": [
+      "SSL encryption",
+      "PCI DSS compliance",
+      "Fraud detection",
+      "Address verification",
+      "CVV verification"
+    ],
+    "transaction_limits": {
+      "minimum_order": 50,
+      "maximum_single_transaction": 50000,
+      "daily_limit_new_customer": 10000,
+      "verification_required_over": 5000
+    }
+  },
+  "loyalty_program": {
+    "tiers": {
+      "precious": {
+        "threshold": 0,
+        "benefits": [
+          "Free shipping",
+          "Extended 45-day returns",
+          "Birthday discount (10%)"
+        ]
+      },
+      "brilliant": {
+        "threshold": 2500,
+        "benefits": [
+          "Priority customer service",
+          "Exclusive early access to new collections",
+          "Complimentary jewelry cleaning",
+          "15% anniversary discount"
+        ]
+      },
+      "radiant": {
+        "threshold": 7500,
+        "benefits": [
+          "Personal jewelry consultant",
+          "Complimentary annual appraisal",
+          "VIP event invitations",
+          "20% exclusive discounts"
+        ]
+      }
+    },
+    "points_system": {
+      "earn_rate": "1 point per $1 spent",
+      "redemption_rate": "100 points = $5",
+      "bonus_opportunities": [
+        "Product reviews (50 points)",
+        "Referrals (500 points)",
+        "Social shares (25 points)",
+        "Birthday bonus (100 points)"
+      ]
+    }
+  },
+  "seasonal_adjustments": {
+    "engagement_season": {
+      "period": "November - February",
+      "inventory_boost": 1.5,
+      "marketing_spend": 2.0,
+      "staff_increase": 1.3
+    },
+    "wedding_season": {
+      "period": "April - June",
+      "focus": "Wedding bands and gift jewelry",
+      "inventory_boost": 1.2,
+      "marketing_focus": "Wedding party gifts"
+    },
+    "holiday_season": {
+      "period": "November - December",
+      "focus": "Gift jewelry under $2000",
+      "inventory_boost": 1.4,
+      "marketing_focus": "Gift guides"
+    }
+  }
+}

@@ -1,0 +1,422 @@
+{
+  "additional_products": [
+    {
+      "id": "RING-007",
+      "sku": "BJ-WED-LG-BAN-007",
+      "name": "Eternal Band",
+      "category": "wedding-bands",
+      "subcategory": "womens-bands",
+      "description": "A delicate diamond wedding band featuring channel-set lab-grown diamonds for seamless sparkle.",
+      "short_description": "Channel-set lab-grown diamond wedding band",
+      "long_description": "The Eternal Band provides the perfect complement to any engagement ring with its sophisticated channel setting that creates a continuous line of sparkle. The flush-set diamonds are secure and comfortable for daily wear while delivering maximum brilliance.",
+      "price": 899,
+      "compare_at_price": 1199,
+      "cost": 449,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 15,
+          "total_carat": 0.75,
+          "cut": "princess",
+          "color": "G",
+          "clarity": "VS2",
+          "setting": "channel"
+        },
+        "band": {
+          "width": "2.5mm",
+          "profile": "comfort fit",
+          "thickness": "1.8mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/bands/band-007-main.jpg",
+        "/images/products/bands/band-007-detail.jpg",
+        "/images/products/bands/band-007-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 20,
+        "low_stock_threshold": 5
+      },
+      "tags": ["wedding", "channel-set", "stackable"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 3.2
+    },
+    {
+      "id": "EARRINGS-004",
+      "sku": "BJ-EAR-LG-HUG-004",
+      "name": "Embrace Huggie Hoops",
+      "category": "earrings",
+      "subcategory": "hoops",
+      "description": "Petite huggie hoop earrings with pavé-set lab-grown diamonds for subtle everyday sparkle.",
+      "short_description": "Pavé lab-grown diamond huggie hoop earrings",
+      "long_description": "The Embrace Huggie Hoops offer the perfect balance of sparkle and subtlety. These petite hoops hug the earlobe closely while delivering continuous brilliance through expertly set micro-diamonds.",
+      "price": 649,
+      "compare_at_price": 849,
+      "cost": 324,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 20,
+          "total_carat": 0.4,
+          "cut": "round brilliant",
+          "color": "G-H",
+          "clarity": "SI1",
+          "setting": "micro-pavé"
+        },
+        "hoops": {
+          "diameter": "12mm",
+          "width": "2mm",
+          "closure": "hinged snap"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/earrings/ear-004-main.jpg",
+        "/images/products/earrings/ear-004-detail.jpg",
+        "/images/products/earrings/ear-004-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 15,
+        "low_stock_threshold": 4
+      },
+      "tags": ["huggie", "everyday", "petite", "pavé"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 2.8
+    },
+    {
+      "id": "RING-008",
+      "sku": "BJ-ENG-LG-MAR-008",
+      "name": "Starlight Marquise",
+      "category": "engagement-rings",
+      "subcategory": "solitaire",
+      "description": "An elegant marquise-cut lab-grown diamond solitaire that elongates the finger beautifully.",
+      "short_description": "Marquise-cut lab-grown diamond solitaire ring",
+      "long_description": "The Starlight Marquise captures attention with its distinctive boat-shaped diamond that appears larger than its actual carat weight. The elegant elongated cut creates a stunning focal point that flatters every hand.",
+      "price": 2199,
+      "compare_at_price": 2799,
+      "cost": 1099,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.25,
+          "cut": "marquise",
+          "color": "F",
+          "clarity": "VVS2",
+          "certification": "IGI",
+          "dimensions": "10.0x5.0mm"
+        },
+        "setting": {
+          "style": "solitaire",
+          "prongs": 6,
+          "band_width": "2.0mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-008-main.jpg",
+        "/images/products/rings/eng-008-side.jpg",
+        "/images/products/rings/eng-008-detail.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 6,
+        "low_stock_threshold": 2
+      },
+      "tags": ["marquise", "elongating", "unique", "elegant"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 4.9
+    },
+    {
+      "id": "NECKLACE-003",
+      "sku": "BJ-NECK-LG-BAR-003",
+      "name": "Linear Grace Bar",
+      "category": "necklaces",
+      "subcategory": "pendants",
+      "description": "A modern horizontal bar pendant featuring a row of lab-grown diamonds for contemporary elegance.",
+      "short_description": "Lab-grown diamond bar pendant necklace",
+      "long_description": "The Linear Grace Bar brings modern sophistication to any outfit. This sleek horizontal pendant features a perfectly aligned row of lab-grown diamonds that catch light beautifully with every movement.",
+      "price": 799,
+      "compare_at_price": 1049,
+      "cost": 399,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 7,
+          "total_carat": 0.35,
+          "cut": "round brilliant",
+          "color": "F-G",
+          "clarity": "VS1",
+          "setting": "micro-prong"
+        },
+        "pendant": {
+          "length": "20mm",
+          "width": "2mm",
+          "thickness": "1.5mm"
+        },
+        "chain": {
+          "type": "cable chain",
+          "length": "18 inches",
+          "adjustable": true,
+          "adjustment_range": "16-18 inches"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/necklaces/neck-003-main.jpg",
+        "/images/products/necklaces/neck-003-detail.jpg",
+        "/images/products/necklaces/neck-003-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 18,
+        "low_stock_threshold": 5
+      },
+      "tags": ["modern", "bar", "linear", "contemporary"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 3.8
+    },
+    {
+      "id": "RING-009",
+      "sku": "BJ-ENG-LG-SPLIT-009",
+      "name": "Infinity Split Shank",
+      "category": "engagement-rings",
+      "subcategory": "halo",
+      "description": "A romantic split shank engagement ring with halo setting and twisted band design.",
+      "short_description": "Split shank halo lab-grown diamond engagement ring",
+      "long_description": "The Infinity Split Shank creates a dramatic and romantic statement with its twisted band that flows into a brilliant halo setting. The split shank design adds visual interest while the halo maximizes the sparkle of the center stone.",
+      "price": 2599,
+      "compare_at_price": 3299,
+      "cost": 1299,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.0,
+          "cut": "round brilliant",
+          "color": "F",
+          "clarity": "VS1",
+          "certification": "IGI"
+        },
+        "halo_diamonds": {
+          "quantity": 18,
+          "total_carat": 0.36,
+          "cut": "round brilliant",
+          "color": "F-G",
+          "clarity": "SI1"
+        },
+        "band_diamonds": {
+          "quantity": 28,
+          "total_carat": 0.28,
+          "cut": "round brilliant",
+          "setting": "micro-pavé"
+        },
+        "setting": {
+          "style": "halo with split shank",
+          "band_width": "2.5mm",
+          "special_features": "twisted split shank"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-009-main.jpg",
+        "/images/products/rings/eng-009-side.jpg",
+        "/images/products/rings/eng-009-detail.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 4,
+        "low_stock_threshold": 1
+      },
+      "tags": ["split-shank", "halo", "romantic", "twisted"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 5.4
+    },
+    {
+      "id": "EARRINGS-005",
+      "sku": "BJ-EAR-LG-CHAND-005",
+      "name": "Cascade Chandelier",
+      "category": "earrings",
+      "subcategory": "drops",
+      "description": "Statement chandelier earrings with multiple tiers of lab-grown diamonds for maximum glamour.",
+      "short_description": "Multi-tier lab-grown diamond chandelier earrings",
+      "long_description": "The Cascade Chandelier earrings are designed for moments when you want to make an unforgettable impression. Multiple tiers of sparkling lab-grown diamonds create a waterfall effect that moves beautifully with every turn.",
+      "price": 2299,
+      "compare_at_price": 2999,
+      "cost": 1149,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "total_quantity": 84,
+          "total_carat": 2.1,
+          "cut": "round brilliant",
+          "color": "G-H",
+          "clarity": "SI1-SI2",
+          "setting": "micro-prong"
+        },
+        "earrings": {
+          "total_length": "45mm",
+          "width": "15mm",
+          "tiers": 3,
+          "movement": "articulated",
+          "back_type": "lever back"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/earrings/ear-005-main.jpg",
+        "/images/products/earrings/ear-005-detail.jpg",
+        "/images/products/earrings/ear-005-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 3,
+        "low_stock_threshold": 1
+      },
+      "tags": ["chandelier", "statement", "formal", "glamour"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 6.8
+    },
+    {
+      "id": "BRACELET-003",
+      "sku": "BJ-BRAC-LG-CHARM-003",
+      "name": "Stellar Charm Bracelet",
+      "category": "bracelets",
+      "subcategory": "chain",
+      "description": "A delicate chain bracelet featuring lab-grown diamond star charms for whimsical elegance.",
+      "short_description": "Lab-grown diamond star charm bracelet",
+      "long_description": "The Stellar Charm Bracelet adds a touch of celestial magic to your jewelry collection. Delicate star charms set with brilliant lab-grown diamonds dance along a fine chain, creating movement and sparkle with every gesture.",
+      "price": 849,
+      "compare_at_price": 1099,
+      "cost": 424,
+      "specifications": {
+        "charms": {
+          "quantity": 5,
+          "design": "star shapes",
+          "diamonds_per_charm": 3,
+          "total_diamonds": 15,
+          "total_carat": 0.15,
+          "cut": "round brilliant"
+        },
+        "chain": {
+          "type": "cable chain",
+          "length": "7 inches",
+          "adjustable": true,
+          "adjustment_range": "6.5-7.5 inches",
+          "width": "1.5mm"
+        },
+        "clasp": {
+          "type": "lobster clasp",
+          "safety_chain": true
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/bracelets/brac-003-main.jpg",
+        "/images/products/bracelets/brac-003-detail.jpg",
+        "/images/products/bracelets/brac-003-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 12,
+        "low_stock_threshold": 3
+      },
+      "tags": ["charm", "stars", "whimsical", "delicate"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 4.2
+    },
+    {
+      "id": "RING-010",
+      "sku": "BJ-ENG-LG-PEAR-010",
+      "name": "Teardrop Elegance",
+      "category": "engagement-rings",
+      "subcategory": "solitaire",
+      "description": "A graceful pear-shaped lab-grown diamond solitaire that combines classic beauty with unique shape.",
+      "short_description": "Pear-shaped lab-grown diamond solitaire ring",
+      "long_description": "The Teardrop Elegance showcases the romantic beauty of a pear-shaped diamond in a classic solitaire setting. The unique teardrop silhouette creates an elegant and distinctive look that stands out from traditional round diamonds.",
+      "price": 2099,
+      "compare_at_price": 2699,
+      "cost": 1049,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.15,
+          "cut": "pear",
+          "color": "E",
+          "clarity": "VVS2",
+          "certification": "IGI",
+          "dimensions": "9.0x6.0mm"
+        },
+        "setting": {
+          "style": "solitaire",
+          "prongs": 6,
+          "band_width": "2.2mm",
+          "special_features": "V-prong for point protection"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-010-main.jpg",
+        "/images/products/rings/eng-010-side.jpg",
+        "/images/products/rings/eng-010-detail.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 5,
+        "low_stock_threshold": 2
+      },
+      "tags": ["pear-shaped", "unique", "elegant", "teardrop"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 5.1
+    }
+  ]
+}

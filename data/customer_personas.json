@@ -1,0 +1,366 @@
+{
+  "customer_personas": [
+    {
+      "persona_id": "sustainable-sarah",
+      "name": "Sustainable Sarah",
+      "age_range": "26-32",
+      "income": "$75,000-$120,000",
+      "location": "Urban/Suburban",
+      "occupation": "Marketing Manager, Teacher, Non-profit",
+      "relationship_status": "Engaged/Married within 2 years",
+      "description": "Environmental and socially conscious millennial who researches brands thoroughly before purchasing. Values transparency, sustainability, and ethical business practices.",
+      "motivations": [
+        "Wants beautiful jewelry without environmental impact",
+        "Seeks brands that align with personal values",
+        "Desires unique pieces with meaningful stories",
+        "Values transparency in sourcing and pricing"
+      ],
+      "pain_points": [
+        "Skeptical of traditional diamond industry",
+        "Overwhelmed by too many options online",
+        "Concerned about quality of lab-grown diamonds",
+        "Limited budget but wants premium quality"
+      ],
+      "shopping_behavior": {
+        "research_time": "3-6 weeks",
+        "information_sources": ["Instagram", "Brand websites", "Reviews", "Friends"],
+        "budget_range": "$1,800-$3,500",
+        "preferred_communication": "Email, text, social media"
+      },
+      "ideal_products": [
+        "Ethical Brilliance Solitaire",
+        "Heritage Rose Vintage", 
+        "Essential Diamond Drop",
+        "Classic Diamond Studs"
+      ],
+      "content_preferences": [
+        "Sustainability stories",
+        "Behind-the-scenes content",
+        "Educational articles about lab-grown diamonds",
+        "Customer testimonials"
+      ]
+    },
+    {
+      "persona_id": "luxury-lauren",
+      "name": "Luxury Lauren",
+      "age_range": "30-40",
+      "income": "$120,000-$250,000",
+      "location": "Major metropolitan areas",
+      "occupation": "Doctor, Lawyer, Executive, Entrepreneur",
+      "relationship_status": "Engaged/Married, buying anniversary/milestone gifts",
+      "description": "Successful professional who appreciates luxury and quality. Willing to pay premium for exceptional design, service, and craftsmanship. Values exclusivity and personal attention.",
+      "motivations": [
+        "Wants the finest quality and craftsmanship",
+        "Seeks unique, exclusive designs",
+        "Values exceptional customer service",
+        "Appreciates expert guidance and education"
+      ],
+      "pain_points": [
+        "Limited time for extensive shopping",
+        "Wants personalized service without pushy sales tactics",
+        "Concerned about making the right investment",
+        "Desires exclusivity in a crowded market"
+      ],
+      "shopping_behavior": {
+        "research_time": "2-4 weeks",
+        "information_sources": ["Brand websites", "Expert consultations", "Luxury magazines", "Referrals"],
+        "budget_range": "$3,500-$8,000+",
+        "preferred_communication": "Phone consultations, in-person if available"
+      },
+      "ideal_products": [
+        "Eternal Trinity",
+        "Metropolitan Emerald",
+        "Brilliant Tennis Bracelet",
+        "Riviera Tennis Necklace",
+        "Luminary Double Halo"
+      ],
+      "content_preferences": [
+        "Craftsmanship details",
+        "Designer spotlights",
+        "Luxury lifestyle content",
+        "Expert education"
+      ]
+    },
+    {
+      "persona_id": "modern-michael",
+      "name": "Modern Michael",
+      "age_range": "28-35",
+      "income": "$80,000-$150,000",
+      "location": "Urban areas",
+      "occupation": "Tech professional, Designer, Consultant",
+      "relationship_status": "Planning proposal or buying anniversary gift",
+      "description": "Tech-savvy millennial man who values innovation and smart purchasing decisions. Appreciates modern design and ethical consumption. Often the primary researcher for engagement ring purchases.",
+      "motivations": [
+        "Wants cutting-edge, innovative products",
+        "Values smart financial decisions",
+        "Appreciates clean, modern design",
+        "Seeks efficiency in shopping process"
+      ],
+      "pain_points": [
+        "Overwhelmed by jewelry terminology and options",
+        "Wants to make a good impression without overspending",
+        "Concerned about making the 'wrong' choice",
+        "Limited knowledge about diamonds and quality"
+      ],
+      "shopping_behavior": {
+        "research_time": "4-8 weeks",
+        "information_sources": ["Reddit", "YouTube", "Brand websites", "Comparison sites"],
+        "budget_range": "$2,000-$4,500",
+        "preferred_communication": "Email, chat, detailed product information"
+      },
+      "ideal_products": [
+        "Metropolitan Emerald",
+        "Radiant Halo Dream",
+        "Infinite Sparkle Hoops",
+        "Renaissance Bangle"
+      ],
+      "content_preferences": [
+        "Technical specifications",
+        "Comparison guides",
+        "Video education",
+        "Process transparency"
+      ]
+    },
+    {
+      "persona_id": "gifting-grace",
+      "name": "Gifting Grace",
+      "age_range": "35-55",
+      "income": "$100,000-$200,000",
+      "location": "Suburban",
+      "occupation": "Various professionals, often mothers",
+      "relationship_status": "Married, buying gifts for family members",
+      "description": "Thoughtful gift-giver who purchases jewelry for special occasions like graduations, anniversaries, birthdays. Values meaningful pieces that recipients will treasure.",
+      "motivations": [
+        "Wants to give meaningful, lasting gifts",
+        "Seeks pieces suitable for different recipients",
+        "Values gift presentation and packaging",
+        "Appreciates helpful guidance for gift selection"
+      ],
+      "pain_points": [
+        "Uncertainty about recipient preferences",
+        "Wants appropriate pieces for different age groups",
+        "Concerned about sizing and fit",
+        "Needs flexible return/exchange policies"
+      ],
+      "shopping_behavior": {
+        "research_time": "1-3 weeks",
+        "information_sources": ["Brand websites", "Gift guides", "Recommendations"],
+        "budget_range": "$500-$2,500",
+        "preferred_communication": "Phone, email with detailed guidance"
+      },
+      "ideal_products": [
+        "Essential Diamond Drop",
+        "Classic Diamond Studs",
+        "Celestial Cascade",
+        "Infinite Sparkle Hoops"
+      ],
+      "content_preferences": [
+        "Gift guides",
+        "Styling suggestions",
+        "Recipient testimonials",
+        "Care instructions"
+      ]
+    }
+  ],
+  "sample_customers": [
+    {
+      "customer_id": "CUST-001",
+      "profile": {
+        "name": "Sarah Johnson",
+        "email": "sarah.johnson@email.com",
+        "phone": "+1-555-0123",
+        "age": 28,
+        "location": "San Francisco, CA",
+        "persona": "sustainable-sarah",
+        "acquisition_source": "Instagram ad",
+        "registration_date": "2024-02-15"
+      },
+      "order_history": [
+        {
+          "order_id": "ORD-001",
+          "date": "2024-03-01",
+          "products": [
+            {
+              "sku": "BJ-ENG-LG-SOL-001",
+              "name": "Ethical Brilliance Solitaire",
+              "variant": "14k-rose-size-6",
+              "price": 1899,
+              "quantity": 1
+            }
+          ],
+          "subtotal": 1899,
+          "tax": 170.91,
+          "shipping": 0,
+          "total": 2069.91,
+          "status": "delivered"
+        }
+      ],
+      "wishlist": [
+        "BJ-NECK-LG-SOL-001",
+        "BJ-EAR-LG-STUD-001"
+      ],
+      "reviews": [
+        {
+          "product_sku": "BJ-ENG-LG-SOL-001",
+          "rating": 5,
+          "title": "Perfect ethical choice!",
+          "comment": "Absolutely love my ring! The quality is amazing and I feel good knowing it's ethically made. The rose gold is gorgeous and the diamond sparkles beautifully. Great customer service too!",
+          "date": "2024-03-10",
+          "verified_purchase": true
+        }
+      ],
+      "lifetime_value": 2069.91,
+      "referrals": 2
+    },
+    {
+      "customer_id": "CUST-002", 
+      "profile": {
+        "name": "Dr. Lauren Martinez",
+        "email": "lauren.martinez@medcenter.com",
+        "phone": "+1-555-0456",
+        "age": 34,
+        "location": "New York, NY",
+        "persona": "luxury-lauren",
+        "acquisition_source": "Google search",
+        "registration_date": "2024-01-20"
+      },
+      "order_history": [
+        {
+          "order_id": "ORD-002",
+          "date": "2024-02-14",
+          "products": [
+            {
+              "sku": "BJ-BRAC-LG-TEN-001",
+              "name": "Brilliant Tennis Bracelet", 
+              "variant": "14k-white-7inch",
+              "price": 3299,
+              "quantity": 1
+            },
+            {
+              "sku": "BJ-EAR-LG-STUD-001",
+              "name": "Classic Diamond Studs",
+              "variant": "14k-white",
+              "price": 899,
+              "quantity": 1
+            }
+          ],
+          "subtotal": 4198,
+          "tax": 377.82,
+          "shipping": 0,
+          "total": 4575.82,
+          "status": "delivered"
+        }
+      ],
+      "wishlist": [
+        "BJ-NECK-LG-TEN-002",
+        "BJ-ENG-LG-EME-005"
+      ],
+      "reviews": [
+        {
+          "product_sku": "BJ-BRAC-LG-TEN-001",
+          "rating": 5,
+          "title": "Exceptional quality and service",
+          "comment": "This tennis bracelet exceeded my expectations. The diamonds are brilliant and the craftsmanship is impeccable. The personal consultation made all the difference in choosing the perfect piece.",
+          "date": "2024-02-25",
+          "verified_purchase": true
+        }
+      ],
+      "lifetime_value": 4575.82,
+      "referrals": 1
+    },
+    {
+      "customer_id": "CUST-003",
+      "profile": {
+        "name": "Michael Chen",
+        "email": "mchen.tech@gmail.com", 
+        "phone": "+1-555-0789",
+        "age": 30,
+        "location": "Seattle, WA",
+        "persona": "modern-michael",
+        "acquisition_source": "Reddit recommendation",
+        "registration_date": "2024-01-05"
+      },
+      "order_history": [
+        {
+          "order_id": "ORD-003",
+          "date": "2024-01-28",
+          "products": [
+            {
+              "sku": "BJ-ENG-LG-HALO-002",
+              "name": "Radiant Halo Dream",
+              "variant": "14k-white-size-6",
+              "price": 2299,
+              "quantity": 1
+            }
+          ],
+          "subtotal": 2299,
+          "tax": 206.91,
+          "shipping": 0,
+          "total": 2505.91,
+          "status": "delivered"
+        }
+      ],
+      "wishlist": [
+        "BJ-EAR-LG-HOOP-002"
+      ],
+      "reviews": [
+        {
+          "product_sku": "BJ-ENG-LG-HALO-002", 
+          "rating": 5,
+          "title": "Perfect proposal ring!",
+          "comment": "She said yes! The ring is absolutely stunning and the halo makes the center diamond look huge. Great value for the quality and the educational content helped me understand what I was buying.",
+          "date": "2024-02-05",
+          "verified_purchase": true
+        }
+      ],
+      "lifetime_value": 2505.91,
+      "referrals": 3
+    },
+    {
+      "customer_id": "CUST-004",
+      "profile": {
+        "name": "Grace Thompson",
+        "email": "grace.thompson@consulting.com",
+        "phone": "+1-555-0321",
+        "age": 42,
+        "location": "Chicago, IL", 
+        "persona": "gifting-grace",
+        "acquisition_source": "Friend referral",
+        "registration_date": "2024-02-28"
+      },
+      "order_history": [
+        {
+          "order_id": "ORD-004",
+          "date": "2024-03-08",
+          "products": [
+            {
+              "sku": "BJ-NECK-LG-SOL-001",
+              "name": "Essential Diamond Drop",
+              "variant": "14k-yellow",
+              "price": 599,
+              "quantity": 1
+            },
+            {
+              "sku": "BJ-EAR-LG-STUD-001", 
+              "name": "Classic Diamond Studs",
+              "variant": "14k-yellow",
+              "price": 899,
+              "quantity": 1
+            }
+          ],
+          "subtotal": 1498,
+          "tax": 134.82,
+          "shipping": 0,
+          "total": 1632.82,
+          "status": "shipped"
+        }
+      ],
+      "wishlist": [
+        "BJ-EAR-LG-DROP-003"
+      ],
+      "reviews": [],
+      "lifetime_value": 1632.82,
+      "referrals": 0
+    }
+  ]
+}

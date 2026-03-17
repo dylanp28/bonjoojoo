@@ -1,0 +1,688 @@
+'use client'
+
+import { useState, useRef, useEffect } from 'react'
+import { Search, Heart, MapPin, User, ShoppingBag, Play, Pause, VolumeX, Volume2, ChevronDown } from 'lucide-react'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import {
+  usePandoraHeaderScroll,
+  PandoraProductCard,
+  PandoraHeroSection,
+  PandoraButton,
+  PandoraStaggerGrid,
+  PandoraStaggerItem,
+  ScrollProgress,
+  PandoraText,
+  PandoraNavigation
+} from '../components/PandoraAnimations'
+import {
+  EnhancedNewFeaturedMegaMenu,
+  EnhancedShopByMegaMenu,
+  EnhancedCharmsMegaMenu
+} from '../components/EnhancedPandoraMegaMenu'
+import {
+  PandoraWishlistHeart,
+  PandoraShoppingBag,
+  PandoraSearchBar,
+  PandoraProductImage,
+  PandoraPrice
+} from '../components/PandoraMicroInteractions'
+
+export default function PandoraAnimatedHomePage() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [videoStates, setVideoStates] = useState({
+    katseye: { playing: true, muted: true },
+    bestsellers: { playing: false, muted: true },
+    engraving: { playing: false, muted: true },
+    disney: { playing: false, muted: true }
+  })
+
+  // Use Pandora header scroll hook
+  const { headerRef, logoRef, headerStyle, logoStyle } = usePandoraHeaderScroll()
+  
+  const toggleVideo = (section: keyof typeof videoStates) => {
+    setVideoStates(prev => ({
+      ...prev,
+      [section]: { ...prev[section], playing: !prev[section].playing }
+    }))
+  }
+
+  const toggleMute = (section: keyof typeof videoStates) => {
+    setVideoStates(prev => ({
+      ...prev,
+      [section]: { ...prev[section], muted: !prev[section].muted }
+    }))
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Scroll Progress Indicator */}
+      <ScrollProgress />
+      
+      {/* ANIMATED HEADER WITH PANDORA SCROLL BEHAVIOR */}
+      <motion.header
+        ref={headerRef}
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent"
+        style={headerStyle}
+      >
+        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+          {/* Animated Logo */}
+          <Link href="/" className="flex-shrink-0">
+            <motion.div
+              ref={logoRef}
+              className="text-2xl font-bold text-black tracking-wide origin-center"
+              style={logoStyle}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
+              BONJOOJOO
+            </motion.div>
+          </Link>
+
+          {/* Animated Navigation */}
+          <PandoraNavigation className="hidden lg:flex items-center space-x-8 text-sm font-medium">
+            {[
+              { name: 'New & featured', href: '/new-featured' },
+              { name: 'Shop by', href: '/shop-by' },
+              { name: 'Charms', href: '/charms' },
+              { name: 'Bracelets', href: '/bracelets' },
+              { name: 'Necklaces', href: '/necklaces' },
+              { name: 'Rings', href: '/rings' },
+              { name: 'Earrings', href: '/earrings' },
+              { name: 'Lab-grown diamonds', href: '/lab-grown-diamonds' },
+              { name: 'Engraving', href: '/engraving' },
+              { name: 'Gifts', href: '/gifts' },
+              { name: 'Collections', href: '/collections' }
+            ].map((item, index) => (
+              <motion.div key={item.href}>
+                <Link 
+                  href={item.href} 
+                  className="text-black hover:text-gray-600 relative group"
+                >
+                  {item.name}
+                  {/* Animated underline */}
+                  <motion.div
+                    className="absolute -bottom-1 left-0 h-0.5 bg-black"
+                    initial={{ width: 0 }}
+                    whileHover={{
+                      width: '100%',
+                      transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
+                    }}
+                  />
+                </Link>
+              </motion.div>
+            ))}
+          </PandoraNavigation>
+
+          {/* Animated Right Side Icons */}
+          <motion.div 
+            className="flex items-center space-x-4"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            {/* Search with Animation */}
+            <div className="hidden md:block">
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <input 
+                  type="text" 
+                  placeholder="Search"
+                  className="w-80 pl-4 pr-12 py-3 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-400 transition-all duration-300 focus:border-black"
+                />
+                <Search className="absolute right-4 top-3.5 w-5 h-5 text-gray-400" />
+              </motion.div>
+            </div>
+
+            {/* Animated Icons */}
+            {[Heart, MapPin, User, ShoppingBag].map((Icon, index) => (
+              <motion.button
+                key={index}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                whileHover={{ 
+                  scale: 1.1,
+                  rotate: index === 0 ? 5 : 0 // Heart gets a little rotation
+                }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+              >
+                <Icon className="w-5 h-5" />
+              </motion.button>
+            ))}
+          </motion.div>
+        </div>
+      </motion.header>
+
+      <main className="pt-20">
+        {/* HERO SECTION 1: ANIMATED KATSEYE */}
+        <PandoraHeroSection className="bg-gradient-to-br from-purple-100 via-pink-50 to-gold-100">
+          {/* Enhanced Jewelry Visualization with Animations */}
+          <motion.div 
+            className="absolute inset-0"
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.8 }}
+            transition={{ duration: 2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            {/* Background with jewelry-inspired gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 opacity-80"></div>
+            
+            {/* Animated jewelry representation */}
+            <div className="absolute inset-0 flex items-center justify-end pr-32">
+              <motion.div 
+                className="relative"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ duration: 1.5, ease: [0.34, 1.56, 0.64, 1], delay: 0.5 }}
+              >
+                {/* Main jewelry piece visualization */}
+                <div className="w-96 h-96 relative">
+                  {/* Animated charm bracelet visualization */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full border-8 border-gold-400 bg-gradient-to-br from-gold-100 to-gold-200 shadow-2xl"
+                    animate={{
+                      rotate: 360,
+                      scale: [1, 1.02, 1]
+                    }}
+                    transition={{
+                      rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                      scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  >
+                    <div className="absolute inset-4 rounded-full bg-gradient-to-br from-white to-pink-50">
+                      {/* Animated mini charms around the circle */}
+                      {[
+                        { top: 8, left: '50%', color: 'purple', delay: 0 },
+                        { top: '50%', right: 8, color: 'pink', delay: 0.2 },
+                        { bottom: 8, left: '50%', color: 'yellow', delay: 0.4 },
+                        { top: '50%', left: 8, color: 'blue', delay: 0.6 }
+                      ].map((charm, index) => (
+                        <motion.div
+                          key={index}
+                          className={`absolute w-8 h-8 bg-${charm.color}-300 rounded-full shadow-lg transform -translate-x-1/2 -translate-y-1/2`}
+                          style={{
+                            top: charm.top,
+                            right: charm.right,
+                            bottom: charm.bottom,
+                            left: charm.left
+                          }}
+                          animate={{
+                            scale: [1, 1.3, 1],
+                            rotate: [0, 180, 360]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            delay: charm.delay,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))}
+                      
+                      {/* Center text with animation */}
+                      <motion.div
+                        className="absolute inset-0 flex items-center justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 1 }}
+                      >
+                        <div className="text-center text-gray-700">
+                          <PandoraText className="text-2xl font-bold mb-2">KATSEYE</PandoraText>
+                          <PandoraText className="text-sm" delay={0.5}>MINIS</PandoraText>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                  
+                  {/* Floating elements with continuous animation */}
+                  <motion.div
+                    className="absolute -top-4 -left-4 w-12 h-12 bg-purple-400 rounded-full shadow-xl opacity-70"
+                    animate={{
+                      y: [-10, 10, -10],
+                      rotate: [0, 360],
+                      scale: [0.8, 1.2, 0.8]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  <motion.div
+                    className="absolute -bottom-4 -right-4 w-8 h-8 bg-pink-400 rounded-full shadow-xl opacity-70"
+                    animate={{
+                      y: [10, -10, 10],
+                      rotate: [360, 0],
+                      scale: [1.2, 0.8, 1.2]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.5
+                    }}
+                  />
+                </div>
+              </motion.div>
+            </div>
+            
+            {/* Overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+          </motion.div>
+
+          {/* Animated Video Controls */}
+          <motion.div 
+            className="absolute top-8 right-8 flex space-x-4"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 1.5 }}
+          >
+            <motion.button 
+              onClick={() => toggleVideo('katseye')}
+              className="w-12 h-12 bg-gray-900 bg-opacity-80 hover:bg-opacity-90 rounded-full flex items-center justify-center text-white transition-all"
+              whileHover={{ scale: 1.1, backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {videoStates.katseye.playing ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
+            </motion.button>
+            <motion.button 
+              onClick={() => toggleMute('katseye')}
+              className="w-12 h-12 bg-gray-900 bg-opacity-80 hover:bg-opacity-90 rounded-full flex items-center justify-center text-white transition-all"
+              whileHover={{ scale: 1.1, backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {videoStates.katseye.muted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+            </motion.button>
+          </motion.div>
+
+          {/* Animated Content */}
+          <div className="max-w-7xl mx-auto px-8 w-full">
+            <motion.div
+              className="max-w-md text-gray-900"
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <motion.p
+                className="text-lg font-light mb-4 text-gray-600"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1 }}
+              >
+                Tiny charms, max volume
+              </motion.p>
+              
+              <PandoraText 
+                className="text-6xl font-bold mb-8 leading-tight text-black block"
+                delay={0.2}
+              >
+                PANDORA MINIS STYLED BY KATSEYE
+              </PandoraText>
+              
+              <PandoraButton 
+                variant="primary"
+                className="mt-4"
+              >
+                SHOP NOW
+              </PandoraButton>
+            </motion.div>
+          </div>
+
+          {/* Animated Promotional Banner */}
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 px-8 py-6"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.5 }}
+          >
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <div className="flex-1">
+                <motion.p
+                  className="text-sm font-bold text-pink-600 mb-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 1.8 }}
+                >
+                  LIMITED TIME ONLY!
+                </motion.p>
+                <motion.p
+                  className="text-lg font-semibold text-black"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 2 }}
+                >
+                  15% off select bracelets when you buy 2 charms
+                </motion.p>
+                <motion.p
+                  className="text-sm text-gray-600"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 2.2 }}
+                >
+                  <Link href="#" className="underline hover:text-black transition-colors">Terms & Conditions</Link> apply.
+                </motion.p>
+              </div>
+              <PandoraButton variant="primary">
+                SHOP CHARMS
+              </PandoraButton>
+            </div>
+          </motion.div>
+        </PandoraHeroSection>
+
+        {/* ANIMATED CATEGORY SECTION */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-8">
+            <motion.div
+              className="text-center mb-12"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <p className="text-lg text-gray-600 mb-4">Find what speaks to you</p>
+              <motion.h2
+                className="text-5xl font-bold text-black"
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <motion.span
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                  whileHover={{
+                    scale: 1.05,
+                    rotate: [-1, 1, -1, 0],
+                    transition: { duration: 0.5 }
+                  }}
+                >
+                  Sale 30% Off
+                </motion.span>
+              </motion.h2>
+            </motion.div>
+
+            {/* Animated Category Grid */}
+            <PandoraStaggerGrid className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {[
+                { name: 'Charms', href: '/charms', emoji: '🌟' },
+                { name: 'Bracelets', href: '/bracelets', emoji: '💎' },
+                { name: 'Rings', href: '/rings', emoji: '💍' },
+                { name: 'Necklaces', href: '/necklaces', emoji: '📿' }
+              ].map((category) => (
+                <PandoraStaggerItem key={category.name}>
+                  <PandoraProductCard href={category.href}>
+                    <div className="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center border-2 border-dashed border-gray-400 group-hover:border-gray-600 transition-colors duration-300">
+                      <motion.div
+                        className="text-center text-gray-600"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <motion.div
+                          className="text-6xl mb-2"
+                          animate={{
+                            rotate: [0, 10, -10, 0]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        >
+                          {category.emoji}
+                        </motion.div>
+                        <p className="text-sm font-medium">{category.name} Image</p>
+                        <p className="text-xs text-gray-500">Product Photo</p>
+                      </motion.div>
+                    </div>
+                    <h3 className="text-xl font-bold text-black group-hover:text-gray-700 transition-colors duration-300">
+                      {category.name}
+                    </h3>
+                  </PandoraProductCard>
+                </PandoraStaggerItem>
+              ))}
+            </PandoraStaggerGrid>
+
+            {/* Animated Gifts Banner */}
+            <motion.div
+              className="bg-stone-50 rounded-lg p-12 text-center border border-gray-200"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+              whileHover={{
+                scale: 1.02,
+                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+                transition: { duration: 0.3 }
+              }}
+            >
+              <motion.h3
+                className="text-3xl font-bold text-black mb-4"
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                Gifts
+              </motion.h3>
+              <motion.p
+                className="text-lg text-gray-600 mb-6"
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                Perfect presents for every occasion
+              </motion.p>
+              <PandoraButton variant="primary">
+                SHOP GIFTS
+              </PandoraButton>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ANIMATED TRUST BADGES */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-6xl mx-auto px-8">
+            <PandoraStaggerGrid className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                'Free 30-day returns',
+                'Free shipping on orders $75+',
+                'Gift packaging available',
+                'Complimentary 1-year warranty'
+              ].map((feature, index) => (
+                <PandoraStaggerItem key={feature}>
+                  <motion.div
+                    className="flex items-center space-x-4 text-center lg:text-left"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.div
+                      className="w-12 h-12 bg-black rounded-full flex items-center justify-center flex-shrink-0"
+                      whileHover={{
+                        rotate: 360,
+                        backgroundColor: '#333'
+                      }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <motion.div
+                        className="w-6 h-6 bg-white rounded-full"
+                        animate={{
+                          scale: [1, 1.2, 1]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: index * 0.3
+                        }}
+                      />
+                    </motion.div>
+                    <div>
+                      <h3 className="font-semibold text-black">{feature}</h3>
+                    </div>
+                  </motion.div>
+                </PandoraStaggerItem>
+              ))}
+            </PandoraStaggerGrid>
+          </div>
+        </section>
+      </main>
+
+      {/* ANIMATED FOOTER */}
+      <motion.footer
+        className="bg-white border-t border-gray-200 pt-16 pb-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: '-200px' }}
+        transition={{ duration: 1 }}
+      >
+        <div className="max-w-7xl mx-auto px-8">
+          {/* 5 Column Footer with Stagger Animation */}
+          <PandoraStaggerGrid className="grid grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+            {[
+              {
+                title: 'SHOP',
+                links: ['Charms', 'Bracelets', 'Rings', 'Necklaces & Pendants', 'Earrings', 'Lab-Grown Diamonds', 'Collections', 'Gifts']
+              },
+              {
+                title: 'RESOURCES',
+                links: ['Blog', 'Size Guide', 'Care Guide']
+              },
+              {
+                title: 'SERVICES',
+                links: ['Engraving', 'Gift Cards', 'Warranty', 'Repairs']
+              },
+              {
+                title: 'LEGAL',
+                links: ['Privacy Policy', 'Terms of Service', 'Returns']
+              },
+              {
+                title: 'ABOUT US',
+                links: ['Our Story', 'Sustainability', 'Careers']
+              }
+            ].map((column, columnIndex) => (
+              <PandoraStaggerItem key={column.title}>
+                <motion.div>
+                  <motion.h3
+                    className="font-bold text-black mb-4 text-sm tracking-wider"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: columnIndex * 0.1 }}
+                  >
+                    {column.title}
+                  </motion.h3>
+                  <motion.ul className="space-y-3 text-sm">
+                    {column.links.map((link, linkIndex) => (
+                      <motion.li
+                        key={link}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.6,
+                          delay: (columnIndex * 0.1) + (linkIndex * 0.05)
+                        }}
+                      >
+                        <Link
+                          href={`/${link.toLowerCase().replace(/\s+/g, '-')}`}
+                          className="text-gray-600 hover:text-black transition-colors duration-200 relative group"
+                        >
+                          {link}
+                          <motion.div
+                            className="absolute -bottom-1 left-0 h-px bg-black"
+                            initial={{ width: 0 }}
+                            whileHover={{
+                              width: '100%',
+                              transition: { duration: 0.3 }
+                            }}
+                          />
+                        </Link>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
+              </PandoraStaggerItem>
+            ))}
+          </PandoraStaggerGrid>
+
+          {/* Animated Bottom Footer */}
+          <motion.div
+            className="border-t border-gray-200 pt-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="flex flex-col lg:flex-row justify-between items-center">
+              {/* Left: Logo and Country */}
+              <motion.div
+                className="flex items-center space-x-8 mb-6 lg:mb-0"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <Link href="/" className="text-2xl font-bold text-black hover:text-gray-700 transition-colors">
+                  BONJOOJOO
+                </Link>
+                <div className="flex items-center space-x-4">
+                  <button className="text-sm text-gray-600 hover:text-black transition-colors">United States</button>
+                  <span className="text-sm text-gray-600">English</span>
+                </div>
+              </motion.div>
+
+              {/* Center: Copyright */}
+              <motion.div
+                className="mb-6 lg:mb-0"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
+                <p className="text-sm text-gray-600">© ALL RIGHTS RESERVED. 2026 Bonjoojoo</p>
+              </motion.div>
+
+              {/* Right: Animated Social Icons */}
+              <motion.div
+                className="flex space-x-3"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                {[...Array(6)].map((_, i) => (
+                  <motion.button
+                    key={i}
+                    className="w-10 h-10 bg-gray-300 hover:bg-gray-400 rounded-full transition-colors"
+                    initial={{ scale: 0, rotate: 180 }}
+                    whileInView={{
+                      scale: 1,
+                      rotate: 0,
+                      transition: {
+                        duration: 0.6,
+                        delay: 0.7 + (i * 0.1),
+                        ease: [0.34, 1.56, 0.64, 1]
+                      }
+                    }}
+                    viewport={{ once: true }}
+                    whileHover={{
+                      scale: 1.1,
+                      rotate: 360,
+                      backgroundColor: '#666',
+                      transition: { duration: 0.5 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  />
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.footer>
+    </div>
+  )
+}

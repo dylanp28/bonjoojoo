@@ -1,0 +1,180 @@
+<svg viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="diamondGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="40%" style="stop-color:#E8F4F8;stop-opacity:0.9"/>
+      <stop offset="80%" style="stop-color:#D4AF37;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#87A96B;stop-opacity:0.2"/>
+    </radialGradient>
+    <linearGradient id="goldSetting" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="50%" style="stop-color:#D4AF37"/>
+      <stop offset="100%" style="stop-color:#B8941F"/>
+    </linearGradient>
+    <filter id="sparkleEffect" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="braceletShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  
+  <!-- White studio background -->
+  <rect width="1200" height="1200" fill="#ffffff"/>
+  
+  <!-- Soft shadow beneath bracelet -->
+  <ellipse cx="600" cy="700" rx="250" ry="80" fill="#000000" opacity="0.04"/>
+  
+  <!-- Tennis Bracelet positioned elegantly -->
+  <g transform="translate(600, 600) rotate(25)">
+    
+    <!-- Bracelet base structure -->
+    <ellipse cx="0" cy="0" rx="220" ry="80" fill="none" stroke="url(#goldSetting)" stroke-width="8" filter="url(#braceletShadow)"/>
+    
+    <!-- Inner bracelet band -->
+    <ellipse cx="0" cy="0" rx="215" ry="75" fill="none" stroke="#F8F6F0" stroke-width="4" opacity="0.9"/>
+    
+    <!-- Individual Diamond Settings (17 diamonds total for tennis bracelet) -->
+    
+    <!-- Top diamonds -->
+    <g transform="translate(0, -75)">
+      <!-- Center top diamond -->
+      <g>
+        <rect x="-8" y="-8" width="16" height="16" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="7" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="5" fill="#ffffff" opacity="0.9"/>
+        <circle cx="-2" cy="-3" r="1.5" fill="#ffffff"/>
+      </g>
+      
+      <!-- Adjacent top diamonds -->
+      <g transform="translate(-35, 5)">
+        <rect x="-7" y="-7" width="14" height="14" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="6" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="4" fill="#ffffff" opacity="0.8"/>
+      </g>
+      <g transform="translate(35, 5)">
+        <rect x="-7" y="-7" width="14" height="14" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="6" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="4" fill="#ffffff" opacity="0.8"/>
+      </g>
+      
+      <!-- Outer top diamonds -->
+      <g transform="translate(-65, 15)">
+        <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+      </g>
+      <g transform="translate(65, 15)">
+        <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+      </g>
+    </g>
+    
+    <!-- Side diamonds -->
+    <g transform="translate(-180, 0)">
+      <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+      <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+      <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    <g transform="translate(180, 0)">
+      <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+      <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+      <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    
+    <!-- Mid-side diamonds -->
+    <g transform="translate(-140, -35)">
+      <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+      <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+      <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    <g transform="translate(140, -35)">
+      <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+      <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+      <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    
+    <g transform="translate(-140, 35)">
+      <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+      <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+      <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    <g transform="translate(140, 35)">
+      <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+      <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+      <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    
+    <!-- Bottom diamonds -->
+    <g transform="translate(0, 75)">
+      <!-- Center bottom diamond -->
+      <g>
+        <rect x="-7" y="-7" width="14" height="14" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="6" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="4.5" fill="#ffffff" opacity="0.9"/>
+        <circle cx="-1" cy="-2" r="1" fill="#ffffff"/>
+      </g>
+      
+      <!-- Adjacent bottom diamonds -->
+      <g transform="translate(-30, -5)">
+        <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+      </g>
+      <g transform="translate(30, -5)">
+        <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+      </g>
+      
+      <!-- Outer bottom diamonds -->
+      <g transform="translate(-60, -15)">
+        <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+      </g>
+      <g transform="translate(60, -15)">
+        <rect x="-6" y="-6" width="12" height="12" rx="2" fill="url(#goldSetting)"/>
+        <circle cx="0" cy="0" r="5" fill="url(#diamondGlow)" filter="url(#sparkleEffect)"/>
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" opacity="0.8"/>
+      </g>
+    </g>
+    
+    <!-- Clasp mechanism -->
+    <g transform="translate(200, 0)">
+      <rect x="0" y="-6" width="15" height="12" rx="2" fill="url(#goldSetting)"/>
+      <rect x="2" y="-4" width="11" height="8" rx="1" fill="#F8F6F0"/>
+      <rect x="4" y="-2" width="7" height="4" rx="1" fill="#D4AF37"/>
+    </g>
+    
+    <!-- Ambient sparkles around bracelet -->
+    <g opacity="0.5">
+      <!-- Large sparkles -->
+      <path d="M-250,-100 L-245,-95 L-250,-90 L-255,-95 Z" fill="#D4AF37"/>
+      <path d="M280,-80 L285,-75 L280,-70 L275,-75 Z" fill="#ffffff"/>
+      <path d="M-260,120 L-255,125 L-260,130 L-265,125 Z" fill="#E8F4F8"/>
+      <path d="M290,100 L295,105 L290,110 L285,105 Z" fill="#87A96B"/>
+      
+      <!-- Medium sparkles -->
+      <circle cx="-180" cy="-120" r="2" fill="#D4AF37" opacity="0.7"/>
+      <circle cx="220" cy="-110" r="1.5" fill="#ffffff"/>
+      <circle cx="-200" cy="140" r="2.5" fill="#E8F4F8" opacity="0.6"/>
+      <circle cx="240" cy="130" r="1" fill="#F5E6E8"/>
+      
+      <!-- Small sparkles -->
+      <circle cx="-120" cy="-160" r="1" fill="#D4AF37"/>
+      <circle cx="160" cy="-150" r="1" fill="#ffffff"/>
+      <circle cx="-140" cy="170" r="1.5" fill="#E8F4F8"/>
+      <circle cx="180" cy="160" r="1" fill="#87A96B"/>
+    </g>
+  </g>
+  
+  <!-- Professional studio lighting reflections -->
+  <ellipse cx="350" cy="250" rx="120" ry="180" fill="#ffffff" opacity="0.02"/>
+  <ellipse cx="850" cy="350" rx="80" ry="220" fill="#E8F4F8" opacity="0.02"/>
+</svg>

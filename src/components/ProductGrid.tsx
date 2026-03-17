@@ -1,0 +1,164 @@
+'use client'
+
+import { useState } from 'react'
+import Image from 'next/image'
+import { Heart, ShoppingCart, Star } from 'lucide-react'
+import { Product } from '@/data/products'
+import { useCart } from '@/store/useCart'
+
+interface ProductGridProps {
+  products: Product[]
+  title?: string
+}
+
+export function ProductGrid({ products, title }: ProductGridProps) {
+  const [wishlist, setWishlist] = useState<Set<string>>(new Set())
+  const addItem = useCart(state => state.addItem)
+  
+  const toggleWishlist = (productId: string) => {
+    const newWishlist = new Set(wishlist)
+    if (newWishlist.has(productId)) {
+      newWishlist.delete(productId)
+    } else {
+      newWishlist.add(productId)
+    }
+    setWishlist(newWishlist)
+  }
+
+  const handleAddToCart = (product: Product) => {
+    addItem(product)
+  }
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+    }).format(price)
+  }
+
+  const renderRating = (rating: number, reviewCount: number) => {
+    return (
+      <div className="flex items-center mb-2">
+        <div className="flex items-center">
+          {Array.from({ length: 5 }, (_, i) => (
+            <Star
+              key={i}
+              size={12}
+              className={`${
+                i < Math.floor(rating) 
+                  ? 'text-yellow-400 fill-current' 
+                  : 'text-gray-300'
+              }`}
+            />
+          ))}
+        </div>
+        <span className="text-xs text-gray-500 ml-2">({reviewCount})</span>
+      </div>
+    )
+  }
+
+  return (
+    <section>
+      {title && (
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-light text-gray-900">{title}</h2>
+        </div>
+      )}
+      
+      {/* EXACT Pandora Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="group cursor-pointer">
+            {/* Product Image */}
+            <div className="relative aspect-square bg-gray-50 overflow-hidden mb-4">
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <span className="text-gray-400 text-sm">{product.name}</span>
+              </div>
+              
+              {/* Sale Badge - Pandora Style */}
+              {product.originalPrice && product.originalPrice > product.price && (
+                <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 text-xs font-medium uppercase">
+                  Sale
+                </div>
+              )}
+              
+              {/* Wishlist Button - Pandora Position */}
+              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <button
+                  onClick={() => toggleWishlist(product.id)}
+                  className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <Heart
+                    size={16}
+                    className={`${
+                      wishlist.has(product.id)
+                        ? 'text-red-500 fill-current'
+                        : 'text-gray-600'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Quick Shop Overlay - Pandora Style */}
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="w-full bg-white text-black py-2 px-4 text-sm font-medium hover:bg-gray-100 transition-colors"
+                >
+                  Quick Shop
+                </button>
+              </div>
+            </div>
+
+            {/* Product Details - Pandora Layout */}
+            <div className="space-y-2">
+              {/* Product Name */}
+              <h3 className="text-sm font-medium text-gray-900 line-clamp-2 leading-tight">
+                {product.name}
+              </h3>
+
+              {/* Rating - Pandora Style */}
+              {renderRating(product.rating, product.reviewCount)}
+
+              {/* Price - Pandora Styling */}
+              <div className="flex items-center space-x-2">
+                <span className="text-lg font-medium text-gray-900">
+                  {formatPrice(product.price)}
+                </span>
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatPrice(product.originalPrice)}
+                  </span>
+                )}
+              </div>
+
+              {/* Product Colors/Options - Pandora Style */}
+              <div className="flex items-center space-x-1 pt-1">
+                <div className="w-4 h-4 rounded-full bg-yellow-300 border border-gray-300"></div>
+                <div className="w-4 h-4 rounded-full bg-pink-200 border border-gray-300"></div>
+                <div className="w-4 h-4 rounded-full bg-gray-300 border border-gray-300"></div>
+                <span className="text-xs text-gray-500 ml-2">+2 more</span>
+              </div>
+
+              {/* Stock Status */}
+              {!product.inStock && (
+                <div className="mt-2">
+                  <span className="text-xs text-gray-500 font-medium">Out of Stock</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* No Products State - Pandora Style */}
+      {products.length === 0 && (
+        <div className="text-center py-16">
+          <div className="text-gray-500 mb-4 font-medium text-lg">No products found</div>
+          <p className="text-gray-400">Please try adjusting your search or filters.</p>
+        </div>
+      )}
+    </section>
+  )
+}

@@ -1,0 +1,564 @@
+{
+  "products": [
+    {
+      "id": "RING-004",
+      "sku": "BJ-ENG-LG-THREE-004",
+      "name": "Eternal Trinity",
+      "category": "engagement-rings",
+      "subcategory": "three-stone",
+      "description": "A sophisticated three-stone engagement ring featuring an oval center diamond flanked by two matching side stones, representing past, present, and future.",
+      "short_description": "Three-stone oval lab-grown diamond engagement ring",
+      "long_description": "The Eternal Trinity tells your love story in three perfect chapters. The stunning oval center diamond is complemented by two perfectly matched side stones, creating a harmonious composition that symbolizes your journey together. This timeless design balances tradition with contemporary elegance.",
+      "price": 2799,
+      "compare_at_price": 3499,
+      "cost": 1399,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.5,
+          "cut": "oval",
+          "color": "D",
+          "clarity": "VVS1",
+          "certification": "IGI",
+          "dimensions": "9.0x6.5mm"
+        },
+        "side_stones": {
+          "type": "lab-grown diamond",
+          "quantity": 2,
+          "total_carat": 0.8,
+          "per_stone_carat": 0.4,
+          "cut": "oval",
+          "color": "D",
+          "clarity": "VVS2",
+          "dimensions": "6.0x4.5mm"
+        },
+        "setting": {
+          "style": "three-stone",
+          "prongs": 6,
+          "band_width": "2.8mm"
+        },
+        "metal": {
+          "type": "18k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "18k",
+          "rhodium_plated": true
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-004-main.jpg",
+        "/images/products/rings/eng-004-side.jpg",
+        "/images/products/rings/eng-004-detail.jpg",
+        "/images/products/rings/eng-004-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 4,
+        "low_stock_threshold": 1,
+        "variants": {
+          "18k-white-size-6": 1,
+          "18k-white-size-7": 1,
+          "18k-yellow-size-6": 1,
+          "18k-rose-size-6": 1
+        }
+      },
+      "seo": {
+        "meta_title": "Three-Stone Oval Diamond Engagement Ring | Eternal Trinity",
+        "meta_description": "Stunning 1.5ct oval lab-grown diamond three-stone engagement ring in 18k gold. Past, present, future symbolism.",
+        "keywords": ["three stone ring", "oval diamond ring", "lab grown engagement ring", "symbolic ring"]
+      },
+      "tags": ["luxury", "symbolic", "oval", "premium"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 6.8,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "RING-005",
+      "sku": "BJ-ENG-LG-EME-005",
+      "name": "Metropolitan Emerald",
+      "category": "engagement-rings",
+      "subcategory": "solitaire",
+      "description": "A modern emerald-cut lab-grown diamond solitaire with clean lines and sophisticated appeal, perfect for the contemporary bride.",
+      "short_description": "Emerald-cut lab-grown diamond solitaire ring",
+      "long_description": "The Metropolitan Emerald captures the essence of modern luxury with its sophisticated emerald-cut diamond and sleek setting. The step-cut facets create mesmerizing flashes of light while the clean lines appeal to those who appreciate architectural beauty. This ring is designed for the bride who values understated elegance over flashy sparkle.",
+      "price": 2399,
+      "compare_at_price": 2999,
+      "cost": 1199,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.8,
+          "cut": "emerald",
+          "color": "E",
+          "clarity": "VVS2",
+          "certification": "IGI",
+          "dimensions": "8.5x6.5mm"
+        },
+        "setting": {
+          "style": "solitaire",
+          "prongs": 4,
+          "band_width": "2.2mm",
+          "profile": "cathedral"
+        },
+        "metal": {
+          "type": "platinum",
+          "options": ["platinum", "18k white gold"],
+          "purity": "950 platinum",
+          "rhodium_plated": false
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 75
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-005-main.jpg",
+        "/images/products/rings/eng-005-side.jpg",
+        "/images/products/rings/eng-005-detail.jpg",
+        "/images/products/rings/eng-005-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 3,
+        "low_stock_threshold": 1,
+        "variants": {
+          "platinum-size-6": 1,
+          "platinum-size-7": 1,
+          "18k-white-size-6": 1
+        }
+      },
+      "seo": {
+        "meta_title": "Emerald Cut Lab-Grown Diamond Ring | Metropolitan Luxury",
+        "meta_description": "Sophisticated 1.8ct emerald-cut lab-grown diamond engagement ring in platinum. Modern architectural elegance.",
+        "keywords": ["emerald cut diamond", "lab grown diamond ring", "platinum ring", "modern engagement ring"]
+      },
+      "tags": ["modern", "sophisticated", "emerald-cut", "platinum"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 7.2,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "BRACELET-001",
+      "sku": "BJ-BRAC-LG-TEN-001",
+      "name": "Brilliant Tennis Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "A stunning lab-grown diamond tennis bracelet featuring perfectly matched round diamonds in secure settings.",
+      "short_description": "Lab-grown diamond tennis bracelet",
+      "long_description": "The Brilliant Tennis Bracelet embodies timeless luxury with modern ethics. Featuring a continuous line of perfectly matched lab-grown diamonds, this bracelet delivers unparalleled sparkle and sophistication. Each diamond is individually set in a secure mounting, ensuring both beauty and durability for generations to come.",
+      "price": 3299,
+      "compare_at_price": 4199,
+      "cost": 1649,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 65,
+          "total_carat": 5.0,
+          "per_stone_carat": 0.077,
+          "cut": "round brilliant",
+          "color": "F-G",
+          "clarity": "VS1-VS2",
+          "certification": "IGI batch certified"
+        },
+        "setting": {
+          "style": "4-prong individual settings",
+          "link_type": "flexible",
+          "safety_clasp": true
+        },
+        "bracelet": {
+          "length": "7 inches",
+          "width": "4.5mm",
+          "adjustable": false,
+          "custom_length_available": true
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/bracelets/brac-001-main.jpg",
+        "/images/products/bracelets/brac-001-detail.jpg",
+        "/images/products/bracelets/brac-001-lifestyle.jpg",
+        "/images/products/bracelets/brac-001-clasp.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 5,
+        "low_stock_threshold": 1,
+        "variants": {
+          "14k-white-7inch": 2,
+          "14k-yellow-7inch": 2,
+          "14k-rose-7inch": 1
+        }
+      },
+      "seo": {
+        "meta_title": "5ct Lab-Grown Diamond Tennis Bracelet | Brilliant Luxury",
+        "meta_description": "Stunning 5ct total weight lab-grown diamond tennis bracelet in 14k gold. 65 perfectly matched diamonds.",
+        "keywords": ["diamond tennis bracelet", "lab grown diamond bracelet", "5 carat bracelet", "luxury bracelet"]
+      },
+      "tags": ["luxury", "tennis", "statement", "5-carat"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 18.4,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "EARRINGS-002",
+      "sku": "BJ-EAR-LG-HOOP-002",
+      "name": "Infinite Sparkle Hoops",
+      "category": "earrings",
+      "subcategory": "hoops",
+      "description": "Elegant diamond-set hoop earrings featuring lab-grown diamonds on the front-facing surface for continuous sparkle.",
+      "short_description": "Lab-grown diamond inside-out hoop earrings",
+      "long_description": "The Infinite Sparkle Hoops redefine everyday luxury with their sophisticated design and ethical brilliance. Featuring lab-grown diamonds set along the front-facing curve, these hoops catch light from every angle while maintaining comfort for all-day wear. The secure hinged closure ensures peace of mind with every wear.",
+      "price": 1299,
+      "compare_at_price": 1699,
+      "cost": 649,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 28,
+          "total_carat": 1.4,
+          "per_stone_carat": 0.05,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "VS2",
+          "certification": "IGI",
+          "setting_area": "front-facing only"
+        },
+        "hoops": {
+          "diameter": "25mm",
+          "tube_width": "2.5mm",
+          "closure": "hinged snap",
+          "comfort_fit": true
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/earrings/ear-002-main.jpg",
+        "/images/products/earrings/ear-002-detail.jpg",
+        "/images/products/earrings/ear-002-lifestyle.jpg",
+        "/images/products/earrings/ear-002-close.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 12,
+        "low_stock_threshold": 3,
+        "variants": {
+          "14k-white": 5,
+          "14k-yellow": 4,
+          "14k-rose": 3
+        }
+      },
+      "seo": {
+        "meta_title": "Lab-Grown Diamond Hoop Earrings | Infinite Sparkle",
+        "meta_description": "Elegant 1.4ct lab-grown diamond hoop earrings with hinged closure in 14k gold. Everyday luxury.",
+        "keywords": ["diamond hoop earrings", "lab grown diamond hoops", "inside out hoops", "sparkle hoops"]
+      },
+      "tags": ["hoops", "everyday-luxury", "sparkle", "comfortable"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 3.8,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "NECKLACE-002",
+      "sku": "BJ-NECK-LG-TEN-002",
+      "name": "Riviera Tennis Necklace",
+      "category": "necklaces",
+      "subcategory": "tennis",
+      "description": "An exquisite lab-grown diamond tennis necklace featuring graduated stones for elegant sophistication.",
+      "short_description": "Graduated lab-grown diamond tennis necklace",
+      "long_description": "The Riviera Tennis Necklace epitomizes refined luxury with its graduated diamond design that creates a beautiful flow around the neckline. Starting with smaller diamonds at the back and gradually increasing to larger stones at the center, this piece delivers maximum impact while maintaining elegant proportions.",
+      "price": 4999,
+      "compare_at_price": 6499,
+      "cost": 2499,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 85,
+          "total_carat": 8.5,
+          "graduated_sizes": "0.05ct to 0.15ct",
+          "cut": "round brilliant",
+          "color": "F-G",
+          "clarity": "VS1-VS2",
+          "certification": "IGI batch certified"
+        },
+        "necklace": {
+          "length": "18 inches",
+          "adjustable": true,
+          "adjustment_range": "16-18 inches",
+          "graduation_style": "center-focused",
+          "clasp": "box clasp with safety"
+        },
+        "setting": {
+          "style": "4-prong individual settings",
+          "link_type": "flexible articulated"
+        },
+        "metal": {
+          "type": "18k gold",
+          "options": ["white", "yellow"],
+          "purity": "18k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/necklaces/neck-002-main.jpg",
+        "/images/products/necklaces/neck-002-detail.jpg",
+        "/images/products/necklaces/neck-002-lifestyle.jpg",
+        "/images/products/necklaces/neck-002-clasp.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 2,
+        "low_stock_threshold": 1,
+        "variants": {
+          "18k-white": 1,
+          "18k-yellow": 1
+        }
+      },
+      "seo": {
+        "meta_title": "8.5ct Lab-Grown Diamond Tennis Necklace | Riviera Luxury",
+        "meta_description": "Exquisite 8.5ct graduated lab-grown diamond tennis necklace in 18k gold. Ultimate luxury statement piece.",
+        "keywords": ["diamond tennis necklace", "graduated diamond necklace", "8 carat necklace", "luxury necklace"]
+      },
+      "tags": ["luxury", "tennis", "graduated", "statement", "premium"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 28.5,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "EARRINGS-003",
+      "sku": "BJ-EAR-LG-DROP-003",
+      "name": "Celestial Cascade",
+      "category": "earrings",
+      "subcategory": "drops",
+      "description": "Elegant drop earrings featuring pear-shaped lab-grown diamonds suspended from delicate diamond-set hooks.",
+      "short_description": "Pear-shaped lab-grown diamond drop earrings",
+      "long_description": "The Celestial Cascade earrings capture the grace of falling stars with their elegant pear-shaped lab-grown diamonds that sway gently with every movement. The delicate diamond-set hooks add subtle sparkle while ensuring comfort and security. Perfect for special occasions or when you want to add a touch of glamour to any outfit.",
+      "price": 1799,
+      "compare_at_price": 2299,
+      "cost": 899,
+      "specifications": {
+        "main_stones": {
+          "type": "lab-grown diamond",
+          "quantity": 2,
+          "total_carat": 1.5,
+          "per_stone_carat": 0.75,
+          "cut": "pear",
+          "color": "F",
+          "clarity": "VS1",
+          "certification": "IGI",
+          "dimensions": "8.0x5.5mm"
+        },
+        "accent_diamonds": {
+          "quantity": 12,
+          "total_carat": 0.24,
+          "cut": "round brilliant",
+          "color": "F-G",
+          "clarity": "VS2"
+        },
+        "earrings": {
+          "total_length": "25mm",
+          "drop_length": "15mm",
+          "movement": "gentle sway",
+          "back_type": "lever back"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/earrings/ear-003-main.jpg",
+        "/images/products/earrings/ear-003-detail.jpg",
+        "/images/products/earrings/ear-003-lifestyle.jpg",
+        "/images/products/earrings/ear-003-movement.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 8,
+        "low_stock_threshold": 2,
+        "variants": {
+          "14k-white": 3,
+          "14k-yellow": 3,
+          "14k-rose": 2
+        }
+      },
+      "seo": {
+        "meta_title": "Pear-Shaped Lab-Grown Diamond Drop Earrings | Celestial",
+        "meta_description": "Elegant 1.5ct pear-shaped lab-grown diamond drop earrings in 14k gold. Perfect for special occasions.",
+        "keywords": ["pear diamond earrings", "drop earrings", "lab grown diamond drops", "elegant earrings"]
+      },
+      "tags": ["elegant", "drops", "pear-shaped", "special-occasion"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 4.2,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "RING-006",
+      "sku": "BJ-ENG-LG-DOUB-006",
+      "name": "Luminary Double Halo",
+      "category": "engagement-rings",
+      "subcategory": "halo",
+      "description": "A breathtaking double halo engagement ring with a cushion-cut center stone surrounded by two rings of brilliant diamonds.",
+      "short_description": "Cushion-cut lab-grown diamond double halo ring",
+      "long_description": "The Luminary Double Halo creates an extraordinary display of brilliance with its cushion-cut center diamond embraced by two perfectly aligned halos. This dramatic design maximizes sparkle while creating the illusion of a much larger center stone. The micro-pavé band continues the luxurious diamond story from every angle.",
+      "price": 2899,
+      "compare_at_price": 3699,
+      "cost": 1449,
+      "specifications": {
+        "center_stone": {
+          "type": "lab-grown diamond",
+          "carat": 1.0,
+          "cut": "cushion",
+          "color": "E",
+          "clarity": "VVS2",
+          "certification": "IGI",
+          "dimensions": "6.5x6.5mm"
+        },
+        "halo_diamonds": {
+          "inner_halo": {
+            "quantity": 20,
+            "total_carat": 0.4,
+            "cut": "round brilliant"
+          },
+          "outer_halo": {
+            "quantity": 32,
+            "total_carat": 0.48,
+            "cut": "round brilliant"
+          },
+          "band_diamonds": {
+            "quantity": 36,
+            "total_carat": 0.32,
+            "cut": "round brilliant"
+          }
+        },
+        "setting": {
+          "style": "double halo",
+          "band_width": "2.8mm",
+          "head_diameter": "12mm",
+          "profile_height": "8mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k",
+          "rhodium_plated": true
+        },
+        "size": {
+          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
+          "sizing_fee": 0
+        }
+      },
+      "images": [
+        "/images/products/rings/eng-006-main.jpg",
+        "/images/products/rings/eng-006-side.jpg",
+        "/images/products/rings/eng-006-detail.jpg",
+        "/images/products/rings/eng-006-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 5,
+        "low_stock_threshold": 1,
+        "variants": {
+          "14k-white-size-6": 2,
+          "14k-white-size-7": 1,
+          "14k-rose-size-6": 1,
+          "14k-yellow-size-6": 1
+        }
+      },
+      "seo": {
+        "meta_title": "Cushion Cut Double Halo Lab-Grown Diamond Ring | Luminary",
+        "meta_description": "Stunning 1ct cushion-cut lab-grown diamond ring with double halo and micro-pavé band in 14k gold.",
+        "keywords": ["double halo ring", "cushion cut diamond", "lab grown engagement ring", "halo diamond ring"]
+      },
+      "tags": ["dramatic", "halo", "cushion-cut", "maximum-sparkle"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 5.9,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    },
+    {
+      "id": "BRACELET-002",
+      "sku": "BJ-BRAC-LG-BAN-002", 
+      "name": "Renaissance Bangle",
+      "category": "bracelets",
+      "subcategory": "bangles",
+      "description": "A sophisticated hinged bangle bracelet featuring channel-set lab-grown diamonds in an architectural design.",
+      "short_description": "Channel-set lab-grown diamond bangle bracelet",
+      "long_description": "The Renaissance Bangle merges architectural sophistication with timeless elegance. Featuring channel-set lab-grown diamonds that flow seamlessly around the bracelet, this piece offers a modern interpretation of classic luxury. The hinged design ensures comfort and security while the continuous diamond line delivers uninterrupted brilliance.",
+      "price": 2199,
+      "compare_at_price": 2799,
+      "cost": 1099,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 42,
+          "total_carat": 2.1,
+          "per_stone_carat": 0.05,
+          "cut": "princess",
+          "color": "G",
+          "clarity": "VS1",
+          "certification": "IGI",
+          "setting": "channel"
+        },
+        "bangle": {
+          "style": "hinged",
+          "diameter": "60mm",
+          "width": "6mm",
+          "thickness": "4mm",
+          "closure": "hidden clasp with safety"
+        },
+        "metal": {
+          "type": "18k gold",
+          "options": ["white", "yellow"],
+          "purity": "18k",
+          "rhodium_plated": true
+        }
+      },
+      "images": [
+        "/images/products/bracelets/brac-002-main.jpg",
+        "/images/products/bracelets/brac-002-detail.jpg",
+        "/images/products/bracelets/brac-002-lifestyle.jpg",
+        "/images/products/bracelets/brac-002-clasp.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 3,
+        "low_stock_threshold": 1,
+        "variants": {
+          "18k-white": 2,
+          "18k-yellow": 1
+        }
+      },
+      "seo": {
+        "meta_title": "Princess Cut Lab-Grown Diamond Bangle | Renaissance",
+        "meta_description": "Sophisticated 2.1ct princess-cut lab-grown diamond channel-set bangle in 18k gold. Architectural elegance.",
+        "keywords": ["diamond bangle", "princess cut diamonds", "channel set bracelet", "luxury bangle"]
+      },
+      "tags": ["sophisticated", "channel-set", "princess-cut", "architectural"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 22.8,
+      "created_at": "2024-03-16",
+      "updated_at": "2024-03-16"
+    }
+  ]
+}

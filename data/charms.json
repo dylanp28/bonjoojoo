@@ -1,0 +1,393 @@
+{
+  "charms": [
+    {
+      "id": "CHARM-001",
+      "sku": "BJ-CRM-LG-HRT-001",
+      "name": "Eternal Heart Charm",
+      "category": "charms",
+      "subcategory": "symbols",
+      "description": "A delicate heart charm featuring pavé-set lab-grown diamonds for timeless romance.",
+      "short_description": "Pavé lab-grown diamond heart charm",
+      "long_description": "The Eternal Heart Charm captures the essence of love with its elegant silhouette and brilliant pavé-set lab-grown diamonds. Perfect for adding sentiment to any bracelet or necklace.",
+      "price": 189,
+      "compare_at_price": 249,
+      "cost": 94,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 12,
+          "total_carat": 0.15,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "VS2",
+          "setting": "pavé"
+        },
+        "dimensions": {
+          "length": "12mm",
+          "width": "10mm",
+          "thickness": "2mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-001-main.jpg",
+        "/images/products/charms/charm-001-detail.jpg",
+        "/images/products/charms/charm-001-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 25,
+        "low_stock_threshold": 5
+      },
+      "tags": ["heart", "love", "pavé", "romantic"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 1.2,
+      "is_featured": true,
+      "is_bestseller": true
+    },
+    {
+      "id": "CHARM-002",
+      "sku": "BJ-CRM-LG-STR-002",
+      "name": "Celestial Star Charm",
+      "category": "charms",
+      "subcategory": "symbols",
+      "description": "A sparkling star charm with a single brilliant lab-grown diamond center.",
+      "short_description": "Lab-grown diamond star charm",
+      "long_description": "Reach for the stars with this enchanting charm featuring a brilliant lab-grown diamond at its center. The star's rays catch light beautifully, creating magical sparkle with every movement.",
+      "price": 149,
+      "compare_at_price": 199,
+      "cost": 74,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 1,
+          "total_carat": 0.08,
+          "cut": "round brilliant",
+          "color": "D",
+          "clarity": "VVS1",
+          "setting": "bezel"
+        },
+        "dimensions": {
+          "diameter": "10mm",
+          "thickness": "1.5mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-002-main.jpg",
+        "/images/products/charms/charm-002-detail.jpg",
+        "/images/products/charms/charm-002-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 18,
+        "low_stock_threshold": 4
+      },
+      "tags": ["star", "celestial", "minimalist"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 0.8,
+      "is_featured": false,
+      "is_bestseller": false
+    },
+    {
+      "id": "CHARM-003",
+      "sku": "BJ-CRM-LG-BTF-003",
+      "name": "Garden Butterfly Charm",
+      "category": "charms",
+      "subcategory": "nature",
+      "description": "A delicate butterfly charm with gradient lab-grown diamonds in the wings.",
+      "short_description": "Gradient lab-grown diamond butterfly charm",
+      "long_description": "Celebrate transformation and beauty with this exquisite butterfly charm. The wings feature a gradient of lab-grown diamonds from pale to brilliant, creating a stunning ombré effect that captures light like real butterfly wings.",
+      "price": 229,
+      "compare_at_price": 299,
+      "cost": 114,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 24,
+          "total_carat": 0.22,
+          "cut": "round brilliant",
+          "color": "G-J",
+          "clarity": "SI1",
+          "setting": "micro-pavé"
+        },
+        "dimensions": {
+          "wingspan": "15mm",
+          "length": "12mm",
+          "thickness": "2.5mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-003-main.jpg",
+        "/images/products/charms/charm-003-detail.jpg",
+        "/images/products/charms/charm-003-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 12,
+        "low_stock_threshold": 3
+      },
+      "tags": ["butterfly", "nature", "gradient", "transformation"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 1.5,
+      "is_featured": true,
+      "is_bestseller": false
+    },
+    {
+      "id": "CHARM-004",
+      "sku": "BJ-CRM-LG-LCK-004",
+      "name": "Vintage Lock Charm",
+      "category": "charms",
+      "subcategory": "symbols",
+      "description": "A vintage-inspired padlock charm with intricate engravings and a diamond accent.",
+      "short_description": "Engraved vintage lock charm with diamond",
+      "long_description": "This charming vintage-inspired lock pays homage to classic jewelry design. Detailed engravings cover the surface while a single lab-grown diamond marks the keyhole, symbolizing the key to your heart.",
+      "price": 169,
+      "compare_at_price": 219,
+      "cost": 84,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 1,
+          "total_carat": 0.05,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "VS1",
+          "setting": "flush"
+        },
+        "dimensions": {
+          "length": "14mm",
+          "width": "10mm",
+          "thickness": "3mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-004-main.jpg",
+        "/images/products/charms/charm-004-detail.jpg",
+        "/images/products/charms/charm-004-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 15,
+        "low_stock_threshold": 3
+      },
+      "tags": ["vintage", "lock", "engraved", "symbolic"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 2.1,
+      "is_featured": false,
+      "is_bestseller": true
+    },
+    {
+      "id": "CHARM-005",
+      "sku": "BJ-CRM-LG-INF-005",
+      "name": "Infinity Symbol Charm",
+      "category": "charms",
+      "subcategory": "symbols",
+      "description": "An elegant infinity symbol charm with continuous lab-grown diamond paving.",
+      "short_description": "Pavé lab-grown diamond infinity charm",
+      "long_description": "Symbolize eternal love and endless possibilities with this sophisticated infinity charm. Lab-grown diamonds are expertly set along the entire curve, creating an unbroken line of brilliance that truly represents infinity.",
+      "price": 209,
+      "compare_at_price": 279,
+      "cost": 104,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 18,
+          "total_carat": 0.18,
+          "cut": "round brilliant",
+          "color": "F",
+          "clarity": "VS2",
+          "setting": "pavé"
+        },
+        "dimensions": {
+          "length": "16mm",
+          "width": "8mm",
+          "thickness": "2mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-005-main.jpg",
+        "/images/products/charms/charm-005-detail.jpg",
+        "/images/products/charms/charm-005-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 22,
+        "low_stock_threshold": 5
+      },
+      "tags": ["infinity", "eternal", "pavé", "meaningful"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 1.4,
+      "is_featured": true,
+      "is_bestseller": true
+    },
+    {
+      "id": "CHARM-006",
+      "sku": "BJ-CRM-LG-MNK-006",
+      "name": "Lucky Horseshoe Charm",
+      "category": "charms",
+      "subcategory": "symbols",
+      "description": "A traditional horseshoe charm enhanced with lab-grown diamonds for modern luck.",
+      "short_description": "Diamond-enhanced lucky horseshoe charm",
+      "long_description": "Carry good fortune with this classic horseshoe charm reimagined with contemporary elegance. Seven lab-grown diamonds represent the seven holes of a traditional horseshoe, bringing both beauty and luck to your collection.",
+      "price": 179,
+      "cost": 89,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 7,
+          "total_carat": 0.14,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "SI2",
+          "setting": "bezel"
+        },
+        "dimensions": {
+          "length": "12mm",
+          "width": "11mm",
+          "thickness": "2mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["yellow", "white"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-006-main.jpg",
+        "/images/products/charms/charm-006-detail.jpg",
+        "/images/products/charms/charm-006-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 20,
+        "low_stock_threshold": 4
+      },
+      "tags": ["horseshoe", "lucky", "traditional", "fortune"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 1.6,
+      "is_featured": false,
+      "is_bestseller": false
+    },
+    {
+      "id": "CHARM-007",
+      "sku": "BJ-CRM-LG-FLR-007",
+      "name": "Blooming Flower Charm",
+      "category": "charms",
+      "subcategory": "nature",
+      "description": "A detailed flower charm with petals outlined in tiny lab-grown diamonds.",
+      "short_description": "Lab-grown diamond flower charm",
+      "long_description": "Celebrate the beauty of nature with this intricate flower charm. Each petal is delicately outlined with micro-set lab-grown diamonds, creating a stunning bloom that captures the essence of a perfect garden flower.",
+      "price": 199,
+      "compare_at_price": 259,
+      "cost": 99,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 15,
+          "total_carat": 0.12,
+          "cut": "round brilliant",
+          "color": "G",
+          "clarity": "VS2",
+          "setting": "micro-pavé"
+        },
+        "dimensions": {
+          "diameter": "13mm",
+          "thickness": "2.5mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-007-main.jpg",
+        "/images/products/charms/charm-007-detail.jpg",
+        "/images/products/charms/charm-007-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 16,
+        "low_stock_threshold": 4
+      },
+      "tags": ["flower", "nature", "bloom", "garden"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 1.3,
+      "is_featured": false,
+      "is_bestseller": true
+    },
+    {
+      "id": "CHARM-008",
+      "sku": "BJ-CRM-LG-CRS-008",
+      "name": "Faith Cross Charm",
+      "category": "charms",
+      "subcategory": "symbols",
+      "description": "A elegant cross charm with a single lab-grown diamond at the intersection.",
+      "short_description": "Diamond-accented cross charm",
+      "long_description": "Express your faith with this beautiful cross charm featuring clean lines and a brilliant lab-grown diamond at its center. The minimalist design makes it perfect for everyday wear while maintaining its spiritual significance.",
+      "price": 159,
+      "compare_at_price": 209,
+      "cost": 79,
+      "specifications": {
+        "diamonds": {
+          "type": "lab-grown diamond",
+          "quantity": 1,
+          "total_carat": 0.06,
+          "cut": "round brilliant",
+          "color": "D",
+          "clarity": "VVS2",
+          "setting": "bezel"
+        },
+        "dimensions": {
+          "length": "14mm",
+          "width": "10mm",
+          "thickness": "1.5mm"
+        },
+        "metal": {
+          "type": "14k gold",
+          "options": ["white", "yellow", "rose"],
+          "purity": "14k"
+        }
+      },
+      "images": [
+        "/images/products/charms/charm-008-main.jpg",
+        "/images/products/charms/charm-008-detail.jpg",
+        "/images/products/charms/charm-008-lifestyle.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 24,
+        "low_stock_threshold": 6
+      },
+      "tags": ["cross", "faith", "spiritual", "minimalist"],
+      "vendor": "BonJooJoo",
+      "weight_grams": 1.0,
+      "is_featured": false,
+      "is_bestseller": false
+    }
+  ]
+}

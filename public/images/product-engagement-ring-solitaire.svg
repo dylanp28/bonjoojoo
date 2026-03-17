@@ -1,0 +1,113 @@
+<svg viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="diamondBrilliance" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="30%" style="stop-color:#E8F4F8;stop-opacity:0.9"/>
+      <stop offset="60%" style="stop-color:#D4AF37;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#87A96B;stop-opacity:0.1"/>
+    </radialGradient>
+    <linearGradient id="platinumBand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="50%" style="stop-color:#E5E4E2"/>
+      <stop offset="100%" style="stop-color:#D4D4D4"/>
+    </linearGradient>
+    <filter id="diamondSparkle" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- White background -->
+  <rect width="1200" height="1200" fill="#ffffff"/>
+  
+  <!-- Subtle shadow beneath ring -->
+  <ellipse cx="600" cy="750" rx="200" ry="50" fill="#000000" opacity="0.05"/>
+  
+  <!-- Ring positioned for maximum visual impact -->
+  <g transform="translate(600, 600) rotate(-15)">
+    
+    <!-- Ring Band Base -->
+    <ellipse cx="0" cy="0" rx="180" ry="25" fill="url(#platinumBand)" filter="url(#softShadow)"/>
+    
+    <!-- Ring Band Highlight -->
+    <ellipse cx="0" cy="-3" rx="175" ry="20" fill="#F8F6F0" opacity="0.9"/>
+    
+    <!-- Ring Band Inner Shadow -->
+    <ellipse cx="0" cy="0" rx="160" ry="15" fill="none" stroke="#E5E4E2" stroke-width="1" opacity="0.6"/>
+    
+    <!-- Diamond Setting - Prong Setting -->
+    <g transform="translate(0, -10)">
+      <!-- Setting Base -->
+      <circle cx="0" cy="0" r="35" fill="url(#platinumBand)" stroke="#D4D4D4" stroke-width="1"/>
+      <circle cx="0" cy="-2" r="32" fill="#F8F6F0"/>
+      
+      <!-- Six Prongs -->
+      <g opacity="0.8">
+        <rect x="-2" y="-45" width="4" height="20" fill="#E5E4E2"/>
+        <rect x="-2" y="-45" width="4" height="20" fill="#E5E4E2" transform="rotate(60)"/>
+        <rect x="-2" y="-45" width="4" height="20" fill="#E5E4E2" transform="rotate(120)"/>
+        <rect x="-2" y="-45" width="4" height="20" fill="#E5E4E2" transform="rotate(180)"/>
+        <rect x="-2" y="-45" width="4" height="20" fill="#E5E4E2" transform="rotate(240)"/>
+        <rect x="-2" y="-45" width="4" height="20" fill="#E5E4E2" transform="rotate(300)"/>
+      </g>
+    </g>
+    
+    <!-- Main Diamond - Round Brilliant Cut -->
+    <g transform="translate(0, -35)">
+      <!-- Diamond Base Shape -->
+      <circle cx="0" cy="0" r="30" fill="url(#diamondBrilliance)" filter="url(#diamondSparkle)"/>
+      
+      <!-- Diamond Facets - Crown -->
+      <g opacity="0.9">
+        <polygon points="0,-25 -18,-8 -9,5 9,5 18,-8" fill="#ffffff"/>
+        <polygon points="0,-25 -9,-15 0,-10 9,-15" fill="#ffffff" opacity="0.8"/>
+        <polygon points="-18,-8 -9,5 0,0 0,-10" fill="#E8F4F8" opacity="0.7"/>
+        <polygon points="18,-8 9,5 0,0 0,-10" fill="#E8F4F8" opacity="0.6"/>
+      </g>
+      
+      <!-- Diamond Facets - Pavilion -->
+      <g opacity="0.7">
+        <polygon points="-9,5 9,5 0,20" fill="#87A96B" opacity="0.3"/>
+        <polygon points="-9,5 0,20 -5,15" fill="#E8F4F8" opacity="0.5"/>
+        <polygon points="9,5 0,20 5,15" fill="#E8F4F8" opacity="0.4"/>
+      </g>
+      
+      <!-- Brilliant light reflections -->
+      <g opacity="0.9">
+        <circle cx="-8" cy="-15" r="3" fill="#ffffff"/>
+        <circle cx="6" cy="-12" r="2" fill="#ffffff"/>
+        <circle cx="-3" cy="-8" r="1.5" fill="#ffffff"/>
+        <circle cx="10" cy="-5" r="2.5" fill="#ffffff" opacity="0.7"/>
+        <circle cx="-12" cy="-3" r="1" fill="#E8F4F8"/>
+      </g>
+      
+      <!-- Sparkle effects -->
+      <g opacity="0.6">
+        <path d="M-20,-20 L-16,-16 L-20,-12 L-24,-16 Z" fill="#D4AF37"/>
+        <path d="M22,-15 L26,-11 L22,-7 L18,-11 Z" fill="#ffffff"/>
+        <path d="M-15,15 L-11,19 L-15,23 L-19,19 Z" fill="#E8F4F8"/>
+        <path d="M20,10 L24,14 L20,18 L16,14 Z" fill="#D4AF37" opacity="0.5"/>
+      </g>
+    </g>
+    
+    <!-- Additional sparkle elements around the ring -->
+    <g opacity="0.4">
+      <circle cx="-120" cy="-40" r="3" fill="#D4AF37"/>
+      <circle cx="110" cy="-30" r="2" fill="#ffffff"/>
+      <circle cx="-100" cy="40" r="2.5" fill="#E8F4F8"/>
+      <circle cx="130" cy="35" r="1.5" fill="#87A96B"/>
+      <circle cx="-80" cy="-80" r="1" fill="#F5E6E8"/>
+      <circle cx="95" cy="-70" r="2" fill="#D4AF37"/>
+    </g>
+  </g>
+  
+  <!-- Studio lighting reflection on background -->
+  <ellipse cx="400" cy="300" rx="150" ry="200" fill="#ffffff" opacity="0.03"/>
+  <ellipse cx="900" cy="400" rx="100" ry="300" fill="#E8F4F8" opacity="0.02"/>
+</svg>

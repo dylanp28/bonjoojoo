@@ -1,0 +1,58 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Color Palette Reference -->
+  <text x="20" y="30" font-family="Playfair Display, serif" font-size="24" font-weight="600" fill="#2C2C2C">Bonjoojoo Color Palette</text>
+  
+  <!-- Primary Colors -->
+  <text x="20" y="60" font-family="Montserrat, sans-serif" font-size="14" font-weight="600" fill="#2C2C2C">PRIMARY</text>
+  
+  <!-- Pure White -->
+  <rect x="20" y="70" width="60" height="60" fill="#FFFFFF" stroke="#2C2C2C" stroke-width="1"/>
+  <text x="25" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Pure White</text>
+  <text x="25" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#FFFFFF</text>
+  
+  <!-- Champagne Gold -->
+  <rect x="90" y="70" width="60" height="60" fill="#D4AF37"/>
+  <text x="95" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Champagne Gold</text>
+  <text x="95" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#D4AF37</text>
+  
+  <!-- Deep Charcoal -->
+  <rect x="160" y="70" width="60" height="60" fill="#2C2C2C"/>
+  <text x="165" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Deep Charcoal</text>
+  <text x="165" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#2C2C2C</text>
+  
+  <!-- Secondary Colors -->
+  <text x="260" y="60" font-family="Montserrat, sans-serif" font-size="14" font-weight="600" fill="#2C2C2C">SECONDARY</text>
+  
+  <!-- Sage Green -->
+  <rect x="260" y="70" width="60" height="60" fill="#87A96B"/>
+  <text x="265" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Sage Green</text>
+  <text x="265" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#87A96B</text>
+  
+  <!-- Soft Blush -->
+  <rect x="330" y="70" width="60" height="60" fill="#F5E6E8"/>
+  <text x="335" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Soft Blush</text>
+  <text x="335" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#F5E6E8</text>
+  
+  <!-- Crystal Blue -->
+  <rect x="400" y="70" width="60" height="60" fill="#E8F4F8"/>
+  <text x="405" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Crystal Blue</text>
+  <text x="405" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#E8F4F8</text>
+  
+  <!-- Accent Colors -->
+  <text x="500" y="60" font-family="Montserrat, sans-serif" font-size="14" font-weight="600" fill="#2C2C2C">ACCENT</text>
+  
+  <!-- Rose Gold -->
+  <rect x="500" y="70" width="60" height="60" fill="#E8B4B8"/>
+  <text x="505" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Rose Gold</text>
+  <text x="505" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#E8B4B8</text>
+  
+  <!-- Platinum Silver -->
+  <rect x="570" y="70" width="60" height="60" fill="#E5E4E2"/>
+  <text x="575" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Platinum Silver</text>
+  <text x="575" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#E5E4E2</text>
+  
+  <!-- Moonstone -->
+  <rect x="640" y="70" width="60" height="60" fill="#F8F6F0"/>
+  <text x="645" y="145" font-family="Montserrat, sans-serif" font-size="10" fill="#2C2C2C">Moonstone</text>
+  <text x="645" y="156" font-family="Montserrat, sans-serif" font-size="8" fill="#6B8A6B">#F8F6F0</text>
+</svg>

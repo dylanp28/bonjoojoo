@@ -1,0 +1,91 @@
+<svg viewBox="0 0 1920 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="categoryBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="50%" style="stop-color:#E8F4F8"/>
+      <stop offset="100%" style="stop-color:#F5E6E8"/>
+    </linearGradient>
+    <radialGradient id="ringDiamond" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="40%" style="stop-color:#E8F4F8;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:0.3"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1920" height="400" fill="url(#categoryBg)"/>
+  
+  <!-- Main headline area -->
+  <g transform="translate(150, 200)">
+    <text x="0" y="-50" font-family="'Playfair Display', serif" font-size="48" fill="#2C2C2C" font-weight="600">
+      Crown Collection
+    </text>
+    <text x="0" y="0" font-family="'Montserrat', sans-serif" font-size="18" fill="#2C2C2C" opacity="0.7">
+      Regal elegance. Modern sophistication.
+    </text>
+    <text x="0" y="25" font-family="'Montserrat', sans-serif" font-size="16" fill="#87A96B" opacity="0.9">
+      Lab-grown diamonds that command attention
+    </text>
+  </g>
+  
+  <!-- Featured Ring 1 - Solitaire -->
+  <g transform="translate(800, 200)">
+    <ellipse cx="0" cy="20" rx="60" ry="8" fill="#E5E4E2"/>
+    <circle cx="0" cy="0" r="15" fill="url(#ringDiamond)" filter="url(#glow)"/>
+    <circle cx="0" cy="0" r="10" fill="#ffffff" opacity="0.9"/>
+    <circle cx="-3" cy="-5" r="2" fill="#ffffff"/>
+  </g>
+  
+  <!-- Featured Ring 2 - Halo -->
+  <g transform="translate(1000, 200)">
+    <ellipse cx="0" cy="20" rx="65" ry="8" fill="#D4AF37" opacity="0.8"/>
+    <!-- Center diamond -->
+    <circle cx="0" cy="0" r="12" fill="url(#ringDiamond)" filter="url(#glow)"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" opacity="0.9"/>
+    <!-- Halo diamonds -->
+    <circle cx="-18" cy="0" r="4" fill="#E8F4F8" opacity="0.8"/>
+    <circle cx="18" cy="0" r="4" fill="#E8F4F8" opacity="0.8"/>
+    <circle cx="0" cy="-18" r="4" fill="#E8F4F8" opacity="0.8"/>
+    <circle cx="0" cy="18" r="4" fill="#E8F4F8" opacity="0.8"/>
+    <circle cx="-12" cy="-12" r="3" fill="#E8F4F8" opacity="0.7"/>
+    <circle cx="12" cy="-12" r="3" fill="#E8F4F8" opacity="0.7"/>
+    <circle cx="-12" cy="12" r="3" fill="#E8F4F8" opacity="0.7"/>
+    <circle cx="12" cy="12" r="3" fill="#E8F4F8" opacity="0.7"/>
+  </g>
+  
+  <!-- Featured Ring 3 - Eternity Band -->
+  <g transform="translate(1200, 200)">
+    <ellipse cx="0" cy="20" rx="70" ry="8" fill="#E5E4E2"/>
+    <!-- Multiple diamonds across band -->
+    <circle cx="-25" cy="0" r="6" fill="url(#ringDiamond)" opacity="0.9"/>
+    <circle cx="-8" cy="0" r="6" fill="url(#ringDiamond)" opacity="0.9"/>
+    <circle cx="8" cy="0" r="6" fill="url(#ringDiamond)" opacity="0.9"/>
+    <circle cx="25" cy="0" r="6" fill="url(#ringDiamond)" opacity="0.9"/>
+    <circle cx="-15" cy="0" r="4" fill="#ffffff" opacity="0.8"/>
+    <circle cx="0" cy="0" r="4" fill="#ffffff" opacity="0.8"/>
+    <circle cx="15" cy="0" r="4" fill="#ffffff" opacity="0.8"/>
+  </g>
+  
+  <!-- Decorative elements -->
+  <g opacity="0.3">
+    <circle cx="100" cy="80" r="2" fill="#D4AF37"/>
+    <circle cx="1800" cy="100" r="1.5" fill="#87A96B"/>
+    <circle cx="200" cy="320" r="1" fill="#E8F4F8"/>
+    <circle cx="1700" cy="300" r="2.5" fill="#F5E6E8"/>
+  </g>
+  
+  <!-- Call to action -->
+  <g transform="translate(1500, 200)">
+    <rect x="0" y="-25" width="180" height="50" rx="25" fill="#87A96B" opacity="0.9"/>
+    <text x="90" y="5" font-family="'Montserrat', sans-serif" font-size="14" fill="#ffffff" font-weight="500" text-anchor="middle">
+      EXPLORE RINGS
+    </text>
+  </g>
+</svg>

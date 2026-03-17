@@ -1,0 +1,109 @@
+<svg viewBox="0 0 1920 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="diamondSparkle" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
+      <stop offset="50%" style="stop-color:#E8F4F8;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:0.3"/>
+    </radialGradient>
+    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F6F0"/>
+      <stop offset="100%" style="stop-color:#E8F4F8"/>
+    </linearGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1920" height="800" fill="url(#backgroundGradient)"/>
+  
+  <!-- Hero Diamond Ring - Main Focus -->
+  <g transform="translate(960, 400)">
+    <!-- Ring Band -->
+    <ellipse cx="0" cy="0" rx="120" ry="15" fill="#E5E4E2" stroke="#D4D4D4" stroke-width="2"/>
+    <ellipse cx="0" cy="-5" rx="115" ry="12" fill="#F8F6F0"/>
+    
+    <!-- Diamond Setting -->
+    <rect x="-25" y="-40" width="50" height="30" rx="5" fill="#E5E4E2" stroke="#D4D4D4" stroke-width="1"/>
+    
+    <!-- Main Diamond -->
+    <g transform="translate(0, -25)">
+      <!-- Diamond facets -->
+      <polygon points="0,-20 -15,-5 -8,10 8,10 15,-5" fill="url(#diamondSparkle)" filter="url(#softGlow)"/>
+      <polygon points="0,-20 -8,-10 0,-5 8,-10" fill="#ffffff" opacity="0.9"/>
+      <polygon points="-15,-5 -8,10 0,5 0,-5" fill="#E8F4F8" opacity="0.7"/>
+      <polygon points="15,-5 8,10 0,5 0,-5" fill="#E8F4F8" opacity="0.6"/>
+      
+      <!-- Diamond highlights -->
+      <circle cx="-3" cy="-12" r="2" fill="#ffffff" opacity="0.8"/>
+      <circle cx="5" cy="-8" r="1.5" fill="#ffffff" opacity="0.9"/>
+    </g>
+    
+    <!-- Sparkle effects around diamond -->
+    <g opacity="0.6">
+      <circle cx="-40" cy="-30" r="2" fill="#D4AF37"/>
+      <circle cx="35" cy="-25" r="1.5" fill="#ffffff"/>
+      <circle cx="-30" cy="10" r="1" fill="#E8F4F8"/>
+      <circle cx="45" cy="5" r="2.5" fill="#D4AF37" opacity="0.4"/>
+    </g>
+  </g>
+  
+  <!-- Secondary jewelry pieces -->
+  <!-- Elegant Necklace -->
+  <g transform="translate(1400, 250)">
+    <path d="M-80,0 Q-60,-20 -40,0 Q-20,-15 0,0 Q20,-15 40,0 Q60,-20 80,0" 
+          stroke="#E5E4E2" stroke-width="3" fill="none"/>
+    <circle cx="0" cy="0" r="12" fill="url(#diamondSparkle)" filter="url(#softGlow)"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" opacity="0.8"/>
+  </g>
+  
+  <!-- Tennis Bracelet -->
+  <g transform="translate(500, 550)">
+    <ellipse cx="0" cy="0" rx="60" ry="20" fill="none" stroke="#E5E4E2" stroke-width="4"/>
+    <circle cx="-30" cy="-5" r="4" fill="url(#diamondSparkle)"/>
+    <circle cx="0" cy="-8" r="4" fill="url(#diamondSparkle)"/>
+    <circle cx="30" cy="-5" r="4" fill="url(#diamondSparkle)"/>
+    <circle cx="-45" cy="2" r="3" fill="#ffffff" opacity="0.7"/>
+    <circle cx="45" cy="2" r="3" fill="#ffffff" opacity="0.7"/>
+  </g>
+  
+  <!-- Text Content -->
+  <g transform="translate(200, 150)">
+    <text x="0" y="0" font-family="'Playfair Display', serif" font-size="24" fill="#87A96B" font-weight="300">
+      Conscious Luxury
+    </text>
+    <text x="0" y="60" font-family="'Playfair Display', serif" font-size="64" fill="#2C2C2C" font-weight="600">
+      Lab-Grown
+    </text>
+    <text x="0" y="120" font-family="'Playfair Display', serif" font-size="64" fill="#2C2C2C" font-weight="600">
+      Diamonds
+    </text>
+    <text x="0" y="180" font-family="'Montserrat', sans-serif" font-size="18" fill="#2C2C2C" font-weight="400" opacity="0.8">
+      Ethically created. Undeniably beautiful.
+    </text>
+    <text x="0" y="210" font-family="'Montserrat', sans-serif" font-size="18" fill="#2C2C2C" font-weight="400" opacity="0.8">
+      The same stunning brilliance, elevated values.
+    </text>
+    
+    <!-- Call to Action Button -->
+    <g transform="translate(0, 260)">
+      <rect x="0" y="0" width="200" height="50" rx="25" fill="#D4AF37" stroke="#B8941F" stroke-width="1"/>
+      <text x="100" y="32" font-family="'Montserrat', sans-serif" font-size="14" fill="#ffffff" font-weight="500" text-anchor="middle">
+        EXPLORE COLLECTION
+      </text>
+    </g>
+  </g>
+  
+  <!-- Floating elements for luxury feel -->
+  <g opacity="0.3">
+    <circle cx="150" cy="100" r="1" fill="#D4AF37"/>
+    <circle cx="1800" cy="150" r="2" fill="#87A96B"/>
+    <circle cx="300" cy="700" r="1.5" fill="#E8F4F8"/>
+    <circle cx="1600" cy="650" r="1" fill="#F5E6E8"/>
+    <circle cx="1750" cy="500" r="2" fill="#D4AF37"/>
+  </g>
+</svg>

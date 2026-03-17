@@ -1,0 +1,109 @@
+<svg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Diamond Necklace Hero Product Image -->
+  <defs>
+    <radialGradient id="necklaceGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#F8F6F0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8F4F8;stop-opacity:1" />
+    </radialGradient>
+    
+    <linearGradient id="chainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8E8E8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F5F5F5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D8D8D8;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="pendantSparkle" cx="50%" cy="40%" r="40%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:0.1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="800" fill="url(#necklaceGlow)"/>
+  
+  <!-- Chain -->
+  <g id="necklace-chain">
+    <!-- Main chain curve -->
+    <path d="M 150 200 Q 300 280 450 200 Q 400 350 300 380 Q 200 350 150 200" 
+          stroke="url(#chainGradient)" stroke-width="3" fill="none"/>
+    
+    <!-- Chain links -->
+    <g stroke="#D0D0D0" stroke-width="1" fill="url(#chainGradient)">
+      <!-- Top section links -->
+      <ellipse cx="180" cy="220" rx="4" ry="2"/>
+      <ellipse cx="210" cy="235" rx="4" ry="2"/>
+      <ellipse cx="240" cy="245" rx="4" ry="2"/>
+      <ellipse cx="270" cy="250" rx="4" ry="2"/>
+      <ellipse cx="300" cy="252" rx="4" ry="2"/>
+      <ellipse cx="330" cy="250" rx="4" ry="2"/>
+      <ellipse cx="360" cy="245" rx="4" ry="2"/>
+      <ellipse cx="390" cy="235" rx="4" ry="2"/>
+      <ellipse cx="420" cy="220" rx="4" ry="2"/>
+      
+      <!-- Lower section links -->
+      <ellipse cx="280" cy="300" rx="4" ry="2"/>
+      <ellipse cx="290" cy="330" rx="4" ry="2"/>
+      <ellipse cx="300" cy="360" rx="4" ry="2"/>
+      <ellipse cx="310" cy="330" rx="4" ry="2"/>
+      <ellipse cx="320" cy="300" rx="4" ry="2"/>
+    </g>
+  </g>
+  
+  <!-- Pendant Diamond -->
+  <g transform="translate(300, 380)">
+    <!-- Pendant setting -->
+    <ellipse cx="0" cy="0" rx="20" ry="15" fill="url(#chainGradient)" stroke="#C0C0C0" stroke-width="1"/>
+    
+    <!-- Main diamond -->
+    <polygon points="0,-20 15,-5 10,15 -10,15 -15,-5" fill="url(#pendantSparkle)" stroke="#D4AF37" stroke-width="0.5"/>
+    
+    <!-- Diamond facets -->
+    <polygon points="0,-20 8,-12 0,-5 -8,-12" fill="#FFFFFF" opacity="0.8"/>
+    <polygon points="8,-12 15,-5 0,-5" fill="#F8F6F0" opacity="0.6"/>
+    <polygon points="-8,-12 0,-5 -15,-5" fill="#E8F4F8" opacity="0.6"/>
+    <polygon points="0,-5 15,-5 10,15 0,8" fill="#D4AF37" opacity="0.4"/>
+    <polygon points="0,-5 0,8 -10,15 -15,-5" fill="#E8B4B8" opacity="0.3"/>
+    
+    <!-- Sparkle effects -->
+    <circle cx="-5" cy="-10" r="1.5" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="8" cy="-2" r="1" fill="#FFFFFF" opacity="0.7"/>
+    <circle cx="3" cy="8" r="1" fill="#D4AF37" opacity="0.8"/>
+    
+    <!-- Sparkle rays -->
+    <line x1="-10" y1="-15" x2="-18" y2="-23" stroke="#FFFFFF" stroke-width="1" opacity="0.5"/>
+    <line x1="12" y1="-8" x2="20" y2="-16" stroke="#FFFFFF" stroke-width="1" opacity="0.4"/>
+    <line x1="6" y1="12" x2="14" y2="20" stroke="#D4AF37" stroke-width="1" opacity="0.3"/>
+  </g>
+  
+  <!-- Smaller accent diamonds -->
+  <g transform="translate(260, 320)">
+    <polygon points="0,-8 5,-3 3,5 -3,5 -5,-3" fill="#FFFFFF" stroke="#D4AF37" stroke-width="0.3" opacity="0.7"/>
+    <circle cx="0" cy="-2" r="0.5" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+  
+  <g transform="translate(340, 320)">
+    <polygon points="0,-8 5,-3 3,5 -3,5 -5,-3" fill="#FFFFFF" stroke="#D4AF37" stroke-width="0.3" opacity="0.7"/>
+    <circle cx="0" cy="-2" r="0.5" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+  
+  <!-- Chain clasp -->
+  <g transform="translate(150, 200)">
+    <rect x="-3" y="-2" width="6" height="4" rx="1" fill="url(#chainGradient)" stroke="#C0C0C0" stroke-width="0.5"/>
+  </g>
+  
+  <!-- Luxury lighting effects -->
+  <g opacity="0.2">
+    <ellipse cx="200" cy="300" rx="50" ry="100" fill="#FFFFFF" opacity="0.1" transform="rotate(30 200 300)"/>
+    <ellipse cx="400" cy="450" rx="60" ry="80" fill="#D4AF37" opacity="0.05" transform="rotate(-20 400 450)"/>
+  </g>
+  
+  <!-- Product info -->
+  <g transform="translate(50, 550)" opacity="0.9">
+    <rect width="220" height="90" rx="10" fill="#FFFFFF" opacity="0.95" stroke="#D4AF37" stroke-width="1"/>
+    <text x="15" y="25" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="#2C2C2C">Cascade Pendant</text>
+    <text x="15" y="45" font-family="Montserrat, sans-serif" font-size="12" fill="#6B8A6B">0.75ct Center Stone</text>
+    <text x="15" y="60" font-family="Montserrat, sans-serif" font-size="10" fill="#87A96B">18k White Gold Chain</text>
+    <text x="15" y="75" font-family="Montserrat, sans-serif" font-size="10" fill="#87A96B">Lab-Grown Diamond</text>
+  </g>
+</svg>
