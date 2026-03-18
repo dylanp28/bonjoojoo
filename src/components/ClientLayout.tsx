@@ -8,6 +8,7 @@ import { AuthModal } from '@/components/AuthModal'
 import { useAuth, useAuthModal } from '@/hooks/useAuth'
 import { useCart } from '@/store/useCart'
 import CartSidebar from '@/components/CartSidebar'
+import ChatWidget from '@/components/ChatWidget'
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -422,6 +423,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
       </footer>
 
       <CartSidebar />
+      <ChatWidget />
 
       <AuthModal
         isOpen={isOpen}
