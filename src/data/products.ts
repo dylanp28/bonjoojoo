@@ -23,8 +23,8 @@ export const products: Product[] = [
   {
     id: 'crown-001',
     name: 'Crown Stacking Ring - Rose Gold',
-    price: 680,
-    originalPrice: 780,
+    price: 340,
+    originalPrice: 390,
     description: 'Delicate crown-inspired stacking ring featuring scattered diamonds in an organic tiara silhouette. Part of our signature collection celebrating feminine elegance.',
     category: 'rings',
     subcategory: 'stacking',
@@ -46,7 +46,7 @@ export const products: Product[] = [
   {
     id: 'crown-002',
     name: 'Crown Stacking Ring - Yellow Gold',
-    price: 680,
+    price: 340,
     description: 'Classic yellow gold crown ring with delicate diamond placement. Timeless elegance meets whimsical design in this stackable favorite.',
     category: 'rings',
     subcategory: 'stacking',
@@ -68,7 +68,7 @@ export const products: Product[] = [
   {
     id: 'crown-003',
     name: 'Crown Stacking Ring - White Gold',
-    price: 720,
+    price: 360,
     description: 'Sophisticated white gold crown ring with brilliant diamonds. Modern interpretation of classic romantic jewelry, perfect for everyday elegance.',
     category: 'rings',
     subcategory: 'stacking',
@@ -92,7 +92,7 @@ export const products: Product[] = [
   {
     id: 'cuff-001',
     name: 'Asymmetric Diamond Cuff Ring',
-    price: 890,
+    price: 445,
     description: 'Contemporary open-cuff ring featuring contrasting round brilliant and baguette diamonds. Modern minimalism meets unexpected details.',
     category: 'rings',
     subcategory: 'statement',
@@ -116,8 +116,8 @@ export const products: Product[] = [
   {
     id: 'pave-001',
     name: 'Pavé Stacking Band - Rose Gold',
-    price: 420,
-    originalPrice: 480,
+    price: 210,
+    originalPrice: 240,
     description: 'Ultra-fine pavé stacking band featuring continuous row of brilliant diamonds. Perfect for creating personalized layered looks.',
     category: 'rings',
     subcategory: 'stacking',
@@ -139,8 +139,8 @@ export const products: Product[] = [
   {
     id: 'pave-002',
     name: 'Pavé Stacking Trio Set',
-    price: 1180,
-    originalPrice: 1340,
+    price: 590,
+    originalPrice: 670,
     description: 'Set of three delicate pavé stacking bands designed to be worn together. Create the perfect layered look with this curated trio.',
     category: 'rings',
     subcategory: 'stacking',
@@ -164,7 +164,7 @@ export const products: Product[] = [
   {
     id: 'station-001',
     name: 'Diamond Station Bracelet - Rose Gold',
-    price: 750,
+    price: 375,
     description: 'Diamond station bracelet featuring graduated bezel-set stones on delicate chain. Includes signature bonjoojoo logo charm.',
     category: 'bracelets',
     subcategory: 'chain',
@@ -186,7 +186,7 @@ export const products: Product[] = [
   {
     id: 'station-002',
     name: 'Diamond Station Bracelet - White Gold',
-    price: 750,
+    price: 375,
     description: 'Classic white gold station bracelet with three graduated bezel-set diamonds. Contemporary elegance with signature logo detail.',
     category: 'bracelets',
     subcategory: 'chain',
@@ -210,7 +210,7 @@ export const products: Product[] = [
   {
     id: 'constellation-001',
     name: 'Constellation Ring - Celestial Garden',
-    price: 520,
+    price: 260,
     description: 'Whimsical ring featuring scattered gemstones in constellation patterns. Organic stone placement creates ethereal, celestial beauty.',
     category: 'rings',
     subcategory: 'statement',
@@ -234,7 +234,7 @@ export const products: Product[] = [
   {
     id: 'nec-001',
     name: 'Crown Scattered Necklace',
-    price: 850,
+    price: 425,
     description: 'Delicate chain necklace with scattered diamonds mimicking the crown ring aesthetic. Romantic and whimsical for everyday elegance.',
     category: 'necklaces',
     subcategory: 'delicate',
@@ -257,7 +257,7 @@ export const products: Product[] = [
   {
     id: 'ear-001',
     name: 'Asymmetric Diamond Studs',
-    price: 450,
+    price: 225,
     description: 'Modern twist on classic studs featuring round and baguette diamonds. Contemporary asymmetry inspired by our cuff collection.',
     category: 'earrings',
     subcategory: 'studs',
@@ -278,7 +278,7 @@ export const products: Product[] = [
   {
     id: 'ear-002',
     name: 'Pavé Huggie Hoops',
-    price: 380,
+    price: 190,
     description: 'Delicate huggie hoops featuring continuous pavé diamonds. Perfect complement to the pavé stacking collection.',
     category: 'earrings',
     subcategory: 'hoops',

@@ -66,8 +66,8 @@ export default function HomePage() {
             >
               <source src="/videos/model-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-black/15" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
           </div>
           <div className="relative z-10 h-full flex flex-col justify-end px-8 lg:px-16 pb-24 lg:pb-28">
             <div className="max-w-xl text-left">
@@ -139,8 +139,8 @@ export default function HomePage() {
             >
               <source src="/videos/crowns-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-black/15" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
           </div>
           <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-16 px-8 lg:px-16">
             <div className="max-w-xl text-left">
@@ -182,8 +182,8 @@ export default function HomePage() {
             >
               <source src="/videos/bestsellers-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-black/15" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
           </div>
           <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-16 px-8 lg:px-16">
             <div className="max-w-xl text-left">
@@ -265,7 +265,8 @@ export default function HomePage() {
             >
               <source src="/videos/diamonds-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
           </div>
           <div className="relative z-10 h-full flex flex-col justify-end px-8 lg:px-16 pb-24 lg:pb-28">
             <div className="max-w-xl text-left">
