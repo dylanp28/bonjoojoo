@@ -413,11 +413,8 @@ export default function HomePage() {
                   src="/images/bonjoojoo-2.png"
                   alt="Bonjoojoo ring on hand"
                   fill
-                  className="object-cover img-duotone-rose"
+                  className="object-cover"
                 />
-                {/* Warm gradient overlay for editorial feel */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#B76E79]/15 via-transparent to-[#F5F0EB]/10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/5" />
                 {/* Caption */}
                 <div className="absolute bottom-8 left-8 right-8">
                   <p className="text-[11px] text-white/80 tracking-[0.25em] uppercase drop-shadow-md">Handcrafted in Los Angeles</p>
