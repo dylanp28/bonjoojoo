@@ -1,13 +1,37 @@
 'use client'
 
 import { useRef } from 'react'
-import { MotionConfig } from 'framer-motion'
-import { ChevronLeft, ChevronRight, ArrowRight, Truck, RotateCcw, Shield, Star, Gift } from 'lucide-react'
+import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Truck, RotateCcw, Star, Gift } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { products, collections } from '@/data/products'
-import { LuxuryReveal, LuxuryParallax, LuxuryStagger, LuxuryHover } from '@/components/animations/LuxuryAnimationSystem'
+import { products } from '@/data/products'
+import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+
+// ─── Scroll-focus section: darkens when not in viewport center ───
+function FocusSection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+  const overlayOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.35, 0.65, 0.8, 1],
+    [0.35, 0.08, 0, 0, 0.08, 0.35]
+  )
+
+  return (
+    <section ref={ref} className={`relative ${className || ''}`} style={style}>
+      {children}
+      <motion.div
+        className="absolute inset-0 bg-black pointer-events-none"
+        style={{ opacity: overlayOpacity, zIndex: 25 }}
+      />
+    </section>
+  )
+}
 
 // ─── Format price ───
 const formatPrice = (price: number) =>
@@ -29,9 +53,82 @@ export default function HomePage() {
         <div className="grain-overlay" aria-hidden="true" />
 
         {/* ═══════════════════════════════════════════════════════════
-            HERO 1 — CROWN COLLECTION (video)
+            HERO 1 — MAIN LANDING (model video)
             ═══════════════════════════════════════════════════════════ */}
-        <section className="relative" style={{ height: '100vh', clipPath: 'inset(0)' }}>
+        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
+          <div className="fixed inset-0" style={{ height: '100vh' }}>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/videos/model-hero.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-black/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+          </div>
+          <div className="relative z-10 h-full flex flex-col justify-end px-8 lg:px-16 pb-24 lg:pb-28">
+            <div className="max-w-xl text-left">
+              <LuxuryReveal direction="up" delay={0.1}>
+                <p className="text-[11px] font-bold tracking-[0.3em] uppercase text-white/80 mb-4">Lab-Grown Diamonds</p>
+              </LuxuryReveal>
+              <LuxuryReveal direction="up" delay={0.25}>
+                <h1 className="text-display-hero text-white mb-5 drop-shadow-md font-medium">
+                  Brilliance<br />
+                  <span className="italic font-normal">Redefined</span>
+                </h1>
+              </LuxuryReveal>
+              <LuxuryReveal direction="up" delay={0.4}>
+                <p className="text-[16px] leading-relaxed text-white/75 max-w-md mb-6">
+                  Fine jewelry crafted with lab-grown diamonds. Same fire. Same beauty. A better future.
+                </p>
+              </LuxuryReveal>
+              <LuxuryReveal direction="up" delay={0.55}>
+                <div className="flex flex-wrap gap-4">
+                  <Link href="/search" className="btn-white">Shop Now</Link>
+                  <Link href="/lab-grown-diamonds" className="btn-ghost text-white border-white/50 hover:bg-white/10">Our Diamonds</Link>
+                </div>
+              </LuxuryReveal>
+            </div>
+          </div>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            HERO 2 — LIMITED TIME PROMO (GRAD)
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection className="overflow-hidden bg-gradient-to-b from-[#F5F0EB] to-[#EDE6DE] py-28 lg:py-40">
+          {/* Subtle decorative elements */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-bj-rose-gold/20 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-bj-rose-gold/20 to-transparent" />
+          <div className="relative z-10 text-center px-8">
+            <LuxuryReveal direction="up" delay={0.1}>
+              <p className="text-[11px] font-bold text-bj-pink tracking-[0.3em] uppercase mb-6">Class of 2026</p>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.25}>
+              <p className="font-display text-[36px] lg:text-[56px] font-light text-bj-black leading-tight mb-2">
+                Celebrate the Grad
+              </p>
+              <p className="font-display text-[36px] lg:text-[56px] font-light text-bj-black leading-tight mb-8">
+                <span className="italic">Complimentary Engraving</span>
+              </p>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.4}>
+              <p className="text-[15px] text-bj-gray-500 max-w-md mx-auto mb-8">
+                Make it personal &mdash; free engraving on all graduation gifts for a limited time.
+              </p>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.55}>
+              <Link href="/engraving" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Shop Grad Gifts</Link>
+            </LuxuryReveal>
+          </div>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            HERO 3 — CROWN COLLECTION (video)
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
             <video
               autoPlay
@@ -42,8 +139,8 @@ export default function HomePage() {
             >
               <source src="/videos/crowns-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-black/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
           </div>
           <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-16 px-8 lg:px-16">
             <div className="max-w-xl text-left">
@@ -69,53 +166,12 @@ export default function HomePage() {
               </LuxuryReveal>
             </div>
           </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════
-            HERO 2 — LIMITED TIME PROMO
-            ═══════════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden bg-bj-cream py-24 lg:py-36">
-          <div className="flex items-center">
-            <div className="container-bj-wide">
-              <div className="grid lg:grid-cols-2 items-center gap-10">
-                <LuxuryReveal direction="left" delay={0.1}>
-                  <div className="lg:pr-12">
-                    <p className="text-[11px] font-bold text-bj-pink tracking-[0.2em] uppercase mb-4">Class of 2026</p>
-                    <p className="font-display text-[36px] lg:text-[48px] font-light text-bj-black leading-tight mb-2">
-                      Celebrate the Grad
-                    </p>
-                    <p className="font-display text-[36px] lg:text-[48px] font-light text-bj-black leading-tight mb-5">
-                      Complimentary Engraving
-                    </p>
-                    <p className="text-[15px] text-bj-gray-500 mb-6">
-                      Make it personal &mdash; free engraving on all graduation gifts for a limited time.
-                    </p>
-                    <Link href="/engraving" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Shop Grad Gifts</Link>
-                  </div>
-                </LuxuryReveal>
-                <LuxuryReveal direction="right" delay={0.2}>
-                  <div className="flex justify-center">
-                    <div className="relative w-[320px] h-[320px] lg:w-[400px] lg:h-[400px]">
-                      <div className="absolute inset-[15%] bg-white/60 rounded-full blur-[40px]" />
-                      <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[70%] h-[6px] bg-bj-rose-gold/10 rounded-full blur-[8px]" />
-                      <Image
-                        src="/images/bonjoojoo-4.png"
-                        alt="Diamond Station Bracelet"
-                        fill
-                        className="object-contain drop-shadow-lg relative z-10 img-warm p-4"
-                      />
-                    </div>
-                  </div>
-                </LuxuryReveal>
-              </div>
-            </div>
-          </div>
-        </section>
+        </FocusSection>
 
         {/* ═══════════════════════════════════════════════════════════
             HERO 3 — BEST SELLERS (video)
             ═══════════════════════════════════════════════════════════ */}
-        <section className="relative" style={{ height: '100vh', clipPath: 'inset(0)' }}>
+        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
             <video
               autoPlay
@@ -126,8 +182,8 @@ export default function HomePage() {
             >
               <source src="/videos/bestsellers-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-black/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
           </div>
           <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-16 px-8 lg:px-16">
             <div className="max-w-xl text-left">
@@ -142,206 +198,107 @@ export default function HomePage() {
               </LuxuryReveal>
               <LuxuryReveal direction="up" delay={0.4}>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="/collections" className="btn-white">Shop Favorites</Link>
+                  <Link href="/search" className="btn-white">Shop Favorites</Link>
                 </div>
               </LuxuryReveal>
             </div>
           </div>
-        </section>
+        </FocusSection>
 
         {/* ═══════════════════════════════════════════════════════════
             HERO 4 — ENGRAVING
             ═══════════════════════════════════════════════════════════ */}
-        <section className="hero-section">
-          <LuxuryParallax speed={0.3} className="absolute inset-0">
-            <div className="hero-bg">
-              <Image src="/images/lab-grown-hero-2.webp" alt="" fill className="object-cover" />
-              {/* Rose-tinted cinematic overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FDF2F4]/90 via-[#FDF2F4]/50 to-[#F5F0EB]/20" />
-              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent" />
-              {/* Decorative dots */}
-              <div className="absolute right-[18%] top-[22%] w-1.5 h-1.5 rounded-full bg-bj-pink/20" />
-              <div className="absolute right-[22%] top-[32%] w-1 h-1 rounded-full bg-bj-rose-gold/15" />
-              <div className="absolute right-[15%] top-[42%] w-2 h-2 rounded-full bg-bj-pink/10" />
-            </div>
-          </LuxuryParallax>
-
-          <div className="hero-content">
-            <div className="container-bj-wide">
-              <div className="max-w-xl">
-                <LuxuryReveal direction="up" delay={0.1}>
-                  <p className="text-overline text-bj-pink mb-5 tracking-[0.25em]">Make It Yours</p>
-                </LuxuryReveal>
-                <LuxuryReveal direction="up" delay={0.25}>
-                  <h2 className="text-display-hero text-bj-black mb-6">
-                    Imagine It.<br />
-                    Design It.<br />
-                    <span className="italic font-light">Wear It.</span>
-                  </h2>
-                </LuxuryReveal>
-                <LuxuryReveal direction="up" delay={0.4}>
-                  <p className="text-body-lg max-w-md mb-10">
-                    Add your personal touch with custom engraving.
-                  </p>
-                </LuxuryReveal>
-                <LuxuryReveal direction="up" delay={0.55}>
-                  <Link href="/engraving" className="btn-pink">Start Creating</Link>
-                </LuxuryReveal>
-              </div>
-            </div>
+        <FocusSection className="min-h-[45vh] flex items-center overflow-hidden">
+          {/* Full background image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/engraving-bracelet.png"
+              alt="Rose gold bracelet with custom engraving"
+              fill
+              className="object-contain object-right scale-[0.85] translate-x-[10%]"
+            />
+            {/* Gradient wash from left for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#EDE5DA] via-[#EDE5DA]/85 to-transparent w-[65%]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#EDE5DA] to-transparent w-[40%]" />
           </div>
-        </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            HERO 4 — LAB-GROWN DIAMONDS (dark, cinematic)
-            ═══════════════════════════════════════════════════════════ */}
-        <section className="hero-section">
-          <LuxuryParallax speed={0.4} className="absolute inset-0">
-            <div className="hero-bg">
-              <Image src="/images/lab-grown-hero-3.webp" alt="" fill className="object-cover img-duotone-dark" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/75 via-[#1A1A1A]/35 to-transparent" />
-              {/* Subtle geometric accents */}
-              <div className="absolute right-[10%] top-[20%] w-24 h-24 rotate-45 border border-white/[0.04]" />
-              <div className="absolute right-[20%] top-[38%] w-14 h-14 rotate-45 border border-bj-pink/[0.08]" />
-              <div className="absolute right-[7%] bottom-[28%] w-10 h-10 rotate-45 border border-white/[0.03]" />
-              {/* Radial pink glow */}
-              <div className="absolute top-1/2 right-[18%] -translate-y-1/2 w-[600px] h-[600px] bg-bj-pink/[0.04] rounded-full blur-[120px]" />
-            </div>
-          </LuxuryParallax>
+          {/* Background color for entire section */}
+          <div className="absolute inset-0 -z-10 bg-[#EDE5DA]" />
 
-          <div className="hero-content">
-            <div className="container-bj-wide">
-              <div className="max-w-xl">
-                <LuxuryReveal direction="up" delay={0.1}>
-                  <p className="text-overline text-bj-pink-light mb-5 tracking-[0.25em]">Lab-Grown Diamonds</p>
-                </LuxuryReveal>
-                <LuxuryReveal direction="up" delay={0.25}>
-                  <h2 className="text-display-hero text-white mb-6">
-                    Brilliance<br />
-                    Without<br />
-                    <span className="italic font-light text-bj-pink-light">Compromise</span>
-                  </h2>
-                </LuxuryReveal>
-                <LuxuryReveal direction="up" delay={0.4}>
-                  <p className="text-[17px] leading-relaxed text-white/60 max-w-md mb-10">
-                    IGI & GIA certified. 95% less environmental impact. The same fire, clarity, and beauty &mdash; the future of fine jewelry.
-                  </p>
-                </LuxuryReveal>
-                <LuxuryReveal direction="up" delay={0.55}>
-                  <div className="flex flex-wrap gap-4">
-                    <Link href="/lab-grown-diamonds" className="btn-white">Shop Diamonds</Link>
-                    <Link href="/about" className="btn-ghost text-white border-white/40 hover:text-bj-pink-light hover:border-bj-pink-light">
-                      Learn More
-                    </Link>
-                  </div>
-                </LuxuryReveal>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════
-            CATEGORY GRID — "Find what speaks to you"
-            ═══════════════════════════════════════════════════════════ */}
-        <section className="py-16 lg:py-24 bg-white">
-          <div className="container-bj-wide">
-            <LuxuryReveal direction="up">
-              {/* Section ornament */}
-              <div className="section-ornament mb-4">
-                <div className="ornament-diamond" />
-              </div>
-              <div className="text-center mb-14">
-                <p className="text-[17px] text-bj-gray-500 font-display italic">Find what speaks to you</p>
+          {/* Text content */}
+          <div className="relative z-10 px-8 lg:px-20 py-24 max-w-xl">
+            <LuxuryReveal direction="up" delay={0.1}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-px bg-bj-rose-gold/40" />
+                <p className="text-overline text-bj-pink tracking-[0.25em]">Make It Yours</p>
               </div>
             </LuxuryReveal>
-
-            <PandoraStaggerGrid staggerDelay={0.08} className="grid grid-cols-2 lg:grid-cols-6 gap-3 lg:gap-4">
-              {/* Sale — spans 2 cols */}
-              <PandoraStaggerItem className="lg:col-span-2">
-                <Link href="/sale" className="category-tile group block">
-                  <div className="aspect-square lg:aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-bj-pink via-[#E85A8A] to-[#D4145A]">
-                    <Image src="/images/bonjoojoo-1.png" alt="" fill className="object-cover opacity-[0.12] mix-blend-overlay" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <p className="text-[42px] lg:text-[56px] font-display font-light leading-none">30%</p>
-                        <p className="text-[14px] font-medium tracking-[0.2em] uppercase mt-2">Off Sale</p>
-                      </div>
-                    </div>
-                    <div className="category-overlay absolute inset-0" />
-                  </div>
-                  <h3 className="text-[15px] font-semibold text-bj-black mt-3 group-hover:text-bj-gray-500 transition-colors">Sale 30% Off</h3>
-                </Link>
-              </PandoraStaggerItem>
-
-              {/* Rings */}
-              <PandoraStaggerItem>
-                <Link href="/rings" className="category-tile group block">
-                  <div className="aspect-square relative overflow-hidden bg-gradient-to-b from-[#F5F0EB] to-[#EDE6DE]">
-                    <Image src="/images/bonjoojoo-1.png" alt="Rings" fill className="object-contain p-5 category-img img-warm" />
-                    <div className="category-overlay absolute inset-0" />
-                  </div>
-                  <h3 className="text-[15px] font-semibold text-bj-black mt-3 group-hover:text-bj-gray-500 transition-colors">Rings</h3>
-                </Link>
-              </PandoraStaggerItem>
-
-              {/* Necklaces */}
-              <PandoraStaggerItem>
-                <Link href="/necklaces" className="category-tile group block">
-                  <div className="aspect-square relative overflow-hidden bg-gradient-to-b from-[#FAF8F6] to-[#F0EBE5]">
-                    <Image src="/images/bonjoojoo-6.png" alt="Necklaces" fill className="object-cover scale-110 object-[center_30%] category-img img-editorial" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#F0EBE5]/40 to-transparent" />
-                    <div className="category-overlay absolute inset-0" />
-                  </div>
-                  <h3 className="text-[15px] font-semibold text-bj-black mt-3 group-hover:text-bj-gray-500 transition-colors">Necklaces</h3>
-                </Link>
-              </PandoraStaggerItem>
-
-              {/* Earrings */}
-              <PandoraStaggerItem>
-                <Link href="/earrings" className="category-tile group block">
-                  <div className="aspect-square relative overflow-hidden bg-gradient-to-b from-[#FDF2F4] to-[#F5E8EC]">
-                    <Image src="/images/bonjoojoo-3.png" alt="Earrings" fill className="object-cover scale-125 object-[center_40%] category-img img-warm" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#F5E8EC]/30 to-transparent" />
-                    <div className="category-overlay absolute inset-0" />
-                  </div>
-                  <h3 className="text-[15px] font-semibold text-bj-black mt-3 group-hover:text-bj-gray-500 transition-colors">Earrings</h3>
-                </Link>
-              </PandoraStaggerItem>
-
-              {/* Bracelets */}
-              <PandoraStaggerItem>
-                <Link href="/bracelets" className="category-tile group block">
-                  <div className="aspect-square relative overflow-hidden bg-gradient-to-b from-[#F5F0EB] to-[#EDE6DE]">
-                    <Image src="/images/bonjoojoo-5.png" alt="Bracelets" fill className="object-contain p-4 category-img img-warm" />
-                    <div className="category-overlay absolute inset-0" />
-                  </div>
-                  <h3 className="text-[15px] font-semibold text-bj-black mt-3 group-hover:text-bj-gray-500 transition-colors">Bracelets</h3>
-                </Link>
-              </PandoraStaggerItem>
-
-              {/* Gifts — full width banner */}
-              <PandoraStaggerItem className="col-span-2 lg:col-span-6">
-                <Link href="/gifts" className="category-tile group block">
-                  <div className="relative overflow-hidden bg-gradient-to-r from-bj-offwhite via-bj-cream to-bj-offwhite py-8 lg:py-10">
-                    <div className="flex items-center justify-center gap-6">
-                      <Gift size={24} className="text-bj-gray-400 group-hover:text-bj-pink transition-colors" />
-                      <div>
-                        <h3 className="text-[18px] font-display text-bj-black group-hover:text-bj-gray-500 transition-colors">Gifts</h3>
-                        <p className="text-[13px] text-bj-gray-400">Perfect presents for every occasion</p>
-                      </div>
-                      <ArrowRight size={18} className="text-bj-gray-300 group-hover:text-bj-pink group-hover:translate-x-1 transition-all" />
-                    </div>
-                  </div>
-                </Link>
-              </PandoraStaggerItem>
-            </PandoraStaggerGrid>
+            <LuxuryReveal direction="up" delay={0.25}>
+              <h2 className="text-display-hero text-bj-black mb-6">
+                Imagine It.<br />
+                Design It.<br />
+                <span className="italic font-light">Wear It.</span>
+              </h2>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.4}>
+              <p className="text-body-lg max-w-md mb-10">
+                Add your personal touch with custom engraving.
+              </p>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.55}>
+              <Link href="/engraving" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Start Creating</Link>
+            </LuxuryReveal>
           </div>
-        </section>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            HERO 4 — LAB-GROWN DIAMONDS (video)
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
+          <div className="fixed inset-0" style={{ height: '100vh' }}>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/videos/diamonds-hero.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+          </div>
+          <div className="relative z-10 h-full flex flex-col justify-end px-8 lg:px-16 pb-24 lg:pb-28">
+            <div className="max-w-xl text-left">
+              <LuxuryReveal direction="up" delay={0.1}>
+                <p className="text-[11px] font-bold tracking-[0.3em] uppercase text-white/80 mb-4">Lab-Grown Diamonds</p>
+              </LuxuryReveal>
+              <LuxuryReveal direction="up" delay={0.25}>
+                <h1 className="text-display-hero text-white mb-5 drop-shadow-md font-medium">
+                  Brilliance<br />
+                  Without<br />
+                  <span className="italic font-normal">Compromise</span>
+                </h1>
+              </LuxuryReveal>
+              <LuxuryReveal direction="up" delay={0.4}>
+                <p className="text-[16px] leading-relaxed text-white/75 max-w-md mb-6">
+                  IGI &amp; GIA certified. 95% less environmental impact. The same fire, clarity, and beauty &mdash; the future of fine jewelry.
+                </p>
+              </LuxuryReveal>
+              <LuxuryReveal direction="up" delay={0.55}>
+                <div className="flex flex-wrap gap-4">
+                  <Link href="/lab-grown-diamonds" className="btn-white">Shop Diamonds</Link>
+                  <Link href="/about" className="btn-ghost text-white border-white/50 hover:bg-white/10">Learn More</Link>
+                </div>
+              </LuxuryReveal>
+            </div>
+          </div>
+        </FocusSection>
+
 
         {/* ═══════════════════════════════════════════════════════════
             PRODUCT CAROUSEL — Horizontal Scrolling Best Sellers
             ═══════════════════════════════════════════════════════════ */}
-        <section className="py-16 lg:py-24 bg-bj-gray-50">
+        <FocusSection className="py-16 lg:py-24 bg-bj-gray-50">
           <div>
             <div className="container-bj-wide">
               <LuxuryReveal direction="up">
@@ -437,16 +394,16 @@ export default function HomePage() {
 
             <div className="container-bj-wide mt-10 text-center">
               <LuxuryReveal direction="up">
-                <Link href="/collections" className="btn-secondary">View All Jewelry</Link>
+                <Link href="/search" className="btn-secondary">View All Jewelry</Link>
               </LuxuryReveal>
             </div>
           </div>
-        </section>
+        </FocusSection>
 
         {/* ═══════════════════════════════════════════════════════════
             EDITORIAL STORY SPLIT — Brand narrative
             ═══════════════════════════════════════════════════════════ */}
-        <section className="bg-white">
+        <FocusSection className="bg-white">
           <div className="grid lg:grid-cols-2 min-h-[75vh]">
             {/* Left — Lifestyle visual with warm editorial treatment */}
             <LuxuryReveal direction="left" className="relative overflow-hidden bg-bj-cream">
@@ -489,76 +446,18 @@ export default function HomePage() {
               </div>
             </LuxuryReveal>
           </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════
-            COLLECTIONS GRID
-            ═══════════════════════════════════════════════════════════ */}
-        <section className="py-16 lg:py-24 bg-bj-offwhite">
-          <div className="container-bj">
-            <LuxuryReveal direction="up">
-              <div className="section-ornament mb-4">
-                <div className="ornament-diamond" />
-              </div>
-              <div className="text-center mb-14">
-                <p className="text-overline text-bj-gray-400 mb-3">Curated</p>
-                <h2 className="text-display-lg text-bj-black">Our Collections</h2>
-              </div>
-            </LuxuryReveal>
-
-            <LuxuryStagger delay={0.12} className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {collections.map((col) => {
-                const collectionImages: Record<string, string> = {
-                  crown: '/images/bonjoojoo-1.png',
-                  cuff: '/images/bonjoojoo-2.png',
-                  pave: '/images/bonjoojoo-3.png',
-                  station: '/images/bonjoojoo-4.png',
-                  constellation: '/images/bonjoojoo-6.png',
-                }
-                const collectionGradients: Record<string, string> = {
-                  crown: 'from-[#F5F0EB] to-[#EDE6DE]',
-                  cuff: 'from-[#FAF8F6] to-[#F0EBE5]',
-                  pave: 'from-[#FDF2F4] to-[#F5E8EC]',
-                  station: 'from-[#F5F0EB] to-[#EDE6DE]',
-                  constellation: 'from-[#F0EBF5] to-[#E8E2EE]',
-                }
-                const isLifestyle = col.id === 'cuff' || col.id === 'constellation'
-                return (
-                  <LuxuryHover key={col.id} scale={1.02} elevation>
-                    <Link href={`/collections/${col.id}`} className="group block category-tile">
-                      <div className={`aspect-[4/3] relative overflow-hidden bg-gradient-to-br ${collectionGradients[col.id] || 'from-bj-offwhite to-bj-cream'}`}>
-                        <Image
-                          src={collectionImages[col.id] || '/images/bonjoojoo-1.png'}
-                          alt={col.name}
-                          fill
-                          className={`category-img img-warm ${isLifestyle ? 'object-cover' : 'object-contain p-8'}`}
-                        />
-                        {/* Warm overlay for depth */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/35 via-transparent to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-5">
-                          <h3 className="text-[18px] font-display text-white drop-shadow-md">{col.name}</h3>
-                          <p className="text-[12px] text-white/75 drop-shadow-sm">{col.description}</p>
-                        </div>
-                      </div>
-                    </Link>
-                  </LuxuryHover>
-                )
-              })}
-            </LuxuryStagger>
-          </div>
-        </section>
+        </FocusSection>
 
         {/* ═══════════════════════════════════════════════════════════
             TRUST BADGES — Pandora "Benefits" style
             ═══════════════════════════════════════════════════════════ */}
-        <section className="py-14 bg-white border-t border-gray-100">
+        <FocusSection className="py-14 bg-white border-t border-gray-100">
           <div className="container-bj">
-            <PandoraStaggerGrid staggerDelay={0.15} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <PandoraStaggerGrid staggerDelay={0.15} className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {[
                 { icon: Truck, title: 'Free Shipping', desc: 'On every order, always' },
                 { icon: RotateCcw, title: 'Free 30-Day Returns', desc: 'No questions asked' },
                 { icon: Gift, title: 'Gift Packaging', desc: 'Complimentary on all orders' },
-                { icon: Shield, title: '2-Year Warranty', desc: 'On all jewelry pieces' },
               ].map(({ icon: Icon, title, desc }) => (
                 <PandoraStaggerItem key={title}>
                   <div className="trust-badge flex items-start gap-4">
@@ -574,7 +473,7 @@ export default function HomePage() {
               ))}
             </PandoraStaggerGrid>
           </div>
-        </section>
+        </FocusSection>
       </div>
     </MotionConfig>
   )

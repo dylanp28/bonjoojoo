@@ -185,16 +185,17 @@
   .btn-white {
     @apply inline-flex items-center justify-center font-medium transition-all;
     font-family: var(--font-body);
-    font-size: 12px;
-    letter-spacing: 0.15em;
+    font-size: 11px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    padding: 16px 40px;
-    background: var(--bj-white);
-    color: var(--bj-black);
-    border: 1px solid var(--bj-white);
+    padding: 14px 32px;
+    background: #1C1510;
+    color: var(--bj-white);
+    border: 1.5px solid #1C1510;
+    border-radius: 0;
   }
   .btn-white:hover {
-    background: rgba(255,255,255,0.85);
+    background: #120E0A;
   }
 
   .btn-pink {

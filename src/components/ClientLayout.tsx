@@ -13,12 +13,6 @@ interface ClientLayoutProps {
   children: React.ReactNode
 }
 
-const promoMessages = [
-  { text: 'Complimentary shipping on all orders', link: '/shipping' },
-  { text: '15% off select bracelets when you buy 2 charms', link: '/charms' },
-  { text: 'Free engraving on all lab-grown diamond pieces', link: '/engraving' },
-]
-
 const navItems = [
   { label: 'New & Featured', href: '/new-featured' },
   { label: 'Shop by', href: '/shop-by', mega: true },
@@ -29,7 +23,6 @@ const navItems = [
   { label: 'Lab-Grown Diamonds', href: '/lab-grown-diamonds' },
   { label: 'Engraving', href: '/engraving' },
   { label: 'Gifts', href: '/gifts' },
-  { label: 'Collections', href: '/collections' },
 ]
 
 const megaMenus: Record<string, { categories: { title: string; items: { label: string; href: string }[] }[]; featured?: { title: string; subtitle: string } }> = {
@@ -79,23 +72,35 @@ export function ClientLayout({ children }: ClientLayoutProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [stickyHeader, setStickyHeader] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
-  const [promoIndex, setPromoIndex] = useState(0)
   const menuTimeoutRef = useRef<NodeJS.Timeout>()
+  const lastScrollY = useRef(0)
+  const headerRef = useRef<HTMLElement>(null)
+
+  // stickyHeader = false → absolute, transparent, part of page flow
+  // stickyHeader = true → fixed, solid white, slides in from top
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10)
+    const handleScroll = () => {
+      const currentY = window.scrollY
+      const headerH = headerRef.current?.offsetHeight || 120
+      const scrollingDown = currentY > lastScrollY.current
+
+      if (currentY <= headerH) {
+        // Still in the natural header zone — stay absolute/transparent
+        setStickyHeader(false)
+      } else if (scrollingDown) {
+        // Scrolling down past header — hide sticky
+        setStickyHeader(false)
+      } else {
+        // Scrolling up past the header zone — show fixed white bar
+        setStickyHeader(true)
+      }
+      lastScrollY.current = currentY
+    }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Rotate promo messages
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPromoIndex(i => (i + 1) % promoMessages.length)
-    }, 5000)
-    return () => clearInterval(interval)
   }, [])
 
   const handleMenuEnter = (label: string) => {
@@ -108,36 +113,13 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
   return (
     <>
-      {/* ═══ TOP PROMO BANNER (Rotating) ═══ */}
-      <div className="bg-bj-black text-white text-center py-2.5 px-4 relative overflow-hidden">
-        {promoMessages.map((msg, i) => (
-          <Link
-            key={i}
-            href={msg.link}
-            className={`block text-[11px] font-medium tracking-[0.12em] uppercase transition-all duration-500 ${
-              i === promoIndex ? 'opacity-100 translate-y-0' : 'opacity-0 absolute inset-0 translate-y-2 flex items-center justify-center'
-            }`}
-          >
-            {msg.text}
-          </Link>
-        ))}
-      </div>
-
-      {/* ═══ SECONDARY PROMO ═══ */}
-      <div className="bg-bj-blush text-center py-2.5 px-4 border-b border-bj-pink-light/30">
-        <Link href="/lab-grown-diamonds" className="text-[12px] text-bj-black font-medium hover:text-bj-pink transition-colors">
-          Discover Lab-Grown Diamonds — Same brilliance, better conscience
-          <span className="ml-2 text-bj-pink">Learn More →</span>
-        </Link>
-      </div>
-
       {/* ═══ MAIN HEADER ═══ */}
-      <header className={`header-bj sticky top-0 z-50 bg-white ${isScrolled ? 'scrolled' : ''}`}>
+      <header ref={headerRef} className={`header-bj left-0 right-0 z-50 transition-all duration-300 ${stickyHeader ? 'fixed top-0 bg-white shadow-sm translate-y-0' : 'absolute top-0 bg-transparent'}`}>
         <div className="container-bj-wide">
-          <div className="flex items-center justify-between h-[68px]">
+          <div className="flex items-center justify-between h-[76px]">
             {/* Left: Logo */}
             <Link href="/" className="flex-shrink-0 group">
-              <span className="font-display text-[24px] font-light tracking-[0.2em] text-bj-black uppercase select-none transition-colors group-hover:text-bj-gray-500">
+              <span className={`font-display text-[24px] font-medium tracking-[0.2em] uppercase select-none transition-colors ${stickyHeader ? 'text-bj-black group-hover:text-bj-gray-500' : 'text-white group-hover:text-white/70'}`}>
                 Bonjoojoo
               </span>
             </Link>
@@ -145,11 +127,11 @@ export function ClientLayout({ children }: ClientLayoutProps) {
             {/* Center: Search bar (Pandora pill shape) */}
             <div className="hidden lg:block flex-1 max-w-[380px] mx-12">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-bj-gray-400" size={16} />
+                <Search className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${stickyHeader ? 'text-bj-gray-400' : 'text-white/60'}`} size={16} />
                 <input
                   type="text"
                   placeholder="Search"
-                  className="w-full pl-11 pr-4 py-2.5 bg-bj-gray-50 rounded-full text-[13px] border-none outline-none focus:bg-bj-gray-100 transition-colors placeholder:text-bj-gray-400"
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-none text-[13px] outline-none transition-colors border-b ${stickyHeader ? 'bg-transparent border-gray-300 text-bj-black placeholder:text-bj-gray-400 focus:border-bj-black' : 'bg-transparent border-white/40 text-white placeholder:text-white/50 focus:border-white'}`}
                   onFocus={() => setShowSearch(true)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && e.currentTarget.value.trim()) {
@@ -165,23 +147,23 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               {/* Mobile search */}
               <button
                 onClick={() => setShowSearch(!showSearch)}
-                className="lg:hidden p-2.5 text-bj-black hover:text-bj-gray-500 transition-colors"
+                className={`lg:hidden p-2.5 transition-colors ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
                 aria-label="Search"
               >
                 <Search size={20} strokeWidth={1.5} />
               </button>
 
-              <Link href="/wishlist" className="p-2.5 text-bj-black hover:text-bj-gray-500 transition-colors hidden sm:flex" aria-label="Wishlist">
+              <Link href="/wishlist" className={`p-2.5 transition-colors hidden sm:flex ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`} aria-label="Wishlist">
                 <Heart size={20} strokeWidth={1.5} />
               </Link>
 
-              <Link href="/stores" className="p-2.5 text-bj-black hover:text-bj-gray-500 transition-colors hidden md:flex" aria-label="Store locator">
+              <Link href="/stores" className={`p-2.5 transition-colors hidden md:flex ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`} aria-label="Store locator">
                 <MapPin size={20} strokeWidth={1.5} />
               </Link>
 
               <button
                 onClick={() => isAuthenticated ? setShowUserMenu(!showUserMenu) : openLogin()}
-                className="p-2.5 text-bj-black hover:text-bj-gray-500 transition-colors hidden sm:flex"
+                className={`p-2.5 transition-colors hidden sm:flex ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
                 disabled={isLoading}
                 aria-label="Account"
               >
@@ -190,7 +172,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
               <button
                 onClick={toggleCart}
-                className="p-2.5 text-bj-black hover:text-bj-gray-500 transition-colors relative"
+                className={`p-2.5 transition-colors relative ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
                 aria-label="Shopping bag"
               >
                 <ShoppingBag size={20} strokeWidth={1.5} />
@@ -203,7 +185,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2.5 text-bj-black hover:text-bj-gray-500 transition-colors ml-1"
+                className={`lg:hidden p-2.5 transition-colors ml-1 ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
               >
                 {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
@@ -211,8 +193,8 @@ export function ClientLayout({ children }: ClientLayoutProps) {
           </div>
 
           {/* ═══ NAVIGATION BAR ═══ */}
-          <nav className="hidden lg:block border-t border-gray-100">
-            <div className="flex items-center justify-center gap-7 h-[44px]">
+          <nav className={`hidden lg:block ${stickyHeader ? 'border-t border-gray-100' : ''}`}>
+            <div className="flex items-center justify-center gap-7 h-[48px]">
               {navItems.map((item) => (
                 <div
                   key={item.label}
@@ -220,7 +202,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                   onMouseEnter={() => item.mega ? handleMenuEnter(item.label) : setActiveMenu('')}
                   onMouseLeave={handleMenuLeave}
                 >
-                  <Link href={item.href} className="nav-link text-[12px]">
+                  <Link href={item.href} className={`nav-link text-[12px] ${stickyHeader ? '' : '!text-white hover:!text-white/70'}`}>
                     {item.label}
                   </Link>
                 </div>
@@ -388,7 +370,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
           <div className="container-bj-wide py-14">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
               {[
-                { title: 'Shop', items: ['Rings', 'Necklaces & Pendants', 'Earrings', 'Bracelets', 'Lab-Grown Diamonds', 'Collections', 'Gifts', 'Sale'] },
+                { title: 'Shop', items: ['Rings', 'Necklaces & Pendants', 'Earrings', 'Bracelets', 'Lab-Grown Diamonds', 'Gifts', 'Sale'] },
                 { title: 'Resources', items: ['Order Status', 'Shipping', 'Returns & Exchanges', 'FAQ', 'Contact Us', 'Product Care', 'Warranty', 'Size Guide'] },
                 { title: 'Services', items: ['My Bonjoojoo', 'Buy Now Pay Later', 'Pick Up In Store', 'Engraving', 'Gift Cards', 'Custom Design'] },
                 { title: 'Legal', items: ['Terms & Conditions', 'Privacy Policy', 'Cookie Policy', 'Accessibility'] },
