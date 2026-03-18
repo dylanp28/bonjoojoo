@@ -17,7 +17,7 @@ interface LuxuryRevealProps {
   threshold?: number
 }
 
-// Premium reveal animation with sophisticated easing
+// Premium reveal animation with sophisticated easing - FIXED: Text visible by default
 export const LuxuryReveal = ({ 
   children, 
   delay = 0, 
@@ -33,27 +33,27 @@ export const LuxuryReveal = ({
 
   const variants = {
     up: {
-      hidden: { opacity: 0, y: 60, scale: 0.95 },
+      hidden: { opacity: 1, y: 0, scale: 1 },
       visible: { opacity: 1, y: 0, scale: 1 }
     },
     down: {
-      hidden: { opacity: 0, y: -60, scale: 0.95 },
+      hidden: { opacity: 1, y: 0, scale: 1 },
       visible: { opacity: 1, y: 0, scale: 1 }
     },
     left: {
-      hidden: { opacity: 0, x: -60, scale: 0.95 },
+      hidden: { opacity: 1, x: 0, scale: 1 },
       visible: { opacity: 1, x: 0, scale: 1 }
     },
     right: {
-      hidden: { opacity: 0, x: 60, scale: 0.95 },
+      hidden: { opacity: 1, x: 0, scale: 1 },
       visible: { opacity: 1, x: 0, scale: 1 }
     },
     scale: {
-      hidden: { opacity: 0, scale: 0.8, y: 20 },
+      hidden: { opacity: 1, scale: 1, y: 0 },
       visible: { opacity: 1, scale: 1, y: 0 }
     },
     fade: {
-      hidden: { opacity: 0 },
+      hidden: { opacity: 1 },
       visible: { opacity: 1 }
     }
   }
@@ -72,8 +72,8 @@ export const LuxuryReveal = ({
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      initial="visible"
+      animate={inView ? "visible" : "visible"}
       variants={variants[direction]}
       transition={transition}
       className={className}
@@ -160,7 +160,7 @@ export const LuxuryHover = ({
   )
 }
 
-// Stagger children animations for lists/grids
+// Stagger children animations for lists/grids - FIXED: Text visible by default
 export const LuxuryStagger = ({ 
   children, 
   className = '',
@@ -176,7 +176,7 @@ export const LuxuryStagger = ({
   })
 
   const container = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -187,7 +187,7 @@ export const LuxuryStagger = ({
   }
 
   const item = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    hidden: { opacity: 1, y: 0, scale: 1 },
     visible: {
       opacity: 1,
       y: 0,
@@ -203,8 +203,8 @@ export const LuxuryStagger = ({
     <motion.div
       ref={ref}
       variants={container}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      initial="visible"
+      animate={inView ? "visible" : "visible"}
       className={className}
     >
       {children.map((child, index) => (
@@ -216,7 +216,7 @@ export const LuxuryStagger = ({
   )
 }
 
-// Premium page transitions
+// Premium page transitions - FIXED: Content visible during transitions
 export const LuxuryPageTransition = ({ 
   children, 
   className = '' 
@@ -227,9 +227,9 @@ export const LuxuryPageTransition = ({
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 1, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
+        exit={{ opacity: 1, y: -20 }}
         transition={{
           duration: 0.5,
           ease: [0.25, 0.46, 0.45, 0.94]
@@ -324,7 +324,7 @@ export const MagneticHover = ({
   )
 }
 
-// Smooth scroll reveal for text
+// Smooth scroll reveal for text - FIXED: Text visible by default
 export const LuxuryTextReveal = ({ 
   children,
   className = '',
@@ -342,7 +342,7 @@ export const LuxuryTextReveal = ({
   const words = children.split(' ')
 
   const container = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -354,9 +354,9 @@ export const LuxuryTextReveal = ({
 
   const child = {
     hidden: { 
-      opacity: 0,
-      y: 20,
-      rotateX: 90
+      opacity: 1,
+      y: 0,
+      rotateX: 0
     },
     visible: {
       opacity: 1,
@@ -373,8 +373,8 @@ export const LuxuryTextReveal = ({
     <motion.div
       ref={ref}
       variants={container}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      initial="visible"
+      animate={inView ? "visible" : "visible"}
       className={className}
     >
       {words.map((word, index) => (

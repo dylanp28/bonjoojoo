@@ -29,23 +29,9 @@ export default function LuxuryHomePage() {
 
           {/* Luxury Navigation */}
           <nav className="hidden lg:flex items-center space-x-10 text-sm font-medium">
-            <div className="group relative">
-              <Link href="/collections" className="text-charcoal-900 hover:text-champagne-600 transition-colors">
-                Atelier Collections
-              </Link>
-              <div className="absolute top-full left-0 bg-white shadow-2xl p-8 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-96 border border-gray-100">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold text-charcoal-900 mb-2">Signature Collections</h3>
-                    <ul className="space-y-1 text-gray-600">
-                      <li><Link href="/collections/debut" className="hover:text-champagne-600">The Debut Collection</Link></li>
-                      <li><Link href="/collections/eternal" className="hover:text-champagne-600">Eternal Radiance</Link></li>
-                      <li><Link href="/collections/contemporary" className="hover:text-champagne-600">Contemporary Classics</Link></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Link href="/category/rings" className="text-charcoal-900 hover:text-champagne-600 transition-colors">
+              Signature Rings
+            </Link>
             
             <Link href="/engagement" className="text-charcoal-900 hover:text-champagne-600 transition-colors">
               Engagement Treasures
@@ -72,7 +58,7 @@ export default function LuxuryHomePage() {
             <div className="hidden md:block">
               <SearchBar 
                 className="w-80 border-gray-200 focus:border-champagne-400 bg-gray-50 focus:bg-white" 
-                placeholder="Discover treasures, collections..." 
+                placeholder="Discover treasures, jewelry..." 
               />
             </div>
             <button className="p-2 hover:bg-gray-50 rounded-full transition-colors">
@@ -128,13 +114,13 @@ export default function LuxuryHomePage() {
                     </h1>
                     
                     <p className="text-xl text-gray-700 leading-relaxed max-w-lg font-light">
-                      Discover our inaugural collection of ethically cultivated diamonds—
+                      Discover our exquisite selection of ethically cultivated diamonds—
                       where conscious choice meets conscious design.
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
                       <Link 
-                        href="/collections/signature" 
+                        href="/category/rings" 
                         className="inline-flex items-center justify-center bg-charcoal-900 hover:bg-charcoal-800 text-white px-8 py-4 font-medium tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl"
                       >
                         Begin Your Journey
@@ -220,27 +206,27 @@ export default function LuxuryHomePage() {
           </div>
         </section>
 
-        {/* COLLECTIONS SHOWCASE */}
+        {/* JEWELRY CATEGORIES */}
         <section className="py-24">
           <div className="max-w-8xl mx-auto px-8">
             <div className="text-center mb-16">
-              <h2 className="text-sm font-medium text-champagne-700 tracking-wider uppercase mb-4">Atelier Collections</h2>
+              <h2 className="text-sm font-medium text-champagne-700 tracking-wider uppercase mb-4">Jewelry Categories</h2>
               <h3 className="text-4xl lg:text-5xl font-light text-charcoal-900 mb-6">Curated for Conscious Luxury</h3>
               <p className="text-xl text-gray-600 font-light max-w-3xl mx-auto">
-                Each collection tells a story of innovation, artistry, and ethical creation—
+                Each category showcases our commitment to innovation, artistry, and ethical creation—
                 where modern values meet timeless beauty.
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Collection 1: Engagement */}
+              {/* Category 1: Rings */}
               <div className="group cursor-pointer">
                 <Link href="/engagement">
                   <div className="relative aspect-square bg-gradient-to-br from-blush-rose/20 to-champagne-gold/10 rounded-lg overflow-hidden mb-6 group-hover:shadow-2xl transition-all duration-500">
                     <div className="absolute inset-0 bg-white border-2 border-dashed border-gray-300 flex items-center justify-center">
                       <div className="text-center text-gray-600">
                         <div className="text-6xl mb-4">💍</div>
-                        <p className="text-lg font-medium">Engagement Collection</p>
+                        <p className="text-lg font-medium">Rings Category</p>
                         <p className="text-sm text-gray-500">Forever Begins With Choice</p>
                       </div>
                     </div>
@@ -249,19 +235,19 @@ export default function LuxuryHomePage() {
                   <div className="space-y-2">
                     <h4 className="text-2xl font-light text-charcoal-900">Engagement Treasures</h4>
                     <p className="text-gray-600 font-light">Forever begins with choice</p>
-                    <p className="text-sm text-champagne-700 font-medium group-hover:underline">Discover the Collection →</p>
+                    <p className="text-sm text-champagne-700 font-medium group-hover:underline">Explore Category →</p>
                   </div>
                 </Link>
               </div>
 
-              {/* Collection 2: Necklaces */}
+              {/* Category 2: Necklaces */}
               <div className="group cursor-pointer">
                 <Link href="/necklaces">
                   <div className="relative aspect-square bg-gradient-to-br from-platinum-silver/20 to-diamond-white rounded-lg overflow-hidden mb-6 group-hover:shadow-2xl transition-all duration-500">
                     <div className="absolute inset-0 bg-white border-2 border-dashed border-gray-300 flex items-center justify-center">
                       <div className="text-center text-gray-600">
                         <div className="text-6xl mb-4">✨</div>
-                        <p className="text-lg font-medium">Necklace Collection</p>
+                        <p className="text-lg font-medium">Necklaces Category</p>
                         <p className="text-sm text-gray-500">Illuminate Your Essence</p>
                       </div>
                     </div>
@@ -270,7 +256,7 @@ export default function LuxuryHomePage() {
                   <div className="space-y-2">
                     <h4 className="text-2xl font-light text-charcoal-900">Luminous Necklaces</h4>
                     <p className="text-gray-600 font-light">Illuminate your essence</p>
-                    <p className="text-sm text-champagne-700 font-medium group-hover:underline">Discover the Collection →</p>
+                    <p className="text-sm text-champagne-700 font-medium group-hover:underline">Explore Category →</p>
                   </div>
                 </Link>
               </div>
@@ -291,7 +277,7 @@ export default function LuxuryHomePage() {
                   <div className="space-y-2">
                     <h4 className="text-2xl font-light text-charcoal-900">Radiant Earrings</h4>
                     <p className="text-gray-600 font-light">Whispers of brilliance</p>
-                    <p className="text-sm text-champagne-700 font-medium group-hover:underline">Discover the Collection →</p>
+                    <p className="text-sm text-champagne-700 font-medium group-hover:underline">Explore Category →</p>
                   </div>
                 </Link>
               </div>
@@ -361,10 +347,10 @@ export default function LuxuryHomePage() {
                   Schedule Consultation
                 </Link>
                 <Link 
-                  href="/collections" 
+                  href="/category/rings" 
                   className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-charcoal-900 px-8 py-4 font-medium tracking-wide transition-all duration-300"
                 >
-                  Explore Collections
+                  Explore Categories
                 </Link>
               </div>
               
@@ -383,7 +369,7 @@ export default function LuxuryHomePage() {
             <div>
               <h3 className="font-medium text-charcoal-900 mb-6 text-sm tracking-wider uppercase">The Atelier</h3>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/collections" className="text-gray-600 hover:text-champagne-600 font-light">Signature Collections</Link></li>
+                <li><Link href="/category/rings" className="text-gray-600 hover:text-champagne-600 font-light">Signature Rings</Link></li>
                 <li><Link href="/engagement" className="text-gray-600 hover:text-champagne-600 font-light">Engagement Treasures</Link></li>
                 <li><Link href="/bespoke" className="text-gray-600 hover:text-champagne-600 font-light">Bespoke Creations</Link></li>
                 <li><Link href="/limited-editions" className="text-gray-600 hover:text-champagne-600 font-light">Limited Editions</Link></li>

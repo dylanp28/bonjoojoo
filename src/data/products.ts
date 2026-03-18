@@ -18,331 +18,184 @@ export interface Product {
   tags: string[]
 }
 
+// NOTE: Most products have been moved to productGroups.ts for proper variant handling.
+// This file now contains only single-variant products (no color options).
+// Products with multiple metal/color options should be defined in productGroups.ts
+
 export const products: Product[] = [
-  // Crown Collection - Romantic Tiara Rings
+  // SINGLE-VARIANT PRODUCTS ONLY
+  
+  // EARRINGS - Single Variants
   {
-    id: 'crown-001',
-    name: 'Crown Stacking Ring - Rose Gold',
-    price: 340,
-    originalPrice: 390,
-    description: 'Delicate crown-inspired stacking ring featuring scattered diamonds in an organic tiara silhouette. Part of our signature collection celebrating feminine elegance.',
-    category: 'rings',
-    subcategory: 'stacking',
-    images: ['/images/bonjoojoo-1.png'],
-    materials: ['14k Rose Gold', 'Diamond'],
-    features: ['Crown Design', 'Scattered Diamonds', 'Stackable', 'Milgrain Detail'],
+    id: 'lhe3781a',
+    name: 'Diamond Floral Ear Jackets',
+    price: 1185,
+    description: 'Elevate your everyday elegance with these versatile diamond ear jackets. A delicate openwork floral stud pairs with a curved crescent jacket adorned with graduated round brilliant-cut diamonds. Wear as studs alone or with jackets for contemporary dimension.',
+    category: 'earrings',
+    subcategory: 'jackets',
+    images: [
+      '/images/products/LHE3781A.jpg',
+      '/images/products/LHE3781A-detail.jpg'
+    ],
+    materials: ['14k White Gold', 'Diamond'],
+    features: ['2-in-1 Versatility', 'Floral Stud Design', 'Crescent Jacket', 'Graduated Diamonds'],
     specifications: {
-      'Metal Type': '14k Rose Gold',
-      'Diamond Count': '7-9 stones',
-      'Diamond Weight': '0.15 ct total',
-      'Band Width': '1.5mm',
-      'Crown Height': '3-5mm variable'
+      'Metal Type': '14k White Gold',
+      'Total Diamond Weight': '0.75 ct',
+      'Stud Diameter': '8mm',
+      'Jacket Length': '18mm'
+    },
+    inStock: true,
+    rating: 4.8,
+    reviewCount: 94,
+    tags: ['versatile', 'modern', 'floral']
+  },
+
+  // NECKLACES - Station Necklace (single variant)
+  {
+    id: 'lhn3800a',
+    name: 'Diamond Station Chain Necklace',
+    price: 1285,
+    description: 'Elegant station necklace featuring bezel-set diamonds spaced along a delicate gold chain. Perfect for layering or wearing alone as a sophisticated statement piece.',
+    category: 'necklaces',
+    subcategory: 'chain',
+    images: ['/images/products/LHN3800A.jpg'],
+    materials: ['14k Yellow Gold', 'Diamond'],
+    features: ['Station Design', 'Bezel Settings', 'Layerable', 'Delicate Chain'],
+    specifications: {
+      'Chain Length': '16-20 inches adjustable',
+      'Diamond Count': '5 stations',
+      'Total Diamond Weight': '0.50 ct',
+      'Station Spacing': 'Graduated'
+    },
+    inStock: true,
+    rating: 4.9,
+    reviewCount: 145,
+    tags: ['layerable', 'elegant', 'versatile']
+  },
+
+  {
+    id: 'lhn3881a',
+    name: 'Diamond Tennis Necklace',
+    price: 2485,
+    originalPrice: 2850,
+    description: 'Classic tennis necklace featuring a continuous line of round brilliant-cut diamonds. This timeless piece offers effortless elegance for any occasion, from casual to formal.',
+    category: 'necklaces',
+    subcategory: 'tennis',
+    images: ['/images/products/LHN3881A.jpg'],
+    materials: ['14k White Gold', 'Diamond'],
+    features: ['Tennis Style', 'Continuous Diamonds', 'Secure Clasp', 'Classic Design'],
+    specifications: {
+      'Chain Length': '16 inches',
+      'Diamond Count': '32 stones',
+      'Total Diamond Weight': '3.20 ct',
+      'Setting': 'Four-prong'
     },
     inStock: true,
     rating: 4.9,
     reviewCount: 89,
-    tags: ['bestseller', 'romantic', 'stackable', 'sale']
+    tags: ['luxury', 'classic', 'tennis', 'sale']
   },
+
+  // PENDANTS - Single metal color options
   {
-    id: 'crown-002',
-    name: 'Crown Stacking Ring - Yellow Gold',
-    price: 340,
-    description: 'Classic yellow gold crown ring with delicate diamond placement. Timeless elegance meets whimsical design in this stackable favorite.',
-    category: 'rings',
-    subcategory: 'stacking',
-    images: ['/images/bonjoojoo-1.png'],
+    id: 'lhp3779a',
+    name: 'Diamond Flower Burst Pendant',
+    price: 875,
+    description: 'Radiant flower-inspired pendant with petals of brilliant diamonds arranged in a sunburst pattern. This nature-inspired piece captures light beautifully from every angle.',
+    category: 'necklaces',
+    subcategory: 'pendants',
+    images: ['/images/products/LHP3779A.jpg'],
     materials: ['14k Yellow Gold', 'Diamond'],
-    features: ['Crown Design', 'Scattered Diamonds', 'Stackable', 'Milgrain Detail'],
+    features: ['Flower Burst Design', 'Radial Diamond Setting', 'Nature-Inspired', 'Light-Catching'],
     specifications: {
       'Metal Type': '14k Yellow Gold',
-      'Diamond Count': '7-9 stones',
-      'Diamond Weight': '0.15 ct total',
-      'Band Width': '1.5mm',
-      'Crown Height': '3-5mm variable'
-    },
-    inStock: true,
-    rating: 4.8,
-    reviewCount: 76,
-    tags: ['classic', 'stackable', 'romantic']
-  },
-  {
-    id: 'crown-003',
-    name: 'Crown Stacking Ring - White Gold',
-    price: 360,
-    description: 'Sophisticated white gold crown ring with brilliant diamonds. Modern interpretation of classic romantic jewelry, perfect for everyday elegance.',
-    category: 'rings',
-    subcategory: 'stacking',
-    images: ['/images/bonjoojoo-1.png'],
-    materials: ['14k White Gold', 'Diamond'],
-    features: ['Crown Design', 'Scattered Diamonds', 'Stackable', 'Milgrain Detail'],
-    specifications: {
-      'Metal Type': '14k White Gold',
-      'Diamond Count': '7-9 stones',
-      'Diamond Weight': '0.15 ct total',
-      'Band Width': '1.5mm',
-      'Crown Height': '3-5mm variable'
-    },
-    inStock: true,
-    rating: 4.8,
-    reviewCount: 92,
-    tags: ['modern', 'stackable', 'sophisticated']
-  },
-
-  // Cuff Collection - Asymmetric Beauty
-  {
-    id: 'cuff-001',
-    name: 'Asymmetric Diamond Cuff Ring',
-    price: 445,
-    description: 'Contemporary open-cuff ring featuring contrasting round brilliant and baguette diamonds. Modern minimalism meets unexpected details.',
-    category: 'rings',
-    subcategory: 'statement',
-    images: ['/images/bonjoojoo-2.png'],
-    materials: ['14k Rose Gold', 'Diamond'],
-    features: ['Open Cuff Design', 'Asymmetric Settings', 'Mixed Diamond Cuts', 'Minimalist'],
-    specifications: {
-      'Metal Type': '14k Rose Gold',
-      'Round Diamond': '0.10 ct',
-      'Baguette Diamond': '0.08 ct',
-      'Total Carat Weight': '0.18 ct',
-      'Band Width': '1.2mm'
-    },
-    inStock: true,
-    rating: 4.9,
-    reviewCount: 54,
-    tags: ['bestseller', 'modern', 'minimalist']
-  },
-
-  // Pavé Collection - Delicate Sparkle
-  {
-    id: 'pave-001',
-    name: 'Pavé Stacking Band - Rose Gold',
-    price: 210,
-    originalPrice: 240,
-    description: 'Ultra-fine pavé stacking band featuring continuous row of brilliant diamonds. Perfect for creating personalized layered looks.',
-    category: 'rings',
-    subcategory: 'stacking',
-    images: ['/images/bonjoojoo-3.png'],
-    materials: ['14k Rose Gold', 'Diamond'],
-    features: ['Micro Pavé Setting', 'Stackable Design', 'Continuous Sparkle', 'Delicate Proportions'],
-    specifications: {
-      'Metal Type': '14k Rose Gold',
-      'Diamond Count': '18-22 stones',
-      'Diamond Weight': '0.25 ct total',
-      'Band Width': '1.8mm',
-      'Setting': 'Micro Pavé'
+      'Diamond Weight': '0.42 ct',
+      'Pendant Diameter': '18mm',
+      'Design': 'Sunburst Flower'
     },
     inStock: true,
     rating: 4.7,
-    reviewCount: 134,
-    tags: ['stackable', 'delicate', 'sparkle', 'sale']
-  },
-  {
-    id: 'pave-002',
-    name: 'Pavé Stacking Trio Set',
-    price: 590,
-    originalPrice: 670,
-    description: 'Set of three delicate pavé stacking bands designed to be worn together. Create the perfect layered look with this curated trio.',
-    category: 'rings',
-    subcategory: 'stacking',
-    images: ['/images/bonjoojoo-3.png'],
-    materials: ['14k Rose Gold', 'Diamond'],
-    features: ['Three Band Set', 'Micro Pavé Setting', 'Coordinated Design', 'Gift Box Included'],
-    specifications: {
-      'Metal Type': '14k Rose Gold',
-      'Total Diamond Weight': '0.75 ct',
-      'Band Count': '3 bands',
-      'Band Width': '1.8mm each',
-      'Packaging': 'bonjoojoo Gift Box'
-    },
-    inStock: true,
-    rating: 4.9,
-    reviewCount: 67,
-    tags: ['bestseller', 'set', 'stackable', 'sale']
+    reviewCount: 85,
+    tags: ['floral', 'nature', 'radiant']
   },
 
-  // Station Collection - Graduated Elegance
   {
-    id: 'station-001',
-    name: 'Diamond Station Bracelet - Rose Gold',
-    price: 375,
-    description: 'Diamond station bracelet featuring graduated bezel-set stones on delicate chain. Includes signature bonjoojoo logo charm.',
-    category: 'bracelets',
-    subcategory: 'chain',
-    images: ['/images/bonjoojoo-4.png'],
-    materials: ['14k Rose Gold', 'Diamond'],
-    features: ['Bezel Set Diamonds', 'Graduated Design', 'Fine Chain Links', 'Signature Logo Charm'],
-    specifications: {
-      'Metal Type': '14k Rose Gold',
-      'Diamond Count': '3 stones',
-      'Center Diamond': '0.08 ct',
-      'Side Diamonds': '0.05 ct each',
-      'Chain Length': '7 inches adjustable'
-    },
-    inStock: true,
-    rating: 4.8,
-    reviewCount: 92,
-    tags: ['elegant', 'bracelet', 'station']
-  },
-  {
-    id: 'station-002',
-    name: 'Diamond Station Bracelet - White Gold',
-    price: 375,
-    description: 'Classic white gold station bracelet with three graduated bezel-set diamonds. Contemporary elegance with signature logo detail.',
-    category: 'bracelets',
-    subcategory: 'chain',
-    images: ['/images/bonjoojoo-5.png'],
-    materials: ['14k White Gold', 'Diamond'],
-    features: ['Bezel Set Diamonds', 'Graduated Design', 'Fine Chain Links', 'Signature Logo Charm'],
-    specifications: {
-      'Metal Type': '14k White Gold',
-      'Diamond Count': '3 stones',
-      'Center Diamond': '0.08 ct',
-      'Side Diamonds': '0.05 ct each',
-      'Chain Length': '7 inches adjustable'
-    },
-    inStock: true,
-    rating: 4.8,
-    reviewCount: 78,
-    tags: ['elegant', 'bracelet', 'station']
-  },
-
-  // Constellation Collection - Celestial Gardens
-  {
-    id: 'constellation-001',
-    name: 'Constellation Ring - Celestial Garden',
-    price: 260,
-    description: 'Whimsical ring featuring scattered gemstones in constellation patterns. Organic stone placement creates ethereal, celestial beauty.',
-    category: 'rings',
-    subcategory: 'statement',
-    images: ['/images/bonjoojoo-6.png'],
-    materials: ['Sterling Silver', 'Mixed Gemstones', 'Opal'],
-    features: ['Scattered Gemstones', 'Celestial Design', 'Organic Placement', 'Ethereal Beauty'],
-    specifications: {
-      'Metal Type': 'Sterling Silver',
-      'Center Stone': 'Opal 0.15 ct',
-      'Accent Stones': 'Mixed crystals',
-      'Stone Count': '6-8 stones',
-      'Band Style': 'Organic curved'
-    },
-    inStock: true,
-    rating: 4.6,
-    reviewCount: 43,
-    tags: ['whimsical', 'celestial', 'unique']
-  },
-
-  // Complementary Necklaces
-  {
-    id: 'nec-001',
-    name: 'Crown Scattered Necklace',
-    price: 425,
-    description: 'Delicate chain necklace with scattered diamonds mimicking the crown ring aesthetic. Romantic and whimsical for everyday elegance.',
+    id: 'lhp3838a',
+    name: 'Diamond Vertical Bar Pendant',
+    price: 655,
+    originalPrice: 745,
+    description: 'Sleek vertical bar pendant with sophisticated two-tone design. The upper portion features smooth polished gold, while the lower half sparkles with pavé-set diamonds. Perfect for layering or as a standalone statement.',
     category: 'necklaces',
-    subcategory: 'delicate',
-    images: ['/images/bonjoojoo-1.png'],
-    materials: ['14k Gold', 'Diamond'],
-    features: ['Scattered Design', 'Delicate Chain', 'Romantic', 'Layerable'],
+    subcategory: 'pendants',
+    images: ['/images/products/LHP3838A.jpg'],
+    materials: ['14k Yellow Gold', 'Diamond'],
+    features: ['Vertical Bar Design', 'Two-Tone Finish', 'Pavé Lower Section', 'Modern Minimalist'],
     specifications: {
-      'Chain Length': '16-18 inches adjustable',
-      'Diamond Count': '5-7 stones',
-      'Total Carat Weight': '0.20 ct',
-      'Metal Type': '14k Gold'
-    },
-    inStock: true,
-    rating: 4.7,
-    reviewCount: 67,
-    tags: ['romantic', 'delicate', 'layerable']
-  },
-
-  // Complementary Earrings
-  {
-    id: 'ear-001',
-    name: 'Asymmetric Diamond Studs',
-    price: 225,
-    description: 'Modern twist on classic studs featuring round and baguette diamonds. Contemporary asymmetry inspired by our cuff collection.',
-    category: 'earrings',
-    subcategory: 'studs',
-    images: ['/images/bonjoojoo-2.png'],
-    materials: ['14k Gold', 'Diamond'],
-    features: ['Asymmetric Design', 'Mixed Cuts', 'Modern', 'Everyday'],
-    specifications: {
-      'Round Diamond': '0.08 ct each',
-      'Baguette Diamond': '0.06 ct each',
-      'Total Carat Weight': '0.28 ct',
-      'Metal Type': '14k Gold'
+      'Metal Type': '14k Yellow Gold',
+      'Diamond Weight': '0.15 ct',
+      'Pendant Length': '25mm',
+      'Chain Length': '16-18 inches'
     },
     inStock: true,
     rating: 4.8,
-    reviewCount: 89,
-    tags: ['modern', 'everyday', 'asymmetric']
+    reviewCount: 156,
+    tags: ['modern', 'minimalist', 'layerable', 'sale']
   },
+
   {
-    id: 'ear-002',
-    name: 'Pavé Huggie Hoops',
-    price: 190,
-    description: 'Delicate huggie hoops featuring continuous pavé diamonds. Perfect complement to the pavé stacking collection.',
-    category: 'earrings',
-    subcategory: 'hoops',
-    images: ['/images/bonjoojoo-3.png'],
-    materials: ['14k Gold', 'Diamond'],
-    features: ['Huggie Style', 'Pavé Setting', 'Comfortable Fit', 'Stackable'],
+    id: 'lhp3840a',
+    name: 'Pavé Diamond Butterfly Pendant',
+    price: 785,
+    description: 'Embrace elegance with this exquisite pavé butterfly pendant. Adorned with sparkling round-cut diamonds set in lustrous white gold, this delicate butterfly symbolizes transformation and femininity.',
+    category: 'necklaces',
+    subcategory: 'pendants',
+    images: ['/images/products/LHP3840A.jpg'],
+    materials: ['14k White Gold', 'Diamond'],
+    features: ['Butterfly Motif', 'Full Pavé Setting', 'Symbolic Design', 'Romantic Style'],
     specifications: {
-      'Diameter': '12mm',
-      'Diamond Count': '16 stones per earring',
-      'Total Carat Weight': '0.32 ct',
-      'Closure': 'Hinged huggie'
+      'Metal Type': '14k White Gold',
+      'Diamond Count': '45-50 stones',
+      'Diamond Weight': '0.45 ct',
+      'Pendant Size': '18mm wingspan'
     },
     inStock: true,
-    rating: 4.7,
-    reviewCount: 156,
-    tags: ['huggie', 'pavé', 'everyday']
+    rating: 4.9,
+    reviewCount: 203,
+    tags: ['romantic', 'symbolic', 'butterfly', 'bestseller']
   }
 ]
 
-export const collections = [
-  { 
-    id: 'crown', 
-    name: 'Crown Collection',
-    description: 'Romantic crown-inspired rings with scattered diamonds'
-  },
-  { 
-    id: 'cuff', 
-    name: 'Cuff Collection',
-    description: 'Contemporary asymmetric cuff rings'
-  },
-  { 
-    id: 'pave', 
-    name: 'Pavé Collection',
-    description: 'Delicate stackable pavé bands'
-  },
-  { 
-    id: 'station', 
-    name: 'Station Collection',
-    description: 'Graduated diamond station bracelets'
-  },
-  { 
-    id: 'constellation', 
-    name: 'Constellation Collection',
-    description: 'Whimsical rings with scattered gemstones'
-  }
-]
+
 
 export const categories = [
-  { id: 'rings', name: 'Rings', subcategories: ['stacking', 'statement', 'wedding'] },
-  { id: 'necklaces', name: 'Necklaces', subcategories: ['delicate', 'statement', 'layering'] },
-  { id: 'earrings', name: 'Earrings', subcategories: ['studs', 'hoops', 'climbers'] },
-  { id: 'bracelets', name: 'Bracelets', subcategories: ['chain', 'tennis', 'cuff'] }
+  { 
+    id: 'rings', 
+    name: 'Rings', 
+    subcategories: ['statement', 'eternity', 'delicate', 'stacking', 'bands'] 
+  },
+  { 
+    id: 'necklaces', 
+    name: 'Necklaces', 
+    subcategories: ['pendants', 'chain', 'tennis', 'station'] 
+  },
+  { 
+    id: 'earrings', 
+    name: 'Earrings', 
+    subcategories: ['jackets', 'drops', 'studs', 'hoops'] 
+  },
+  { 
+    id: 'bracelets', 
+    name: 'Bracelets', 
+    subcategories: ['chain', 'tennis', 'statement', 'vintage'] 
+  }
 ]
 
 export function getProductsByCategory(category: string) {
   return products.filter(product => product.category === category)
 }
 
-export function getProductsByCollection(collectionId: string) {
-  return products.filter(product => 
-    product.tags.includes(collectionId) || 
-    product.id.includes(collectionId)
-  )
-}
+
 
 export function getProductById(id: string) {
   return products.find(product => product.id === id)
@@ -354,4 +207,62 @@ export function getFeaturedProducts() {
 
 export function getProductsOnSale() {
   return products.filter(product => product.originalPrice && product.originalPrice > product.price)
+}
+
+export function getProductsByPriceRange(minPrice: number, maxPrice: number) {
+  return products.filter(product => product.price >= minPrice && product.price <= maxPrice)
+}
+
+export function searchProducts(query: string) {
+  const lowercaseQuery = query.toLowerCase()
+  return products.filter(product => 
+    product.name.toLowerCase().includes(lowercaseQuery) ||
+    product.description.toLowerCase().includes(lowercaseQuery) ||
+    product.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
+    product.features.some(feature => feature.toLowerCase().includes(lowercaseQuery)) ||
+    product.materials.some(material => material.toLowerCase().includes(lowercaseQuery))
+  )
+}
+
+export function getNewArrivals() {
+  // Return products with higher IDs as "new arrivals"
+  return products.slice(-8)
+}
+
+export function getRelatedProducts(productId: string, limit: number = 4) {
+  const product = getProductById(productId)
+  if (!product) return []
+  
+  return products
+    .filter(p => 
+      p.id !== productId && 
+      (p.category === product.category || 
+       p.tags.some(tag => product.tags.includes(tag)))
+    )
+    .slice(0, limit)
+}
+
+export function getProductsByMaterial(material: string) {
+  return products.filter(product => 
+    product.materials.some(m => 
+      m.toLowerCase().includes(material.toLowerCase())
+    )
+  )
+}
+
+export function getProductStats() {
+  return {
+    total: products.length,
+    categories: {
+      rings: getProductsByCategory('rings').length,
+      necklaces: getProductsByCategory('necklaces').length,
+      earrings: getProductsByCategory('earrings').length,
+      bracelets: getProductsByCategory('bracelets').length
+    },
+    onSale: getProductsOnSale().length,
+    priceRange: {
+      min: Math.min(...products.map(p => p.price)),
+      max: Math.max(...products.map(p => p.price))
+    }
+  }
 }

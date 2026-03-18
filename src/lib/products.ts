@@ -1,53 +1,64 @@
-import productData from '../../data/product_database.json'
-import charmsData from '../../data/charms.json'
-
-export interface Product {
-  id: string
-  sku: string
-  name: string
-  category: string
-  subcategory?: string
-  description: string
-  short_description?: string
-  price: number
-  compare_at_price?: number
-  images: string[]
-  specifications?: any
-  tags?: string[]
-  is_featured?: boolean
-  is_bestseller?: boolean
-  rating?: number
-  reviews?: number
-  stock?: number
-  availability_status?: string
-  metal?: string
-  diamond?: any
-}
+import { Product, ProductGroup } from '@/types/product'
+import { productGroups } from '@/data/productGroups'
+import { products as legacyProducts } from '@/data/products'
 
 // Combine all products from different data sources
 const getAllProducts = (): Product[] => {
   const products: Product[] = []
   
-  // Add products from main database
-  if (productData.products) {
-    products.push(...productData.products.map(p => ({
-      ...p,
-      images: p.images || [],
-      rating: 4.5 + Math.random() * 0.5, // Generate ratings 4.5-5.0
-      reviews: Math.floor(Math.random() * 200) + 10 // Generate review counts 10-209
-    })))
+  // Add products from new grouped structure (MAIN PRODUCTS ONLY, NOT VARIANTS)
+  for (const group of productGroups) {
+    // Only add the main product entry with default variant
+    const defaultVariant = group.variants.find(v => v.id === group.defaultVariant) || group.variants[0]
+    products.push({
+      id: group.id,
+      sku: defaultVariant.sku || group.id.toUpperCase(),
+      name: group.name,
+      category: group.category,
+      subcategory: group.subcategory,
+      description: group.description,
+      short_description: group.description.substring(0, 150) + '...',
+      price: defaultVariant.price || group.basePrice,
+      compare_at_price: defaultVariant.originalPrice || group.originalPrice,
+      images: group.allImages,
+      specifications: group.specifications,
+      tags: group.tags,
+      is_featured: group.tags?.includes('bestseller') || false,
+      is_bestseller: group.tags?.includes('bestseller') || false,
+      rating: group.rating,
+      reviews: group.reviewCount,
+      stock: defaultVariant.inStock ? 10 : 0,
+      availability_status: defaultVariant.inStock ? 'in_stock' : 'out_of_stock',
+      metal: defaultVariant.metal,
+      variants: group.variants,
+      isGrouped: true
+    })
   }
   
-  // Add charms
-  if (charmsData.charms) {
-    products.push(...charmsData.charms.map(c => ({
-      ...c,
-      category: 'charms',
-      images: c.images || [],
-      rating: 4.5 + Math.random() * 0.5,
-      reviews: Math.floor(Math.random() * 150) + 5
-    })))
-  }
+  // Add legacy products (for backward compatibility) - only those NOT in groups
+  const groupIds = new Set(productGroups.map(g => g.id))
+  products.push(...legacyProducts.filter(p => !groupIds.has(p.id)).map(p => ({
+    id: p.id,
+    sku: p.id.toUpperCase(),
+    name: p.name,
+    category: p.category,
+    subcategory: p.subcategory,
+    description: p.description,
+    short_description: p.description.substring(0, 150) + '...',
+    price: p.price,
+    compare_at_price: p.originalPrice,
+    images: p.images,
+    specifications: p.specifications,
+    tags: p.tags,
+    is_featured: p.tags?.includes('bestseller') || false,
+    is_bestseller: p.tags?.includes('bestseller') || false,
+    rating: p.rating,
+    reviews: p.reviewCount,
+    stock: p.inStock ? 10 : 0,
+    availability_status: p.inStock ? 'in_stock' : 'out_of_stock',
+    metal: p.materials?.find(m => m.includes('Gold')) || undefined,
+    diamond: p.materials?.includes('Diamond') ? { present: true } : undefined
+  })))
   
   return products
 }
@@ -174,4 +185,50 @@ export const getCategories = () => {
     label: category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' '),
     count: products.filter(p => p.category === category).length
   }))
+}
+
+// Product group-specific functions
+export const getProductGroupById = (id: string): ProductGroup | null => {
+  return productGroups.find(g => g.id === id) || null
+}
+
+export const getProductWithVariants = (id: string): Product | null => {
+  // First check if it's a group ID
+  const group = getProductGroupById(id)
+  if (group) {
+    const defaultVariant = group.variants.find(v => v.id === group.defaultVariant) || group.variants[0]
+    return {
+      id: group.id,
+      sku: defaultVariant.sku || group.id.toUpperCase(),
+      name: group.name,
+      category: group.category,
+      subcategory: group.subcategory,
+      description: group.description,
+      short_description: group.description.substring(0, 150) + '...',
+      price: defaultVariant.price || group.basePrice,
+      compare_at_price: defaultVariant.originalPrice || group.originalPrice,
+      images: group.allImages,
+      specifications: group.specifications,
+      tags: group.tags,
+      is_featured: group.tags?.includes('bestseller') || false,
+      is_bestseller: group.tags?.includes('bestseller') || false,
+      rating: group.rating,
+      reviews: group.reviewCount,
+      stock: defaultVariant.inStock ? 10 : 0,
+      availability_status: defaultVariant.inStock ? 'in_stock' : 'out_of_stock',
+      metal: defaultVariant.metal,
+      variants: group.variants,
+      isGrouped: true
+    }
+  }
+  
+  // Fall back to regular product lookup
+  return getProductById(id)
+}
+
+export const getVariantById = (groupId: string, variantId: string) => {
+  const group = getProductGroupById(groupId)
+  if (!group) return null
+  
+  return group.variants.find(v => v.id === variantId) || null
 }

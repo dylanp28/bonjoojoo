@@ -27,19 +27,19 @@ export async function GET(): Promise<Response> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/collections/lab-grown-rings`,
+      url: `${baseUrl}/category/rings`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/collections/lab-grown-necklaces`,
+      url: `${baseUrl}/category/necklaces`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/collections/lab-grown-earrings`,
+      url: `${baseUrl}/category/earrings`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
@@ -93,7 +93,7 @@ export async function GET(): Promise<Response> {
     'earrings',
     'bracelets'
   ].map(category => ({
-    url: `${baseUrl}/collections/${category}`,
+    url: `${baseUrl}/category/${category}`,
     lastModified: currentDate,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
@@ -106,7 +106,7 @@ export async function GET(): Promise<Response> {
     'lab-grown-diamond-studs',
     'lab-grown-tennis-necklaces'
   ].map(category => ({
-    url: `${baseUrl}/collections/${category}`,
+    url: `${baseUrl}/search?tag=${category}`,
     lastModified: currentDate,
     changeFrequency: 'weekly' as const,
     priority: 0.8,

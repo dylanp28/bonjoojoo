@@ -13,9 +13,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
-    // Allow local images from public folder
-    domains: ['localhost'],
     formats: ['image/webp', 'image/avif'],
   },
   compiler: {

@@ -9,7 +9,7 @@ Allow: /
 # High-priority pages for lab-grown diamond SEO
 Allow: /
 Allow: /education/
-Allow: /collections/
+Allow: /category/
 Allow: /products/
 Allow: /sustainability/
 Allow: /certification/
@@ -43,7 +43,7 @@ Sitemap: ${baseUrl}/sitemap.xml
 User-agent: Googlebot
 Allow: /education/lab-grown-diamonds
 Allow: /education/lab-grown-vs-mined-diamonds
-Allow: /collections/lab-grown-*
+Allow: /search?tag=lab-grown-*
 Crawl-delay: 1
 
 # Bing - focus on sustainability content
@@ -90,7 +90,7 @@ Allow: /
 # E-commerce specific crawlers
 User-agent: ShopBot
 Allow: /products/
-Allow: /collections/
+Allow: /category/
 
 User-agent: PriceBot
 Allow: /products/

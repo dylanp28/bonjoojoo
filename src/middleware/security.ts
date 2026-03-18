@@ -422,13 +422,19 @@ async function logSecurityEvent(event: {
     console.log('Security event:', event.type, event);
   }
 
-  // Store in database for analysis
+  // Store in database for analysis (disabled in middleware to avoid fetch issues)
+  // In production, use a proper logging service instead of HTTP requests from middleware
   try {
-    await fetch('/api/security/log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(event)
-    });
+    // await fetch('/api/security/log', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(event)
+    // });
+    
+    // For now, just log to console (production would use external logging service)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Security event logged:', event.type);
+    }
   } catch (error) {
     console.error('Failed to log security event:', error);
   }

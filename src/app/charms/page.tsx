@@ -196,7 +196,7 @@ export default function CharmsPage() {
               <Link href="/lab-grown-diamonds" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Lab-grown diamonds</Link>
               <Link href="/engraving" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Engraving</Link>
               <Link href="/gifts" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Gifts</Link>
-              <Link href="/collections" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Collections</Link>
+              <Link href="/category/necklaces" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Categories</Link>
             </div>
           </nav>
         </div>
@@ -248,7 +248,7 @@ export default function CharmsPage() {
                 <Link href="/charms/new" className="bg-white border border-gray-300 text-gray-900 px-6 py-3 rounded-full text-sm font-medium hover:border-gray-400 transition-colors">
                   NEW CHARMS
                 </Link>
-                <Link href="/collections/bridgerton" className="bg-white border border-gray-300 text-gray-900 px-6 py-3 rounded-full text-sm font-medium hover:border-gray-400 transition-colors">
+                <Link href="/category/necklaces" className="bg-white border border-gray-300 text-gray-900 px-6 py-3 rounded-full text-sm font-medium hover:border-gray-400 transition-colors">
                   PANDORA AND BRIDGERTON
                 </Link>
                 <Link href="/charms/disney" className="bg-white border border-gray-300 text-gray-900 px-6 py-3 rounded-full text-sm font-medium hover:border-gray-400 transition-colors">

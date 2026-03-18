@@ -11,7 +11,6 @@ interface Product {
   name: string
   price: number
   compareAtPrice?: number
-  image: string
   images: string[]
   category: string
   subcategory: string
@@ -49,12 +48,6 @@ function SearchPageContent() {
     availability: 'all'
   })
 
-  useEffect(() => {
-    if (query) {
-      performSearch()
-    }
-  }, [query, sortBy, filters])
-
   const performSearch = async () => {
     setLoading(true)
     setError(null)
@@ -88,6 +81,10 @@ function SearchPageContent() {
     }
   }
 
+  useEffect(() => {
+    performSearch()
+  }, [query, sortBy, filters])
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -114,14 +111,14 @@ function SearchPageContent() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="search-page-content bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="mb-4">
             <SearchBar 
               className="max-w-2xl mx-auto"
-              placeholder="Search jewelry, diamonds, collections..."
+              placeholder="Search jewelry, diamonds, categories..."
             />
           </div>
           
@@ -298,9 +295,9 @@ function SearchPageContent() {
                     }`}
                   >
                     <div className={viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}>
-                      {product.image ? (
+                      {product.images && product.images[0] ? (
                         <img
-                          src={product.image}
+                          src={product.images[0]}
                           alt={product.name}
                           className="w-full h-full object-cover rounded-lg"
                         />
@@ -374,10 +371,10 @@ function SearchPageContent() {
                   Try adjusting your search terms or filters
                 </p>
                 <Link
-                  href="/collections"
+                  href="/category/rings"
                   className="bg-gray-900 text-white px-6 py-3 rounded hover:bg-gray-800"
                 >
-                  Browse All Collections
+                  Browse All Categories
                 </Link>
               </div>
             )}

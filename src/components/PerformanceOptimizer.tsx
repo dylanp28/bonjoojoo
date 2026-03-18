@@ -51,9 +51,9 @@ export function PerformanceOptimizer() {
 
       // Prefetch likely next pages
       const prefetchPages = [
-        '/collections/lab-grown-rings',
+        '/category/rings',
         '/education/lab-grown-diamonds',
-        '/collections/lab-grown-necklaces'
+        '/category/necklaces'
       ]
 
       prefetchPages.forEach(href => {
@@ -316,12 +316,12 @@ export function CriticalResourceHints() {
 
       {/* Resource hints for lab-grown diamond imagery */}
       <link rel="preload" href="/images/lab-grown-hero.webp" as="image" />
-      <link rel="prefetch" href="/images/lab-grown-collection.webp" />
+      <link rel="prefetch" href="/images/lab-grown-hero.webp" />
       <link rel="prefetch" href="/images/sustainability-hero.webp" />
 
       {/* Prefetch critical pages for lab-grown education flow */}
       <link rel="prefetch" href="/education/lab-grown-diamonds" />
-      <link rel="prefetch" href="/collections/lab-grown-rings" />
+      <link rel="prefetch" href="/category/rings" />
     </>
   )
 }

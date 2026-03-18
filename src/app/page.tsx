@@ -5,7 +5,7 @@ import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Truck, RotateCcw, Star, Gift } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { products } from '@/data/products'
+import { searchProducts } from '@/lib/products'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 
@@ -19,7 +19,7 @@ function FocusSection({ children, className, style }: { children: React.ReactNod
   const overlayOpacity = useTransform(
     scrollYProgress,
     [0, 0.2, 0.35, 0.65, 0.8, 1],
-    [0.35, 0.08, 0, 0, 0.08, 0.35]
+    [0.15, 0.05, 0, 0, 0.05, 0.15]
   )
 
   return (
@@ -38,7 +38,7 @@ const formatPrice = (price: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price)
 
 export default function HomePage() {
-  const allProducts = products.slice(0, 8)
+  const allProducts = searchProducts({ limit: 8, featured: true }).products
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scroll = (dir: 'left' | 'right') => {
@@ -66,8 +66,8 @@ export default function HomePage() {
             >
               <source src="/videos/model-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
           <div className="relative z-10 h-full flex flex-col justify-end px-8 lg:px-16 pb-24 lg:pb-28">
             <div className="max-w-xl text-left">
@@ -88,7 +88,7 @@ export default function HomePage() {
               <LuxuryReveal direction="up" delay={0.55}>
                 <div className="flex flex-wrap gap-4">
                   <Link href="/search" className="btn-white">Shop Now</Link>
-                  <Link href="/lab-grown-diamonds" className="btn-ghost text-white border-white/50 hover:bg-white/10">Our Diamonds</Link>
+                  <Link href="/education/lab-grown-diamonds" className="btn-ghost text-white border-white/50 hover:bg-white/10">Our Diamonds</Link>
                 </div>
               </LuxuryReveal>
             </div>
@@ -120,7 +120,7 @@ export default function HomePage() {
               </p>
             </LuxuryReveal>
             <LuxuryReveal direction="up" delay={0.55}>
-              <Link href="/engraving" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Shop Grad Gifts</Link>
+              <Link href="/search?tag=graduation" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Shop Grad Gifts</Link>
             </LuxuryReveal>
           </div>
         </FocusSection>
@@ -139,8 +139,8 @@ export default function HomePage() {
             >
               <source src="/videos/crowns-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
           <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-16 px-8 lg:px-16">
             <div className="max-w-xl text-left">
@@ -160,8 +160,8 @@ export default function HomePage() {
               </LuxuryReveal>
               <LuxuryReveal direction="up" delay={0.55}>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="/collections/crown" className="btn-white">Shop Now</Link>
-                  <Link href="/lab-grown-diamonds" className="btn-ghost text-white border-white/50 hover:bg-white/10">Discover More</Link>
+                  <Link href="/category/rings" className="btn-white">Shop Now</Link>
+                  <Link href="/education/lab-grown-diamonds" className="btn-ghost text-white border-white/50 hover:bg-white/10">Discover More</Link>
                 </div>
               </LuxuryReveal>
             </div>
@@ -182,8 +182,8 @@ export default function HomePage() {
             >
               <source src="/videos/bestsellers-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
           <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-16 px-8 lg:px-16">
             <div className="max-w-xl text-left">
@@ -246,7 +246,7 @@ export default function HomePage() {
               </p>
             </LuxuryReveal>
             <LuxuryReveal direction="up" delay={0.55}>
-              <Link href="/engraving" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Start Creating</Link>
+              <Link href="/search" className="text-[14px] font-medium text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors">Start Creating</Link>
             </LuxuryReveal>
           </div>
         </FocusSection>
@@ -265,8 +265,8 @@ export default function HomePage() {
             >
               <source src="/videos/diamonds-hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
           <div className="relative z-10 h-full flex flex-col justify-end px-8 lg:px-16 pb-24 lg:pb-28">
             <div className="max-w-xl text-left">
@@ -287,7 +287,7 @@ export default function HomePage() {
               </LuxuryReveal>
               <LuxuryReveal direction="up" delay={0.55}>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="/lab-grown-diamonds" className="btn-white">Shop Diamonds</Link>
+                  <Link href="/education/lab-grown-diamonds" className="btn-white">Shop Diamonds</Link>
                   <Link href="/about" className="btn-ghost text-white border-white/50 hover:bg-white/10">Learn More</Link>
                 </div>
               </LuxuryReveal>
@@ -330,12 +330,12 @@ export default function HomePage() {
                 <div key={product.id} style={{ scrollSnapAlign: 'start' }} className="flex-none">
                   <Link href={`/product/${product.id}`} className="group flex-none w-[260px] lg:w-[300px] block">
                     <div className="product-card">
-                      <div className="aspect-[3/4] bg-gradient-to-b from-bj-offwhite to-[#F0EBE5] relative overflow-hidden">
+                      <div className="aspect-[3/4] bg-white relative overflow-hidden product-image-container">
                         <Image
                           src={product.images[0]}
                           alt={product.name}
                           fill
-                          className="object-contain p-6 product-card-img img-warm"
+                          className="object-cover product-grid-image"
                         />
 
                         {/* Badges */}

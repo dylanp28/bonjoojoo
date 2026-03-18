@@ -83,7 +83,6 @@ export default function LuxuryHomePageWithPandoraAnimations() {
             transition={{ duration: 0.6, delay: 0.4, ease: pandoraEasing }}
           >
             {[
-              { label: 'Atelier Collections', href: '/collections' },
               { label: 'Engagement Treasures', href: '/engagement' },
               { label: 'Luminous Necklaces', href: '/necklaces' },
               { label: 'Radiant Earrings', href: '/earrings' },
@@ -112,47 +111,7 @@ export default function LuxuryHomePageWithPandoraAnimations() {
                 >
                   {item.label}
                 </Link>
-                
-                {/* Pandora-style mega menu for collections */}
-                {item.href === '/collections' && (
-                  <motion.div 
-                    className="
-                      absolute top-full left-0 bg-white shadow-2xl p-8 
-                      opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                      transition-all duration-300 w-96 border border-gray-100
-                    "
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    whileHover={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.3, ease: pandoraEasing }}
-                  >
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="font-semibold text-charcoal-900 mb-2">Signature Collections</h3>
-                        <motion.ul className="space-y-1 text-gray-600">
-                          {[
-                            { label: 'The Debut Collection', href: '/collections/debut' },
-                            { label: 'Eternal Radiance', href: '/collections/eternal' },
-                            { label: 'Contemporary Classics', href: '/collections/contemporary' }
-                          ].map((subItem, subIndex) => (
-                            <motion.li 
-                              key={subItem.href}
-                              initial={{ opacity: 0, x: -10 }}
-                              whileHover={{ opacity: 1, x: 0 }}
-                              transition={{ delay: subIndex * 0.1 }}
-                            >
-                              <Link 
-                                href={subItem.href} 
-                                className="hover:text-champagne-600 transition-colors duration-200"
-                              >
-                                {subItem.label}
-                              </Link>
-                            </motion.li>
-                          ))}
-                        </motion.ul>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
+
               </motion.div>
             ))}
           </motion.nav>
@@ -174,7 +133,7 @@ export default function LuxuryHomePageWithPandoraAnimations() {
                   w-80 border-gray-200 focus:border-champagne-400 
                   bg-gray-50 focus:bg-white pandora-form-field
                 " 
-                placeholder="Discover treasures, collections..." 
+                placeholder="Discover treasures, jewelry..." 
               />
             </motion.div>
 
@@ -321,7 +280,7 @@ export default function LuxuryHomePageWithPandoraAnimations() {
                     
                     <LuxuryReveal direction="up" delay={0.6}>
                       <p className="text-xl text-gray-700 leading-relaxed max-w-lg font-light">
-                        Discover our inaugural collection of ethically cultivated diamonds—
+                        Discover our exquisite selection of ethically cultivated diamonds—
                         where conscious choice meets conscious design.
                       </p>
                     </LuxuryReveal>
@@ -335,7 +294,7 @@ export default function LuxuryHomePageWithPandoraAnimations() {
                           transition={{ duration: 0.2, ease: pandoraEasing }}
                         >
                           <Link 
-                            href="/collections/signature" 
+                            href="/category/rings" 
                             className="
                               inline-flex items-center justify-center bg-charcoal-900 
                               hover:bg-charcoal-800 text-white px-8 py-4 font-medium 
@@ -595,15 +554,15 @@ export default function LuxuryHomePageWithPandoraAnimations() {
           </section>
         </LuxuryReveal>
 
-        {/* Collections Showcase with Pandora-style hover effects */}
+        {/* Jewelry Categories with Pandora-style hover effects */}
         <LuxuryReveal direction="up" threshold={0.1}>
           <section className="py-24">
             <div className="max-w-8xl mx-auto px-8">
               <div className="text-center mb-16">
-                <h2 className="text-sm font-medium text-champagne-700 tracking-wider uppercase mb-4">Atelier Collections</h2>
+                <h2 className="text-sm font-medium text-champagne-700 tracking-wider uppercase mb-4">Jewelry Categories</h2>
                 <h3 className="text-4xl lg:text-5xl font-light text-charcoal-900 mb-6">Curated for Conscious Luxury</h3>
                 <p className="text-xl text-gray-600 font-light max-w-3xl mx-auto">
-                  Each collection tells a story of innovation, artistry, and ethical creation—
+                  Each category showcases our commitment to innovation, artistry, and ethical creation—
                   where modern values meet timeless beauty.
                 </p>
               </div>
@@ -611,32 +570,39 @@ export default function LuxuryHomePageWithPandoraAnimations() {
               <LuxuryStagger delay={0.2}>
                 {[
                   {
-                    title: 'Engagement Treasures',
-                    subtitle: 'Forever begins with choice',
+                    title: 'Signature Rings',
+                    subtitle: 'Stories written in gold',
                     emoji: '💍',
-                    href: '/engagement',
+                    href: '/category/rings',
                     gradient: 'from-blush-rose/20 to-champagne-gold/10'
                   },
                   {
                     title: 'Luminous Necklaces',
                     subtitle: 'Illuminate your essence',
                     emoji: '✨',
-                    href: '/necklaces',
+                    href: '/category/necklaces',
                     gradient: 'from-platinum-silver/20 to-diamond-white'
                   },
                   {
                     title: 'Radiant Earrings',
                     subtitle: 'Whispers of brilliance',
                     emoji: '✦',
-                    href: '/earrings',
+                    href: '/category/earrings',
                     gradient: 'from-sage-green/10 to-platinum-silver/20'
+                  },
+                  {
+                    title: 'Elegant Bracelets',
+                    subtitle: 'Grace in every movement',
+                    emoji: '💎',
+                    href: '/category/bracelets',
+                    gradient: 'from-champagne-gold/15 to-blush-rose/10'
                   }
-                ].map((collection) => (
-                  <div key={collection.href} className="group cursor-pointer pandora-product-card">
-                    <Link href={collection.href}>
+                ].map((category) => (
+                  <div key={category.href} className="group cursor-pointer pandora-product-card">
+                    <Link href={category.href}>
                       <motion.div 
                         className={`
-                          relative aspect-square bg-gradient-to-br ${collection.gradient} 
+                          relative aspect-square bg-gradient-to-br ${category.gradient} 
                           rounded-lg overflow-hidden mb-6 group-hover:shadow-2xl 
                           transition-all duration-500
                         `}
@@ -660,10 +626,10 @@ export default function LuxuryHomePageWithPandoraAnimations() {
                                 ease: "easeInOut"
                               }}
                             >
-                              {collection.emoji}
+                              {category.emoji}
                             </motion.div>
-                            <p className="text-lg font-medium">{collection.title}</p>
-                            <p className="text-sm text-gray-500">{collection.subtitle}</p>
+                            <p className="text-lg font-medium">{category.title}</p>
+                            <p className="text-sm text-gray-500">{category.subtitle}</p>
                           </div>
                         </div>
                         <motion.div 
@@ -676,14 +642,14 @@ export default function LuxuryHomePageWithPandoraAnimations() {
                         />
                       </motion.div>
                       <div className="space-y-2">
-                        <h4 className="text-2xl font-light text-charcoal-900">{collection.title}</h4>
-                        <p className="text-gray-600 font-light">{collection.subtitle}</p>
+                        <h4 className="text-2xl font-light text-charcoal-900">{category.title}</h4>
+                        <p className="text-gray-600 font-light">{category.subtitle}</p>
                         <motion.p 
                           className="text-sm text-champagne-700 font-medium"
                           whileHover={{ x: 5 }}
                           transition={{ duration: 0.2 }}
                         >
-                          Discover the Collection →
+                          Explore Category →
                         </motion.p>
                       </div>
                     </Link>

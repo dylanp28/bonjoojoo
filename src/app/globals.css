@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import product image styling */
+@import '../styles/product-images.css';
+
 /* ════════════════════════════════════════════════════
    BONJOOJOO DESIGN SYSTEM — Pandora-Inspired Luxury
    ════════════════════════════════════════════════════ */
@@ -558,6 +561,88 @@
   @keyframes megaMenuReveal {
     from { opacity: 0; transform: translateY(-6px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── HEADER FIXES ─── */
+  .header-bj {
+    /* Remove default blur - only apply when sticky */
+  }
+  
+  /* Ensure proper spacing for sticky header */
+  body.sticky-header-active {
+    padding-top: 124px;
+  }
+  
+  /* Product page specific fixes to prevent header overlap */
+  .product-page-content {
+    min-height: 100vh;
+    padding-top: 124px; /* Account for full header height (76px header + 48px nav) */
+  }
+  
+  /* Adjust for when sticky header is active */
+  body.sticky-header-active .product-page-content {
+    padding-top: 124px; /* Keep same padding since sticky header is fixed */
+  }
+  
+  /* Category and collection pages */
+  .category-page-content,
+  .collection-page-content,
+  .search-page-content {
+    min-height: 100vh;
+    padding-top: 124px;
+  }
+  
+  body.sticky-header-active .category-page-content,
+  body.sticky-header-active .collection-page-content,
+  body.sticky-header-active .search-page-content {
+    padding-top: 124px;
+  }
+  
+  /* Hero pages (education, about, etc.) with video/image heroes */
+  .hero-page-content {
+    min-height: 100vh;
+  }
+  
+  .hero-page-content > section:first-child {
+    margin-top: 124px; /* Push first hero section down */
+  }
+  
+  body.sticky-header-active .hero-page-content > section:first-child {
+    margin-top: 124px; /* Keep same spacing when sticky */
+  }
+  
+  /* Responsive header spacing */
+  @media (max-width: 1024px) {
+    .product-page-content,
+    .category-page-content,
+    .collection-page-content,
+    .search-page-content {
+      padding-top: 76px; /* Only header, no nav bar on mobile */
+    }
+    
+    body.sticky-header-active .product-page-content,
+    body.sticky-header-active .category-page-content,
+    body.sticky-header-active .collection-page-content,
+    body.sticky-header-active .search-page-content {
+      padding-top: 76px;
+    }
+    
+    .hero-page-content > section:first-child {
+      margin-top: 76px; /* Mobile header height */
+    }
+    
+    body.sticky-header-active .hero-page-content > section:first-child {
+      margin-top: 76px;
+    }
+  }
+
+  /* ─── SHADOW UTILITIES ─── */
+  .shadow-overlay {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .shadow-medium {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   }
 
   /* ─── TRUST BADGE ─── */

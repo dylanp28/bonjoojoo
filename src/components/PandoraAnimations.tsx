@@ -82,7 +82,7 @@ export const PandoraProductCard: React.FC<{
         scale: 0.98,
         transition: { duration: 0.1 }
       }}
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 1, y: 50 }}
       whileInView={{ 
         opacity: 1, 
         y: 0,
@@ -164,7 +164,7 @@ export const PandoraHeroSection: React.FC<{
       {/* Content Overlay */}
       <motion.div
         className="relative z-10 h-full flex items-center"
-        initial={{ opacity: 0, y: 100 }}
+        initial={{ opacity: 1, y: 100 }}
         whileInView={{ 
           opacity: 1, 
           y: 0,
@@ -211,7 +211,7 @@ export const PandoraButton: React.FC<{
         scale: 0.98,
         transition: { duration: 0.1 }
       }}
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 1, scale: 0.9 }}
       whileInView={{
         opacity: 1,
         scale: 1,
@@ -285,7 +285,7 @@ export const PandoraStaggerGrid: React.FC<{
   )
 }
 
-// Individual Grid Item
+// Individual Grid Item - FIXED: Trust badges now visible by default
 export const PandoraStaggerItem: React.FC<{
   children: React.ReactNode
   className?: string
@@ -295,9 +295,9 @@ export const PandoraStaggerItem: React.FC<{
       className={className}
       variants={{
         hidden: {
-          opacity: 0,
-          y: 80,
-          scale: 0.95
+          opacity: 1,
+          y: 0,
+          scale: 1
         },
         visible: {
           opacity: 1,
@@ -359,7 +359,7 @@ export const PandoraText: React.FC<{
           className="inline-block"
           variants={{
             hidden: {
-              opacity: 0,
+              opacity: 1,
               y: 50,
               rotateX: -90
             },
@@ -389,7 +389,7 @@ export const PandoraNavigation: React.FC<{
   return (
     <motion.nav
       className={className}
-      initial={{ y: -100, opacity: 0 }}
+      initial={{ y: -100, opacity: 1 }}
       animate={{ 
         y: 0, 
         opacity: 1,

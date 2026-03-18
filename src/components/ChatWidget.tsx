@@ -155,13 +155,13 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Floating chat button */}
+      {/* Floating chat button - FIXED: Now visible immediately */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
-            initial={{ scale: 0, opacity: 0 }}
+            initial={{ scale: 1, opacity: 1 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
+            exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={toggleChat}
             className="fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-bj-black text-white shadow-lg hover:bg-bj-charcoal hover:shadow-xl flex items-center justify-center transition-all"

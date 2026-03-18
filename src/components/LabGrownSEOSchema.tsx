@@ -139,7 +139,7 @@ export function generateLabGrownMetadata({ type, data }: LabGrownSEOSchemaProps)
           title: `${category.name} | bonjoojoo Lab-Grown Diamond Collection`,
           description: category.description,
           type: 'website',
-          url: `${baseUrl}/collections/${category.name.toLowerCase().replace(' ', '-')}`,
+          url: `${baseUrl}/category/${category.name.toLowerCase().replace(' ', '-')}`,
           images: [
             {
               url: `${baseUrl}/collections/${category.name.toLowerCase()}-og.png`,

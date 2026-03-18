@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Search, User, Heart, LogOut, Settings, ShoppingBag, Menu, X, MapPin, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { AuthModal } from '@/components/AuthModal'
 import { useAuth, useAuthModal } from '@/hooks/useAuth'
 import { useCart } from '@/store/useCart'
@@ -15,58 +16,52 @@ interface ClientLayoutProps {
 }
 
 const navItems = [
-  { label: 'New & Featured', href: '/new-featured' },
-  { label: 'Shop by', href: '/shop-by', mega: true },
-  { label: 'Rings', href: '/rings', mega: true },
-  { label: 'Necklaces', href: '/necklaces', mega: true },
-  { label: 'Earrings', href: '/earrings', mega: true },
-  { label: 'Bracelets', href: '/bracelets', mega: true },
-  { label: 'Lab-Grown Diamonds', href: '/lab-grown-diamonds' },
-  { label: 'Engraving', href: '/engraving' },
-  { label: 'Gifts', href: '/gifts' },
+  { label: 'New & Featured', href: '/search?sort=newest' },
+  { label: 'Rings', href: '/category/rings', mega: true },
+  { label: 'Necklaces', href: '/category/necklaces', mega: true },
+  { label: 'Earrings', href: '/category/earrings', mega: true },
+  { label: 'Bracelets', href: '/category/bracelets', mega: true },
+  { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
+  { label: 'Gifts', href: '/search?tag=gift' },
 ]
 
 const megaMenus: Record<string, { categories: { title: string; items: { label: string; href: string }[] }[]; featured?: { title: string; subtitle: string } }> = {
-  'Shop by': {
-    categories: [
-      { title: 'Category', items: [{ label: 'Rings', href: '/rings' }, { label: 'Necklaces & Pendants', href: '/necklaces' }, { label: 'Earrings', href: '/earrings' }, { label: 'Bracelets', href: '/bracelets' }] },
-      { title: 'Metal', items: [{ label: 'Rose Gold', href: '#' }, { label: 'Yellow Gold', href: '#' }, { label: 'White Gold', href: '#' }, { label: 'Sterling Silver', href: '#' }] },
-      { title: 'Occasion', items: [{ label: 'Engagement', href: '#' }, { label: 'Wedding', href: '#' }, { label: 'Anniversary', href: '#' }, { label: 'Gift', href: '#' }] },
-    ],
-    featured: { title: 'Trending Now', subtitle: 'Crown Collection — Romantic stacking rings' },
-  },
   Rings: {
     categories: [
-      { title: 'By Style', items: [{ label: 'Engagement Rings', href: '#' }, { label: 'Wedding Bands', href: '#' }, { label: 'Stacking Rings', href: '#' }, { label: 'Statement Rings', href: '#' }, { label: 'Eternity Bands', href: '#' }] },
-      { title: 'By Collection', items: [{ label: 'Crown Collection', href: '#' }, { label: 'Cuff Collection', href: '#' }, { label: 'Pavé Collection', href: '#' }, { label: 'Constellation', href: '#' }] },
-      { title: 'By Metal', items: [{ label: 'Rose Gold', href: '#' }, { label: 'Yellow Gold', href: '#' }, { label: 'White Gold', href: '#' }, { label: 'Platinum', href: '#' }] },
+      { title: 'By Style', items: [{ label: 'Statement Rings', href: '/category/rings?subcategory=statement' }, { label: 'Eternity Bands', href: '/category/rings?subcategory=eternity' }, { label: 'Stacking Rings', href: '/category/rings?subcategory=stacking' }, { label: 'Delicate Rings', href: '/category/rings?subcategory=delicate' }, { label: 'Wedding Bands', href: '/category/rings?subcategory=bands' }] },
+      { title: 'Featured', items: [{ label: 'Diamond Rings', href: '/category/rings?tag=diamond' }, { label: 'Vintage-Inspired', href: '/category/rings?tag=vintage' }, { label: 'All Rings', href: '/category/rings' }] },
+      { title: 'By Price', items: [{ label: 'Under $1,000', href: '/category/rings?price=0-1000' }, { label: '$1,000 - $2,000', href: '/category/rings?price=1000-2000' }, { label: 'Over $2,000', href: '/category/rings?price=2000-99999' }] },
     ],
-    featured: { title: 'Best Seller', subtitle: 'Crown Stacking Ring — Rose Gold' },
+    featured: { title: 'Best Seller', subtitle: 'Diamond Filigree Wide Band Ring' },
   },
   Necklaces: {
     categories: [
-      { title: 'By Style', items: [{ label: 'Diamond Pendants', href: '#' }, { label: 'Chain Necklaces', href: '#' }, { label: 'Layering Sets', href: '#' }, { label: 'Statement Pieces', href: '#' }, { label: 'Tennis Necklaces', href: '#' }] },
-      { title: 'By Collection', items: [{ label: 'Crown Scattered', href: '#' }, { label: 'Station Collection', href: '#' }, { label: 'All Necklaces', href: '/necklaces' }] },
-      { title: 'By Metal', items: [{ label: 'Rose Gold', href: '#' }, { label: 'Yellow Gold', href: '#' }, { label: 'White Gold', href: '#' }] },
+      { title: 'By Style', items: [{ label: 'Diamond Pendants', href: '/category/necklaces?subcategory=pendants' }, { label: 'Chain Necklaces', href: '/category/necklaces?subcategory=chain' }, { label: 'Tennis Necklaces', href: '/category/necklaces?subcategory=tennis' }, { label: 'Station Necklaces', href: '/category/necklaces?subcategory=station' }] },
+      { title: 'Featured', items: [{ label: 'Diamond Pendants', href: '/category/necklaces?tag=pendant' }, { label: 'Colored Stones', href: '/category/necklaces?tag=coloredstone' }, { label: 'All Necklaces', href: '/category/necklaces' }] },
+      { title: 'By Price', items: [{ label: 'Under $1,000', href: '/category/necklaces?price=0-1000' }, { label: '$1,000 - $2,000', href: '/category/necklaces?price=1000-2000' }, { label: 'Over $2,000', href: '/category/necklaces?price=2000-99999' }] },
     ],
+    featured: { title: 'Featured', subtitle: 'Diamond Quatrefoil Key Pendant' },
   },
   Earrings: {
     categories: [
-      { title: 'By Style', items: [{ label: 'Diamond Studs', href: '#' }, { label: 'Hoop Earrings', href: '#' }, { label: 'Drop Earrings', href: '#' }, { label: 'Huggie Hoops', href: '#' }, { label: 'Ear Climbers', href: '#' }] },
-      { title: 'By Collection', items: [{ label: 'Asymmetric Studs', href: '#' }, { label: 'Pavé Huggies', href: '#' }, { label: 'All Earrings', href: '/earrings' }] },
-      { title: 'By Metal', items: [{ label: 'Rose Gold', href: '#' }, { label: 'Yellow Gold', href: '#' }, { label: 'White Gold', href: '#' }] },
+      { title: 'By Style', items: [{ label: 'Ear Jackets', href: '/category/earrings?subcategory=jackets' }, { label: 'Drop Earrings', href: '/category/earrings?subcategory=drops' }, { label: 'Stud Earrings', href: '/category/earrings?subcategory=studs' }, { label: 'Hoop Earrings', href: '/category/earrings?subcategory=hoops' }] },
+      { title: 'Featured', items: [{ label: 'Diamond Earrings', href: '/category/earrings?tag=diamond' }, { label: 'All Earrings', href: '/category/earrings' }] },
+      { title: 'By Price', items: [{ label: 'Under $1,000', href: '/category/earrings?price=0-1000' }, { label: '$1,000 - $2,000', href: '/category/earrings?price=1000-2000' }, { label: 'Over $2,000', href: '/category/earrings?price=2000-99999' }] },
     ],
+    featured: { title: 'Versatile Design', subtitle: 'Diamond Floral Ear Jackets' },
   },
   Bracelets: {
     categories: [
-      { title: 'By Style', items: [{ label: 'Tennis Bracelets', href: '#' }, { label: 'Chain Bracelets', href: '#' }, { label: 'Cuff Bracelets', href: '#' }, { label: 'Charm Bracelets', href: '#' }, { label: 'Bangles', href: '#' }] },
-      { title: 'By Collection', items: [{ label: 'Station Collection', href: '#' }, { label: 'All Bracelets', href: '/bracelets' }] },
-      { title: 'By Metal', items: [{ label: 'Rose Gold', href: '#' }, { label: 'Yellow Gold', href: '#' }, { label: 'White Gold', href: '#' }] },
+      { title: 'By Style', items: [{ label: 'Tennis Bracelets', href: '/category/bracelets?subcategory=tennis' }, { label: 'Chain Bracelets', href: '/category/bracelets?subcategory=chain' }, { label: 'Statement Bracelets', href: '/category/bracelets?subcategory=statement' }, { label: 'Vintage-Inspired', href: '/category/bracelets?subcategory=vintage' }] },
+      { title: 'Featured', items: [{ label: 'Diamond Bracelets', href: '/category/bracelets?tag=diamond' }, { label: 'Vintage-Inspired', href: '/category/bracelets?tag=vintage' }, { label: 'All Bracelets', href: '/category/bracelets' }] },
+      { title: 'By Price', items: [{ label: 'Under $1,000', href: '/category/bracelets?price=0-1000' }, { label: '$1,000 - $2,500', href: '/category/bracelets?price=1000-2500' }, { label: 'Over $2,500', href: '/category/bracelets?price=2500-99999' }] },
     ],
+    featured: { title: 'Luxury Piece', subtitle: 'Emerald Cut Diamond Eternity Bracelet' },
   },
 }
 
 export function ClientLayout({ children }: ClientLayoutProps) {
+  const pathname = usePathname()
   const { user, isAuthenticated, logout, isLoading } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const { totalItems, toggleCart } = useCart()
@@ -79,48 +74,105 @@ export function ClientLayout({ children }: ClientLayoutProps) {
   const lastScrollY = useRef(0)
   const headerRef = useRef<HTMLElement>(null)
 
-  // stickyHeader = false → absolute, transparent, part of page flow
-  // stickyHeader = true → fixed, solid white, slides in from top
+  // Determine if current page should have solid header (all pages except homepage)
+  const isHomepage = pathname === '/'
+  const shouldHaveSolidHeader = !isHomepage
 
+  // Add/remove body class for sticky header spacing
   useEffect(() => {
+    if (shouldHaveSolidHeader || stickyHeader) {
+      document.body.classList.add('sticky-header-active')
+    } else {
+      document.body.classList.remove('sticky-header-active')
+    }
+    return () => {
+      document.body.classList.remove('sticky-header-active')
+    }
+  }, [shouldHaveSolidHeader, stickyHeader])
+
+  // Close mobile menu on escape key or outside click
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        setShowSearch(false)
+        setActiveMenu('')
+        setShowUserMenu(false)
+      }
+    }
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (isMobileMenuOpen && !e.target) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isMobileMenuOpen])
+
+  // Scroll behavior - only applies to homepage
+  useEffect(() => {
+    if (!isHomepage) {
+      // Non-homepage: always show solid header, no scroll effects
+      setStickyHeader(false) // Use normal header position for non-homepage
+      return
+    }
+
+    // Homepage: scroll-based header behavior
     const handleScroll = () => {
       const currentY = window.scrollY
-      const headerH = headerRef.current?.offsetHeight || 120
+      const headerH = headerRef.current?.offsetHeight || 124
       const scrollingDown = currentY > lastScrollY.current
 
       if (currentY <= headerH) {
         // Still in the natural header zone — stay absolute/transparent
         setStickyHeader(false)
-      } else if (scrollingDown) {
-        // Scrolling down past header — hide sticky
+      } else if (scrollingDown && currentY > headerH + 100) {
+        // Scrolling down past header with some buffer — hide sticky
         setStickyHeader(false)
-      } else {
+      } else if (!scrollingDown && currentY > headerH + 50) {
         // Scrolling up past the header zone — show fixed white bar
         setStickyHeader(true)
       }
       lastScrollY.current = currentY
     }
+    
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isHomepage])
 
   const handleMenuEnter = (label: string) => {
     if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current)
     setActiveMenu(label)
   }
   const handleMenuLeave = () => {
-    menuTimeoutRef.current = setTimeout(() => setActiveMenu(''), 150)
+    menuTimeoutRef.current = setTimeout(() => setActiveMenu(''), 200)
   }
 
   return (
     <>
       {/* ═══ MAIN HEADER ═══ */}
-      <header ref={headerRef} className={`header-bj left-0 right-0 z-50 transition-all duration-300 ${stickyHeader ? 'fixed top-0 bg-white shadow-sm translate-y-0' : 'absolute top-0 bg-transparent'}`}>
+      <header ref={headerRef} className={`header-bj left-0 right-0 z-[100] transition-all duration-300 ${
+        shouldHaveSolidHeader 
+          ? 'fixed top-0 bg-white shadow-sm translate-y-0' 
+          : stickyHeader 
+            ? 'fixed top-0 bg-white shadow-sm translate-y-0' 
+            : 'absolute top-0 bg-transparent'
+      }`}>
         <div className="container-bj-wide">
-          <div className="flex items-center justify-between h-[76px]">
+          <div className="flex items-center justify-between h-[76px] relative">
             {/* Left: Logo */}
             <Link href="/" className="flex-shrink-0 group">
-              <span className={`font-display text-[24px] font-medium tracking-[0.2em] uppercase select-none transition-colors ${stickyHeader ? 'text-bj-black group-hover:text-bj-gray-500' : 'text-white group-hover:text-white/70'}`}>
+              <span className={`font-display text-[24px] font-medium tracking-[0.2em] uppercase select-none transition-colors ${
+                shouldHaveSolidHeader || stickyHeader 
+                  ? 'text-bj-black group-hover:text-bj-gray-500' 
+                  : 'text-white group-hover:text-white/70'
+              }`}>
                 Bonjoojoo
               </span>
             </Link>
@@ -128,11 +180,17 @@ export function ClientLayout({ children }: ClientLayoutProps) {
             {/* Center: Search bar (Pandora pill shape) */}
             <div className="hidden lg:block flex-1 max-w-[380px] mx-12">
               <div className="relative">
-                <Search className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${stickyHeader ? 'text-bj-gray-400' : 'text-white/60'}`} size={16} />
+                <Search className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${
+                  shouldHaveSolidHeader || stickyHeader ? 'text-bj-gray-400' : 'text-white/60'
+                }`} size={16} />
                 <input
                   type="text"
                   placeholder="Search"
-                  className={`w-full pl-11 pr-4 py-2.5 rounded-none text-[13px] outline-none transition-colors border-b ${stickyHeader ? 'bg-transparent border-gray-300 text-bj-black placeholder:text-bj-gray-400 focus:border-bj-black' : 'bg-transparent border-white/40 text-white placeholder:text-white/50 focus:border-white'}`}
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-none text-[13px] outline-none transition-colors border-b ${
+                    shouldHaveSolidHeader || stickyHeader 
+                      ? 'bg-transparent border-gray-300 text-bj-black placeholder:text-bj-gray-400 focus:border-bj-black' 
+                      : 'bg-transparent border-white/40 text-white placeholder:text-white/50 focus:border-white'
+                  }`}
                   onFocus={() => setShowSearch(true)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && e.currentTarget.value.trim()) {
@@ -148,23 +206,39 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               {/* Mobile search */}
               <button
                 onClick={() => setShowSearch(!showSearch)}
-                className={`lg:hidden p-2.5 transition-colors ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
+                className={`lg:hidden p-2.5 transition-colors ${
+                  shouldHaveSolidHeader || stickyHeader 
+                    ? 'text-bj-black hover:text-bj-gray-500' 
+                    : 'text-white hover:text-white/70'
+                }`}
                 aria-label="Search"
               >
                 <Search size={20} strokeWidth={1.5} />
               </button>
 
-              <Link href="/wishlist" className={`p-2.5 transition-colors hidden sm:flex ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`} aria-label="Wishlist">
+              <Link href="/wishlist" className={`p-2.5 transition-colors hidden sm:flex ${
+                shouldHaveSolidHeader || stickyHeader 
+                  ? 'text-bj-black hover:text-bj-gray-500' 
+                  : 'text-white hover:text-white/70'
+              }`} aria-label="Wishlist">
                 <Heart size={20} strokeWidth={1.5} />
               </Link>
 
-              <Link href="/stores" className={`p-2.5 transition-colors hidden md:flex ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`} aria-label="Store locator">
+              <Link href="/stores" className={`p-2.5 transition-colors hidden md:flex ${
+                shouldHaveSolidHeader || stickyHeader 
+                  ? 'text-bj-black hover:text-bj-gray-500' 
+                  : 'text-white hover:text-white/70'
+              }`} aria-label="Store locator">
                 <MapPin size={20} strokeWidth={1.5} />
               </Link>
 
               <button
                 onClick={() => isAuthenticated ? setShowUserMenu(!showUserMenu) : openLogin()}
-                className={`p-2.5 transition-colors hidden sm:flex ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
+                className={`p-2.5 transition-colors hidden sm:flex ${
+                  shouldHaveSolidHeader || stickyHeader 
+                    ? 'text-bj-black hover:text-bj-gray-500' 
+                    : 'text-white hover:text-white/70'
+                }`}
                 disabled={isLoading}
                 aria-label="Account"
               >
@@ -173,7 +247,11 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
               <button
                 onClick={toggleCart}
-                className={`p-2.5 transition-colors relative ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
+                className={`p-2.5 transition-colors relative ${
+                  shouldHaveSolidHeader || stickyHeader 
+                    ? 'text-bj-black hover:text-bj-gray-500' 
+                    : 'text-white hover:text-white/70'
+                }`}
                 aria-label="Shopping bag"
               >
                 <ShoppingBag size={20} strokeWidth={1.5} />
@@ -186,7 +264,11 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`lg:hidden p-2.5 transition-colors ml-1 ${stickyHeader ? 'text-bj-black hover:text-bj-gray-500' : 'text-white hover:text-white/70'}`}
+                className={`lg:hidden p-2.5 transition-colors ml-1 ${
+                  shouldHaveSolidHeader || stickyHeader 
+                    ? 'text-bj-black hover:text-bj-gray-500' 
+                    : 'text-white hover:text-white/70'
+                }`}
               >
                 {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
@@ -194,7 +276,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
           </div>
 
           {/* ═══ NAVIGATION BAR ═══ */}
-          <nav className={`hidden lg:block ${stickyHeader ? 'border-t border-gray-100' : ''}`}>
+          <nav className={`hidden lg:block relative ${
+            shouldHaveSolidHeader || stickyHeader ? 'border-t border-gray-100' : ''
+          }`}>
             <div className="flex items-center justify-center gap-7 h-[48px]">
               {navItems.map((item) => (
                 <div
@@ -203,7 +287,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                   onMouseEnter={() => item.mega ? handleMenuEnter(item.label) : setActiveMenu('')}
                   onMouseLeave={handleMenuLeave}
                 >
-                  <Link href={item.href} className={`nav-link text-[12px] ${stickyHeader ? '' : '!text-white hover:!text-white/70'}`}>
+                  <Link href={item.href} className={`nav-link text-[12px] ${
+                    shouldHaveSolidHeader || stickyHeader ? '' : '!text-white hover:!text-white/70'
+                  }`}>
                     {item.label}
                   </Link>
                 </div>
@@ -215,7 +301,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
         {/* ═══ MEGA MENU DROPDOWN ═══ */}
         {activeMenu && megaMenus[activeMenu] && (
           <div
-            className="absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-overlay z-50 mega-menu-enter"
+            className="absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-overlay z-[90] mega-menu-enter"
             onMouseEnter={() => { if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current) }}
             onMouseLeave={handleMenuLeave}
           >
@@ -264,7 +350,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
         {/* ═══ MOBILE SEARCH OVERLAY ═══ */}
         {showSearch && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-medium z-40 mega-menu-enter">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-medium z-[90] mega-menu-enter">
             <div className="p-4">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-bj-gray-400" size={16} />
@@ -291,8 +377,8 @@ export function ClientLayout({ children }: ClientLayoutProps) {
         {/* ═══ USER DROPDOWN ═══ */}
         {isAuthenticated && showUserMenu && (
           <>
-            <div className="fixed inset-0 z-30" onClick={() => setShowUserMenu(false)} />
-            <div className="absolute right-6 top-[68px] w-64 bg-white shadow-overlay border border-gray-100 z-40 mega-menu-enter">
+            <div className="fixed inset-0 z-[80]" onClick={() => setShowUserMenu(false)} />
+            <div className="absolute right-6 top-[68px] w-64 bg-white shadow-overlay border border-gray-100 z-[85] mega-menu-enter">
               <div className="px-5 py-4 border-b border-gray-100">
                 <p className="text-[14px] font-medium text-bj-black">{user?.firstName} {user?.lastName}</p>
                 <p className="text-[12px] text-bj-gray-400 mt-0.5">{user?.email}</p>
@@ -314,7 +400,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
         {/* ═══ MOBILE MENU ═══ */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 top-[68px] bg-white z-40 overflow-y-auto">
+          <div className="lg:hidden fixed inset-0 top-[68px] bg-white z-[95] overflow-y-auto">
             <div className="p-6">
               <nav className="space-y-0">
                 {navItems.map((item) => (
@@ -371,18 +457,69 @@ export function ClientLayout({ children }: ClientLayoutProps) {
           <div className="container-bj-wide py-14">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
               {[
-                { title: 'Shop', items: ['Rings', 'Necklaces & Pendants', 'Earrings', 'Bracelets', 'Lab-Grown Diamonds', 'Gifts', 'Sale'] },
-                { title: 'Resources', items: ['Order Status', 'Shipping', 'Returns & Exchanges', 'FAQ', 'Contact Us', 'Product Care', 'Warranty', 'Size Guide'] },
-                { title: 'Services', items: ['My Bonjoojoo', 'Buy Now Pay Later', 'Pick Up In Store', 'Engraving', 'Gift Cards', 'Custom Design'] },
-                { title: 'Legal', items: ['Terms & Conditions', 'Privacy Policy', 'Cookie Policy', 'Accessibility'] },
-                { title: 'About Us', items: ['Our Story', 'Sustainability', 'Lab-Grown Diamonds', 'Craftsmanship', 'Careers', 'Press'] },
+                { 
+                  title: 'Shop', 
+                  items: [
+                    { label: 'Rings', href: '/category/rings' },
+                    { label: 'Necklaces & Pendants', href: '/category/necklaces' },
+                    { label: 'Earrings', href: '/category/earrings' },
+                    { label: 'Bracelets', href: '/category/bracelets' },
+                    { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
+                    { label: 'Gifts', href: '/search?tag=gift' },
+                    { label: 'Sale', href: '/search?tag=sale' }
+                  ] 
+                },
+                { 
+                  title: 'Resources', 
+                  items: [
+                    { label: 'Order Status', href: '/account/orders' },
+                    { label: 'Shipping', href: '/help/shipping' },
+                    { label: 'Returns & Exchanges', href: '/help/returns' },
+                    { label: 'FAQ', href: '/help/faq' },
+                    { label: 'Contact Us', href: '/contact' },
+                    { label: 'Product Care', href: '/help/care' },
+                    { label: 'Warranty', href: '/help/warranty' },
+                    { label: 'Size Guide', href: '/help/sizing' }
+                  ] 
+                },
+                { 
+                  title: 'Services', 
+                  items: [
+                    { label: 'My Bonjoojoo', href: '/account' },
+                    { label: 'Buy Now Pay Later', href: '/help/financing' },
+                    { label: 'Pick Up In Store', href: '/stores' },
+                    { label: 'Engraving', href: '/services/engraving' },
+                    { label: 'Gift Cards', href: '/gift-cards' },
+                    { label: 'Custom Design', href: '/services/custom-design' }
+                  ] 
+                },
+                { 
+                  title: 'Legal', 
+                  items: [
+                    { label: 'Terms & Conditions', href: '/legal/terms' },
+                    { label: 'Privacy Policy', href: '/legal/privacy' },
+                    { label: 'Cookie Policy', href: '/legal/cookies' },
+                    { label: 'Accessibility', href: '/legal/accessibility' }
+                  ] 
+                },
+                { 
+                  title: 'About Us', 
+                  items: [
+                    { label: 'Our Story', href: '/about' },
+                    { label: 'Sustainability', href: '/about/sustainability' },
+                    { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
+                    { label: 'Craftsmanship', href: '/about/craftsmanship' },
+                    { label: 'Careers', href: '/careers' },
+                    { label: 'Press', href: '/press' }
+                  ] 
+                },
               ].map((col) => (
                 <div key={col.title}>
                   <h4 className="text-[12px] font-semibold text-bj-black tracking-[0.12em] uppercase mb-5">{col.title}</h4>
                   <ul className="space-y-2">
                     {col.items.map((item) => (
-                      <li key={item}>
-                        <Link href="#" className="text-[13px] text-bj-gray-500 hover:text-bj-black transition-colors">{item}</Link>
+                      <li key={item.label}>
+                        <Link href={item.href} className="text-[13px] text-bj-gray-500 hover:text-bj-black transition-colors">{item.label}</Link>
                       </li>
                     ))}
                   </ul>
@@ -407,10 +544,19 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
               {/* Right: Social icons */}
               <div className="flex gap-3">
-                {['IG', 'FB', 'TK', 'YT', 'PI', 'X'].map((icon) => (
+                {[
+                  { icon: 'IG', href: 'https://instagram.com/bonjoojoo' },
+                  { icon: 'FB', href: 'https://facebook.com/bonjoojoo' },
+                  { icon: 'TK', href: 'https://tiktok.com/@bonjoojoo' },
+                  { icon: 'YT', href: 'https://youtube.com/@bonjoojoo' },
+                  { icon: 'PI', href: 'https://pinterest.com/bonjoojoo' },
+                  { icon: 'X', href: 'https://x.com/bonjoojoo' }
+                ].map(({ icon, href }) => (
                   <Link
                     key={icon}
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-8 h-8 bg-bj-black hover:bg-bj-charcoal rounded-full flex items-center justify-center transition-colors"
                   >
                     <span className="text-white text-[10px] font-medium">{icon}</span>
