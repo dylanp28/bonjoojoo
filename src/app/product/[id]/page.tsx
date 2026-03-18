@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Heart, Share2, Star, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw } from 'lucide-react'
+import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw } from 'lucide-react'
 import { useCart } from '@/store/useCart'
 import { ProductWithVariants, ProductVariant } from '@/types/product'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
@@ -242,22 +242,7 @@ export default function ProductDetailPage() {
                 <h1 className="text-display-lg text-bj-black font-light">
                   {product.name}
                 </h1>
-                <div className="flex items-center space-x-6">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={16}
-                        className={i < Math.floor(product.rating || 0) 
-                          ? "text-bj-gold fill-current" 
-                          : "text-bj-gray-200"
-                        }
-                      />
-                    ))}
-                  </div>
-                  <span className="text-caption text-bj-gray-400">({product.reviews || 0} reviews)</span>
-                  <button className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2">Write a review</button>
-                </div>
+
               </div>
             </LuxuryReveal>
 
@@ -517,25 +502,18 @@ export default function ProductDetailPage() {
                       <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2">
                         {relatedProduct.name}
                       </h3>
-                      <div className="flex items-center gap-1">
-                        <div className="flex">
-                          {[1, 2, 3, 4, 5].map(s => (
-                            <Star key={s} size={10} className={s <= Math.round(relatedProduct.rating) ? 'text-bj-gold fill-current' : 'text-bj-gray-200 fill-current'} />
-                          ))}
-                        </div>
-                        <span className="text-[10px] text-bj-gray-400">({relatedProduct.reviews || 0})</span>
-                      </div>
+
                       <div className="flex items-center gap-2">
                         <span className="text-body font-medium text-bj-black">{formatPrice(relatedProduct.price)}</span>
                         {relatedProduct.compare_at_price && relatedProduct.compare_at_price > relatedProduct.price && (
                           <span className="text-caption text-bj-gray-400 line-through">{formatPrice(relatedProduct.compare_at_price)}</span>
                         )}
                       </div>
-                      {/* Color swatches */}
+                      {/* Color swatches - Gold Options */}
                       <div className="flex items-center gap-1.5 pt-1">
-                        <div className="w-3 h-3 rounded-full bg-bj-rose-gold border border-bj-gray-200" />
-                        <div className="w-3 h-3 rounded-full bg-bj-gold border border-bj-gray-200" />
-                        <div className="w-3 h-3 rounded-full bg-gray-400 border border-bj-gray-200" />
+                        <div className="w-3 h-3 rounded-full bg-yellow-400 border border-bj-gray-200" title="Yellow Gold" />
+                        <div className="w-3 h-3 rounded-full bg-rose-400 border border-bj-gray-200" title="Rose Gold" />
+                        <div className="w-3 h-3 rounded-full bg-gray-200 border border-bj-gray-200" title="White Gold" />
                       </div>
                     </div>
                   </div>

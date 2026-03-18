@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, Star, SlidersHorizontal, ChevronDown, Grid3X3, List } from 'lucide-react'
+import { Heart, SlidersHorizontal, ChevronDown, Grid3X3, List } from 'lucide-react'
 import { Product } from '@/data/products'
 import { LuxuryReveal } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 
-type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest' | 'rating'
+type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest'
 type ViewMode = 'grid' | 'list'
 
 export default function CategoryPage() {
@@ -73,9 +73,7 @@ export default function CategoryPage() {
       case 'newest':
         filtered.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
         break
-      case 'rating':
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0))
-        break
+
       default:
         // Keep featured order
         break
@@ -218,7 +216,7 @@ export default function CategoryPage() {
                       <option value="price-low">Price: Low to High</option>
                       <option value="price-high">Price: High to Low</option>
                       <option value="newest">Newest</option>
-                      <option value="rating">Highest Rated</option>
+
                     </select>
                     <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-bj-gray-400 pointer-events-none" />
                   </div>
@@ -393,14 +391,7 @@ export default function CategoryPage() {
                       <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2">
                         {product.name}
                       </h3>
-                      <div className="flex items-center gap-1">
-                        <div className="flex">
-                          {[1, 2, 3, 4, 5].map(s => (
-                            <Star key={s} size={10} className={s <= Math.round(product.rating) ? 'text-bj-gold fill-current' : 'text-bj-gray-200 fill-current'} />
-                          ))}
-                        </div>
-                        <span className="text-[10px] text-bj-gray-400">({product.reviewCount})</span>
-                      </div>
+
                       <div className="flex items-center gap-2">
                         <span className="text-body font-medium text-bj-black">{formatPrice(product.price)}</span>
                         {product.originalPrice && product.originalPrice > product.price && (
@@ -438,14 +429,7 @@ export default function CategoryPage() {
                         <h3 className="text-body font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors">
                           {product.name}
                         </h3>
-                        <div className="flex items-center gap-2 mt-1">
-                          <div className="flex">
-                            {[1, 2, 3, 4, 5].map(s => (
-                              <Star key={s} size={12} className={s <= Math.round(product.rating) ? 'text-bj-gold fill-current' : 'text-bj-gray-200 fill-current'} />
-                            ))}
-                          </div>
-                          <span className="text-caption text-bj-gray-400">({product.reviewCount})</span>
-                        </div>
+
                       </div>
                       
                       <p className="text-caption text-bj-gray-500 line-clamp-2">{product.description}</p>

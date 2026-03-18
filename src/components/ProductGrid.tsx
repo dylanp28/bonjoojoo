@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, ShoppingCart, Star } from 'lucide-react'
+import { Heart, ShoppingCart } from 'lucide-react'
 import { Product } from '@/data/products'
 import { useCart } from '@/store/useCart'
 
@@ -38,26 +38,7 @@ export function ProductGrid({ products, title }: ProductGridProps) {
     }).format(price)
   }
 
-  const renderRating = (rating: number, reviewCount: number) => {
-    return (
-      <div className="flex items-center mb-2">
-        <div className="flex items-center">
-          {Array.from({ length: 5 }, (_, i) => (
-            <Star
-              key={i}
-              size={12}
-              className={`${
-                i < Math.floor(rating) 
-                  ? 'text-yellow-400 fill-current' 
-                  : 'text-gray-300'
-              }`}
-            />
-          ))}
-        </div>
-        <span className="text-xs text-gray-500 ml-2">({reviewCount})</span>
-      </div>
-    )
-  }
+
 
   return (
     <section>
@@ -129,8 +110,7 @@ export function ProductGrid({ products, title }: ProductGridProps) {
                 {product.name}
               </h3>
 
-              {/* Rating - Pandora Style */}
-              {renderRating(product.rating, product.reviewCount)}
+
 
               {/* Price - Pandora Styling */}
               <div className="flex items-center space-x-2">
@@ -144,12 +124,11 @@ export function ProductGrid({ products, title }: ProductGridProps) {
                 )}
               </div>
 
-              {/* Product Colors/Options - Pandora Style */}
+              {/* Product Colors/Options - Gold Colors */}
               <div className="flex items-center space-x-1 pt-1">
-                <div className="w-4 h-4 rounded-full bg-yellow-300 border border-gray-300"></div>
-                <div className="w-4 h-4 rounded-full bg-pink-200 border border-gray-300"></div>
-                <div className="w-4 h-4 rounded-full bg-gray-300 border border-gray-300"></div>
-                <span className="text-xs text-gray-500 ml-2">+2 more</span>
+                <div className="w-4 h-4 rounded-full bg-yellow-400 border border-gray-300" title="Yellow Gold"></div>
+                <div className="w-4 h-4 rounded-full bg-rose-400 border border-gray-300" title="Rose Gold"></div>
+                <div className="w-4 h-4 rounded-full bg-gray-200 border border-gray-300" title="White Gold"></div>
               </div>
 
               {/* Stock Status */}

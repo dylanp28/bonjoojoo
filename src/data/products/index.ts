@@ -1,0 +1,5 @@
+export { ringProducts } from './rings'
+export { braceletProducts } from './bracelets'
+export { earringProducts } from './earrings'
+export { necklaceProducts } from './necklaces'
+export { pendantProducts } from './pendants'

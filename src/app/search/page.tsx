@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Filter, Grid, List, SortAsc, SortDesc, Heart, Star } from 'lucide-react'
-import SearchBar from '@/components/SearchBar'
+import { Filter, Grid, List, SortAsc, SortDesc, Heart } from 'lucide-react'
+
 
 interface Product {
   id: string
@@ -15,8 +15,7 @@ interface Product {
   category: string
   subcategory: string
   description: string
-  rating: number
-  reviews: number
+
   bestseller?: boolean
   featured?: boolean
 }
@@ -48,40 +47,46 @@ function SearchPageContent() {
     availability: 'all'
   })
 
-  const performSearch = async () => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const params = new URLSearchParams({
-        q: query,
-        sortBy: sortBy === 'relevance' ? 'name' : sortBy,
-        limit: '24'
-      })
-
-      // Add filters
-      if (filters.category) params.append('category', filters.category)
-      if (filters.minPrice) params.append('minPrice', filters.minPrice)
-      if (filters.maxPrice) params.append('maxPrice', filters.maxPrice)
-      if (filters.availability === 'inStock') params.append('inStock', 'true')
-
-      const response = await fetch(`/api/inventory/search?${params}`)
-      
-      if (!response.ok) {
-        throw new Error('Search failed')
-      }
-
-      const data = await response.json()
-      setResults(data)
-    } catch (err) {
-      console.error('Search error:', err)
-      setError('Failed to load search results. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
+    const performSearch = async () => {
+      console.log('performSearch called with:', { query, sortBy, filters })
+      setLoading(true)
+      setError(null)
+
+      try {
+        const params = new URLSearchParams({
+          q: query,
+          sortBy: sortBy === 'relevance' ? 'name' : sortBy,
+          limit: '24'
+        })
+
+        // Add filters
+        if (filters.category) params.append('category', filters.category)
+        if (filters.minPrice) params.append('minPrice', filters.minPrice)
+        if (filters.maxPrice) params.append('maxPrice', filters.maxPrice)
+        if (filters.availability === 'inStock') params.append('inStock', 'true')
+
+        const url = `/api/inventory/search?${params}`
+        console.log('Fetching from:', url)
+        
+        const response = await fetch(url)
+        console.log('Response status:', response.status)
+        
+        if (!response.ok) {
+          throw new Error('Search failed')
+        }
+
+        const data = await response.json()
+        console.log('Search results:', data)
+        setResults(data)
+      } catch (err) {
+        console.error('Search error:', err)
+        setError('Failed to load search results. Please try again.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
     performSearch()
   }, [query, sortBy, filters])
 
@@ -107,7 +112,7 @@ function SearchPageContent() {
     { value: 'name', label: 'Name A-Z' },
     { value: 'price', label: 'Price Low to High' },
     { value: '-price', label: 'Price High to Low' },
-    { value: '-rating', label: 'Highest Rated' }
+
   ]
 
   return (
@@ -115,12 +120,7 @@ function SearchPageContent() {
       {/* Header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="mb-4">
-            <SearchBar 
-              className="max-w-2xl mx-auto"
-              placeholder="Search jewelry, diamonds, categories..."
-            />
-          </div>
+
           
           {query && (
             <h1 className="text-2xl font-light text-gray-900 text-center">
@@ -316,23 +316,7 @@ function SearchPageContent() {
                         {product.category.replace('-', ' ')}
                       </p>
                       
-                      <div className="flex items-center mb-2">
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              size={14}
-                              className={i < Math.floor(product.rating || 0) 
-                                ? "text-yellow-400 fill-current" 
-                                : "text-gray-300"
-                              }
-                            />
-                          ))}
-                        </div>
-                        <span className="text-xs text-gray-500 ml-1">
-                          ({product.reviews || 0})
-                        </span>
-                      </div>
+
 
                       <div className="flex items-center justify-between">
                         <div>

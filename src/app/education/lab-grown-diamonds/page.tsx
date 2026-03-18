@@ -140,7 +140,7 @@ export default function LabGrownDiamondsPage() {
             <LuxuryReveal direction="left">
               <div className="relative">
                 <Image
-                  src="/images/lab-grown-collection.png"
+                  src="/images/lab-grown-education.png"
                   alt="Diamond crystal formation"
                   width={600}
                   height={400}

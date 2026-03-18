@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Truck, RotateCcw, Star, Gift } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { searchProducts } from '@/lib/products'
@@ -38,7 +38,7 @@ const formatPrice = (price: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price)
 
 export default function HomePage() {
-  const allProducts = searchProducts({ limit: 8, featured: true }).products
+  const allProducts = searchProducts({ limit: 8, bestseller: true }).products
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scroll = (dir: 'left' | 'right') => {
@@ -367,14 +367,7 @@ export default function HomePage() {
                       <h3 className="text-[14px] font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-1 mb-1">
                         {product.name}
                       </h3>
-                      <div className="flex items-center gap-1 mb-1.5">
-                        <div className="flex">
-                          {[1, 2, 3, 4, 5].map(s => (
-                            <Star key={s} size={11} className={s <= Math.round(product.rating) ? 'text-bj-black fill-bj-black' : 'text-bj-gray-200 fill-bj-gray-200'} />
-                          ))}
-                        </div>
-                        <span className="text-[11px] text-bj-gray-400">({product.reviewCount})</span>
-                      </div>
+
                       <div className="flex items-center gap-2">
                         <span className="text-[15px] font-medium text-bj-black">{formatPrice(product.price)}</span>
                         {product.originalPrice && product.originalPrice > product.price && (

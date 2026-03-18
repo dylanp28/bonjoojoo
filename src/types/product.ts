@@ -28,9 +28,11 @@ export interface ProductGroup {
   specifications: {
     [key: string]: string
   }
-  rating: number
-  reviewCount: number
   tags: string[]
+  
+  // Product flags
+  featured?: boolean
+  bestseller?: boolean
   
   // Product gallery - all images from variants
   allImages: string[]
@@ -52,8 +54,6 @@ export interface Product {
     [key: string]: string
   }
   inStock: boolean
-  rating: number
-  reviewCount: number
   tags: string[]
   
   // Additional properties for API compatibility
@@ -62,7 +62,6 @@ export interface Product {
   compare_at_price?: number
   is_featured?: boolean
   is_bestseller?: boolean
-  reviews?: number
   stock?: number
   availability_status?: string
   metal?: string
