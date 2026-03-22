@@ -1,427 +1,429 @@
 {
   "products": [
     {
-      "id": "RING-001",
-      "sku": "BJ-ENG-LG-SOL-001",
-      "name": "Ethical Brilliance Solitaire",
-      "category": "engagement-rings",
-      "subcategory": "solitaire",
-      "description": "A timeless lab-grown diamond solitaire engagement ring showcasing a brilliant-cut diamond in a classic 6-prong setting. Ethically created without compromise on beauty or quality.",
-      "short_description": "Classic lab-grown diamond solitaire in 14k gold",
-      "long_description": "The Ethical Brilliance Solitaire represents the pinnacle of sustainable luxury. Featuring a stunning lab-grown diamond with exceptional fire and brilliance, this ring is crafted for the conscious consumer who refuses to compromise on ethics or beauty. The classic 6-prong setting maximizes light performance while the sleek band creates a timeless silhouette that will never go out of style.",
-      "price": 1899,
-      "compare_at_price": 2499,
-      "cost": 950,
-      "specifications": {
-        "center_stone": {
-          "type": "lab-grown diamond",
-          "carat": 1.0,
-          "cut": "round brilliant",
-          "color": "F",
-          "clarity": "VS1",
-          "certification": "IGI"
-        },
-        "setting": {
-          "style": "solitaire",
-          "prongs": 6,
-          "head_material": "14k white gold",
-          "band_width": "2mm"
-        },
-        "metal": {
-          "type": "14k gold",
-          "options": ["white", "yellow", "rose"],
-          "purity": "14k",
-          "rhodium_plated": true
-        },
-        "size": {
-          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
-          "sizing_fee": 0
-        }
-      },
+      "id": "BRACELET-3406",
+      "sku": "BJ-BRAC-3406",
+      "name": "Classic Gold Band Bracelet",
+      "category": "bracelets",
+      "subcategory": "bangles",
+      "description": "A sophisticated gold band bracelet featuring elegant design and premium craftsmanship.",
+      "short_description": "Premium gold band bracelet",
+      "price": 2450,
+      "compare_at_price": 3200,
+      "cost": 1225,
       "images": [
-        "/images/products/rings/eng-001-main.jpg",
-        "/images/products/rings/eng-001-side.jpg",
-        "/images/products/rings/eng-001-detail.jpg",
-        "/images/products/rings/eng-001-lifestyle.jpg"
+        "/images/products/b3406a-rg.jpg",
+        "/images/products/b3406a-wg.jpg", 
+        "/images/products/b3406a-yg.jpg"
       ],
       "inventory": {
         "track_quantity": true,
-        "quantity": 12,
-        "low_stock_threshold": 3,
-        "variants": {
-          "14k-white-size-6": 4,
-          "14k-yellow-size-6": 3,
-          "14k-rose-size-6": 2,
-          "14k-white-size-7": 3
-        }
+        "quantity": 8
       },
-      "seo": {
-        "meta_title": "Lab-Grown Diamond Solitaire Engagement Ring | Ethical Luxury",
-        "meta_description": "Stunning 1ct lab-grown diamond solitaire engagement ring in 14k gold. Ethically created, IGI certified, and crafted for conscious luxury.",
-        "keywords": ["lab grown diamond ring", "ethical engagement ring", "solitaire ring", "sustainable diamond"]
-      },
-      "tags": ["bestseller", "ethical", "classic", "sustainable"],
-      "vendor": "BonJooJoo",
-      "weight_grams": 5.2,
-      "created_at": "2024-03-16",
-      "updated_at": "2024-03-16"
+      "tags": ["premium", "gold", "bracelet"],
+      "vendor": "BonJooJoo"
     },
     {
-      "id": "RING-002", 
-      "sku": "BJ-ENG-LG-HALO-002",
-      "name": "Radiant Halo Dream",
-      "category": "engagement-rings",
-      "subcategory": "halo",
-      "description": "A captivating lab-grown diamond halo engagement ring featuring a round center stone surrounded by brilliant micro-pavé diamonds for maximum sparkle.",
-      "short_description": "Lab-grown diamond halo ring with micro-pavé band",
-      "long_description": "The Radiant Halo Dream transforms any moment into pure magic. The center lab-grown diamond is embraced by a perfect circle of smaller diamonds, creating an illusion of size while delivering breathtaking brilliance. The delicate micro-pavé band continues the sparkle journey, making this ring a true showstopper for the modern romantic.",
-      "price": 2299,
-      "compare_at_price": 2899,
-      "cost": 1150,
-      "specifications": {
-        "center_stone": {
-          "type": "lab-grown diamond",
-          "carat": 0.75,
-          "cut": "round brilliant",
-          "color": "G",
-          "clarity": "VS2",
-          "certification": "IGI"
-        },
-        "accent_stones": {
-          "halo_diamonds": {
-            "quantity": 16,
-            "total_carat": 0.32,
-            "cut": "round brilliant",
-            "color": "G-H",
-            "clarity": "SI1"
-          },
-          "band_diamonds": {
-            "quantity": 22,
-            "total_carat": 0.18,
-            "cut": "round brilliant",
-            "color": "G-H",
-            "clarity": "SI1"
-          }
-        },
-        "setting": {
-          "style": "halo",
-          "prongs": 4,
-          "halo_diameter": "8mm",
-          "band_width": "2.2mm"
-        },
-        "metal": {
-          "type": "14k gold",
-          "options": ["white", "yellow", "rose"],
-          "purity": "14k",
-          "rhodium_plated": true
-        },
-        "size": {
-          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
-          "sizing_fee": 0
-        }
-      },
-      "images": [
-        "/images/products/rings/eng-002-main.jpg",
-        "/images/products/rings/eng-002-side.jpg", 
-        "/images/products/rings/eng-002-detail.jpg",
-        "/images/products/rings/eng-002-lifestyle.jpg"
-      ],
-      "inventory": {
-        "track_quantity": true,
-        "quantity": 8,
-        "low_stock_threshold": 2,
-        "variants": {
-          "14k-white-size-6": 3,
-          "14k-yellow-size-6": 2,
-          "14k-rose-size-6": 1,
-          "14k-white-size-7": 2
-        }
-      },
-      "seo": {
-        "meta_title": "Lab-Grown Diamond Halo Engagement Ring | Radiant Sparkle",
-        "meta_description": "Stunning 0.75ct lab-grown diamond halo engagement ring with micro-pavé band. Maximum sparkle, ethical luxury, IGI certified.",
-        "keywords": ["diamond halo ring", "lab grown engagement ring", "micro pave", "sparkle ring"]
-      },
-      "tags": ["trending", "sparkle", "halo", "bestseller"],
-      "vendor": "BonJooJoo",
-      "weight_grams": 4.8,
-      "created_at": "2024-03-16",
-      "updated_at": "2024-03-16"
-    },
-    {
-      "id": "RING-003",
-      "sku": "BJ-ENG-LG-VIN-003", 
-      "name": "Heritage Rose Vintage",
-      "category": "engagement-rings",
-      "subcategory": "vintage",
-      "description": "An enchanting vintage-inspired engagement ring featuring an oval lab-grown diamond with intricate milgrain detailing and rose gold accents.",
-      "short_description": "Vintage oval lab-grown diamond ring in rose gold",
-      "long_description": "The Heritage Rose Vintage captures the romance of bygone eras with modern ethical standards. The stunning oval lab-grown diamond sits gracefully in an Art Deco-inspired setting, complete with delicate milgrain work and vintage scrollwork. Crafted in warm rose gold, this ring tells a story of timeless love with contemporary consciousness.",
-      "price": 2199,
-      "compare_at_price": 2799,
-      "cost": 1099,
-      "specifications": {
-        "center_stone": {
-          "type": "lab-grown diamond",
-          "carat": 1.2,
-          "cut": "oval",
-          "color": "E",
-          "clarity": "VVS2",
-          "certification": "IGI",
-          "dimensions": "8.0x6.0mm"
-        },
-        "accent_stones": {
-          "side_diamonds": {
-            "quantity": 12,
-            "total_carat": 0.15,
-            "cut": "round brilliant",
-            "color": "F-G",
-            "clarity": "VS1"
-          }
-        },
-        "setting": {
-          "style": "vintage",
-          "prongs": 6,
-          "details": "milgrain border, scrollwork",
-          "band_width": "2.5mm",
-          "head_height": "7mm"
-        },
-        "metal": {
-          "type": "14k rose gold",
-          "options": ["rose", "yellow", "white"],
-          "purity": "14k",
-          "rhodium_plated": false
-        },
-        "size": {
-          "available_sizes": ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9"],
-          "sizing_fee": 0
-        }
-      },
-      "images": [
-        "/images/products/rings/eng-003-main.jpg",
-        "/images/products/rings/eng-003-side.jpg",
-        "/images/products/rings/eng-003-detail.jpg",
-        "/images/products/rings/eng-003-lifestyle.jpg"
-      ],
-      "inventory": {
-        "track_quantity": true,
-        "quantity": 6,
-        "low_stock_threshold": 2,
-        "variants": {
-          "14k-rose-size-6": 2,
-          "14k-rose-size-7": 2,
-          "14k-yellow-size-6": 1,
-          "14k-white-size-6": 1
-        }
-      },
-      "seo": {
-        "meta_title": "Vintage Oval Lab-Grown Diamond Ring | Art Deco Inspired",
-        "meta_description": "Stunning 1.2ct oval lab-grown diamond engagement ring with vintage milgrain detailing in rose gold. Ethically crafted luxury.",
-        "keywords": ["vintage engagement ring", "oval diamond ring", "art deco ring", "rose gold engagement ring"]
-      },
-      "tags": ["vintage", "romantic", "unique", "oval"],
-      "vendor": "BonJooJoo",
-      "weight_grams": 5.8,
-      "created_at": "2024-03-16",
-      "updated_at": "2024-03-16"
-    },
-    {
-      "id": "NECKLACE-001",
-      "sku": "BJ-NECK-LG-SOL-001",
-      "name": "Essential Diamond Drop",
+      "id": "PENDANT-3777",
+      "sku": "BJ-PEND-3777",
+      "name": "Luxury Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "A delicate lab-grown diamond solitaire pendant necklace, perfect for everyday elegance or special occasions.",
-      "short_description": "Lab-grown diamond solitaire pendant necklace",
-      "long_description": "The Essential Diamond Drop embodies effortless sophistication. This minimalist pendant features a brilliant lab-grown diamond that captures light beautifully, suspended from a delicate chain that moves gracefully with every gesture. Versatile enough for daily wear yet elegant for special moments, this piece is a modern essential.",
-      "price": 599,
-      "compare_at_price": 799,
-      "cost": 299,
-      "specifications": {
-        "center_stone": {
-          "type": "lab-grown diamond",
-          "carat": 0.25,
-          "cut": "round brilliant",
-          "color": "G",
-          "clarity": "VS2",
-          "certification": "IGI"
-        },
-        "chain": {
-          "type": "cable chain",
-          "length": "18 inches",
-          "adjustable": true,
-          "adjustment_range": "16-18 inches",
-          "width": "1.2mm"
-        },
-        "pendant": {
-          "setting": "4-prong",
-          "diameter": "4mm",
-          "bail_type": "hidden bail"
-        },
-        "metal": {
-          "type": "14k gold",
-          "options": ["white", "yellow", "rose"],
-          "purity": "14k",
-          "rhodium_plated": true
-        }
-      },
+      "description": "An exquisite diamond pendant featuring brilliant lab-grown diamonds in premium setting.",
+      "short_description": "Lab-grown diamond pendant",
+      "price": 3250,
+      "compare_at_price": 4200,
+      "cost": 1625,
       "images": [
-        "/images/products/necklaces/neck-001-main.jpg",
-        "/images/products/necklaces/neck-001-detail.jpg",
-        "/images/products/necklaces/neck-001-lifestyle.jpg"
+        "/images/products/LHP3777A.jpg",
+        "/images/products/LHP3777A-R.jpg",
+        "/images/products/LHP3777A-Y.jpg",
+        "/images/products/LHP3777A-TWR.jpg"
       ],
       "inventory": {
         "track_quantity": true,
-        "quantity": 25,
-        "low_stock_threshold": 5,
-        "variants": {
-          "14k-white": 10,
-          "14k-yellow": 8,
-          "14k-rose": 7
-        }
+        "quantity": 5
       },
-      "seo": {
-        "meta_title": "Lab-Grown Diamond Pendant Necklace | Essential Elegance",
-        "meta_description": "Delicate 0.25ct lab-grown diamond solitaire pendant necklace in 14k gold. Perfect for everyday luxury.",
-        "keywords": ["diamond pendant", "lab grown diamond necklace", "minimalist jewelry", "everyday diamond"]
-      },
-      "tags": ["minimalist", "everyday", "bestseller", "gift"],
-      "vendor": "BonJooJoo",
-      "weight_grams": 3.2,
-      "created_at": "2024-03-16",
-      "updated_at": "2024-03-16"
+      "tags": ["luxury", "diamond", "pendant"],
+      "vendor": "BonJooJoo"
     },
     {
-      "id": "EARRINGS-001",
-      "sku": "BJ-EAR-LG-STUD-001",
-      "name": "Classic Diamond Studs",
-      "category": "earrings", 
-      "subcategory": "studs",
-      "description": "Timeless lab-grown diamond stud earrings with 4-prong settings and secure screw backs for everyday luxury.",
-      "short_description": "Lab-grown diamond stud earrings with screw backs",
-      "long_description": "The Classic Diamond Studs are the foundation of every jewelry collection. These perfectly matched lab-grown diamonds are set in secure 4-prong mountings with comfortable screw backs for peace of mind. Whether worn alone for understated elegance or paired with other pieces for a curated look, these studs deliver timeless sophistication.",
-      "price": 899,
-      "compare_at_price": 1199,
-      "cost": 449,
-      "specifications": {
-        "stones": {
-          "type": "lab-grown diamond",
-          "total_carat": 1.0,
-          "per_stone_carat": 0.5,
-          "cut": "round brilliant",
-          "color": "F",
-          "clarity": "VS1", 
-          "certification": "IGI",
-          "matched_pair": true
-        },
-        "setting": {
-          "style": "4-prong",
-          "back_type": "screw back",
-          "post_diameter": "0.8mm",
-          "setting_diameter": "5.2mm"
-        },
-        "metal": {
-          "type": "14k gold",
-          "options": ["white", "yellow", "rose"],
-          "purity": "14k",
-          "rhodium_plated": true
-        }
-      },
+      "id": "PENDANT-3778", 
+      "sku": "BJ-PEND-3778",
+      "name": "Elegant Diamond Pendant",
+      "category": "necklaces",
+      "subcategory": "pendants", 
+      "description": "A beautiful diamond pendant with sophisticated design and brilliant sparkle.",
+      "short_description": "Diamond pendant with brilliant cut",
+      "price": 675,
+      "compare_at_price": 875,
+      "cost": 337,
       "images": [
-        "/images/products/earrings/ear-001-main.jpg",
-        "/images/products/earrings/ear-001-detail.jpg",
-        "/images/products/earrings/ear-001-lifestyle.jpg"
+        "/images/products/LHP3778A-R.jpg",
+        "/images/products/LHP3778A-W.jpg",
+        "/images/products/LHP3778A-Y.jpg",
+        "/images/products/LHP3778A-YWR.jpg"
       ],
       "inventory": {
         "track_quantity": true,
-        "quantity": 18,
-        "low_stock_threshold": 4,
-        "variants": {
-          "14k-white": 8,
-          "14k-yellow": 5,
-          "14k-rose": 5
-        }
+        "quantity": 15
       },
-      "seo": {
-        "meta_title": "Lab-Grown Diamond Stud Earrings | Classic 1ct Total Weight",
-        "meta_description": "Brilliant 1ct total weight lab-grown diamond stud earrings with secure screw backs in 14k gold. Timeless elegance.",
-        "keywords": ["diamond studs", "lab grown diamond earrings", "classic earrings", "1 carat studs"]
+      "tags": ["elegant", "diamond", "pendant"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "PENDANT-3779",
+      "sku": "BJ-PEND-3779", 
+      "name": "Classic Diamond Pendant",
+      "category": "necklaces",
+      "subcategory": "pendants",
+      "description": "A timeless diamond pendant featuring classic design and exceptional quality.",
+      "short_description": "Classic diamond pendant design",
+      "price": 1150,
+      "compare_at_price": 1500,
+      "cost": 575,
+      "images": [
+        "/images/products/LHP3779A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 10
       },
-      "tags": ["classic", "everyday", "bestseller", "secure"],
-      "vendor": "BonJooJoo", 
-      "weight_grams": 2.1,
-      "created_at": "2024-03-16",
-      "updated_at": "2024-03-16"
+      "tags": ["classic", "diamond", "pendant"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "PENDANT-3780",
+      "sku": "BJ-PEND-3780",
+      "name": "Modern Diamond Pendant", 
+      "category": "necklaces",
+      "subcategory": "pendants",
+      "description": "A contemporary diamond pendant with modern aesthetic and brilliant diamonds.",
+      "short_description": "Modern diamond pendant style",
+      "price": 1450,
+      "compare_at_price": 1900,
+      "cost": 725,
+      "images": [
+        "/images/products/LHP3780A.jpg",
+        "/images/products/LHP3780A-R.jpg",
+        "/images/products/LHP3780A-Y.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 7
+      },
+      "tags": ["modern", "diamond", "pendant"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3782",
+      "sku": "BJ-BRAC-3782",
+      "name": "Premium Diamond Bracelet",
+      "category": "bracelets", 
+      "subcategory": "tennis",
+      "description": "An exceptional diamond bracelet featuring premium lab-grown diamonds in luxurious setting.",
+      "short_description": "Premium lab-grown diamond bracelet",
+      "price": 4500,
+      "compare_at_price": 5900,
+      "cost": 2250,
+      "images": [
+        "/images/products/LHBD3782A.jpg",
+        "/images/products/LHBD3782A-R.jpg",
+        "/images/products/LHBD3782A-W.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 3
+      },
+      "tags": ["premium", "diamond", "bracelet", "luxury"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3783",
+      "sku": "BJ-BRAC-3783",
+      "name": "Luxury Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis", 
+      "description": "A stunning diamond bracelet with exquisite craftsmanship and brilliant lab-grown diamonds.",
+      "short_description": "Luxury diamond tennis bracelet",
+      "price": 3725,
+      "compare_at_price": 4850,
+      "cost": 1862,
+      "images": [
+        "/images/products/LHBD3783A.jpg",
+        "/images/products/LHBD3783A-R.jpg",
+        "/images/products/LHBD3783A-Y.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 4
+      },
+      "tags": ["luxury", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3784",
+      "sku": "BJ-BRAC-3784",
+      "name": "Statement Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "An extraordinary statement diamond bracelet featuring exceptional lab-grown diamonds.",
+      "short_description": "Statement diamond bracelet design", 
+      "price": 5250,
+      "compare_at_price": 6800,
+      "cost": 2625,
+      "images": [
+        "/images/products/LHBD3784A.jpg",
+        "/images/products/LHBD3784A-R.jpg",
+        "/images/products/LHBD3784A-Y.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 2
+      },
+      "tags": ["statement", "diamond", "bracelet", "premium"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3785",
+      "sku": "BJ-BRAC-3785",
+      "name": "Elegant Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "An elegant diamond bracelet with sophisticated design and premium quality.",
+      "short_description": "Elegant diamond tennis bracelet",
+      "price": 1975,
+      "compare_at_price": 2575,
+      "cost": 987,
+      "images": [
+        "/images/products/LHBD3785A.jpg",
+        "/images/products/LHBD3785A-R.jpg", 
+        "/images/products/LHBD3785A-Y.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 6
+      },
+      "tags": ["elegant", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3786",
+      "sku": "BJ-BRAC-3786",
+      "name": "Eternity Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "A beautiful eternity diamond bracelet featuring continuous sparkle and elegant design.",
+      "short_description": "Eternity diamond bracelet",
+      "price": 2025,
+      "compare_at_price": 2650,
+      "cost": 1012,
+      "images": [
+        "/images/products/lhbd3786a-et.jpg",
+        "/images/products/LHBD3786A-ET-R.jpg",
+        "/images/products/LHBD3786A-ET-Y.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 5
+      },
+      "tags": ["eternity", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3787",
+      "sku": "BJ-BRAC-3787",
+      "name": "Signature Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "Our signature diamond bracelet featuring exceptional quality and timeless design.",
+      "short_description": "Signature diamond tennis bracelet",
+      "price": 4250,
+      "compare_at_price": 5525,
+      "cost": 2125,
+      "images": [
+        "/images/products/LHBD3787A.jpg",
+        "/images/products/LHBD3787A-R.jpg",
+        "/images/products/LHBD3787A-Y.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 3
+      },
+      "tags": ["signature", "diamond", "bracelet", "premium"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3788",
+      "sku": "BJ-BRAC-3788", 
+      "name": "Classic Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "A classic diamond bracelet with timeless appeal and brilliant lab-grown diamonds.",
+      "short_description": "Classic diamond tennis bracelet",
+      "price": 1250,
+      "compare_at_price": 1625,
+      "cost": 625,
+      "images": [
+        "/images/products/LHBD3788A-R.jpg",
+        "/images/products/LHBD3788A-W.jpg",
+        "/images/products/LHBD3788A-Y.jpg",
+        "/images/products/LHBD3788A-YWR.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 8
+      },
+      "tags": ["classic", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3798",
+      "sku": "BJ-BRAC-3798",
+      "name": "Refined Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "bangles", 
+      "description": "A refined diamond bracelet featuring sophisticated styling and premium craftsmanship.",
+      "short_description": "Refined diamond bangle bracelet",
+      "price": 1775,
+      "compare_at_price": 2300,
+      "cost": 887,
+      "images": [
+        "/images/products/LHB3798A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 6
+      },
+      "tags": ["refined", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3799",
+      "sku": "BJ-BRAC-3799",
+      "name": "Designer Diamond Bracelet",
+      "category": "bracelets", 
+      "subcategory": "bangles",
+      "description": "A designer diamond bracelet with unique styling and exceptional quality diamonds.",
+      "short_description": "Designer diamond bangle bracelet",
+      "price": 2325,
+      "compare_at_price": 3025,
+      "cost": 1162,
+      "images": [
+        "/images/products/LHB3799A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 4
+      },
+      "tags": ["designer", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "NECKLACE-3800",
+      "sku": "BJ-NECK-3800",
+      "name": "Elegant Diamond Necklace",
+      "category": "necklaces",
+      "subcategory": "statement",
+      "description": "An elegant diamond necklace featuring beautiful lab-grown diamonds and sophisticated design.",
+      "short_description": "Elegant diamond statement necklace",
+      "price": 1775,
+      "compare_at_price": 2300,
+      "cost": 887,
+      "images": [
+        "/images/products/LHN3800A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 5
+      },
+      "tags": ["elegant", "diamond", "necklace"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "PENDANT-3838",
+      "sku": "BJ-PEND-3838",
+      "name": "Premium Diamond Pendant",
+      "category": "necklaces",
+      "subcategory": "pendants",
+      "description": "A premium diamond pendant featuring exceptional quality and elegant design.",
+      "short_description": "Premium diamond pendant",
+      "price": 2175,
+      "compare_at_price": 2825,
+      "cost": 1087,
+      "images": [
+        "/images/products/LHP3838A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 4
+      },
+      "tags": ["premium", "diamond", "pendant"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "BRACELET-3839",
+      "sku": "BJ-BRAC-3839",
+      "name": "Contemporary Diamond Bracelet",
+      "category": "bracelets",
+      "subcategory": "tennis",
+      "description": "A contemporary diamond bracelet with modern styling and brilliant lab-grown diamonds.",
+      "short_description": "Contemporary diamond tennis bracelet",
+      "price": 2150,
+      "compare_at_price": 2800,
+      "cost": 1075,
+      "images": [
+        "/images/products/LHBD3839A.jpg",
+        "/images/products/LHBD3839A-V2.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 5
+      },
+      "tags": ["contemporary", "diamond", "bracelet"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "PENDANT-3840",
+      "sku": "BJ-PEND-3840",
+      "name": "Sophisticated Diamond Pendant",
+      "category": "necklaces",
+      "subcategory": "pendants",
+      "description": "A sophisticated diamond pendant with refined design and premium quality.",
+      "short_description": "Sophisticated diamond pendant",
+      "price": 1425,
+      "compare_at_price": 1850,
+      "cost": 712,
+      "images": [
+        "/images/products/LHP3840A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 7
+      },
+      "tags": ["sophisticated", "diamond", "pendant"],
+      "vendor": "BonJooJoo"
+    },
+    {
+      "id": "NECKLACE-3881",
+      "sku": "BJ-NECK-3881", 
+      "name": "Luxury Diamond Necklace",
+      "category": "necklaces",
+      "subcategory": "statement",
+      "description": "A luxury diamond necklace featuring exquisite craftsmanship and brilliant diamonds.",
+      "short_description": "Luxury diamond statement necklace",
+      "price": 1800,
+      "compare_at_price": 2340,
+      "cost": 900,
+      "images": [
+        "/images/products/LHN3881A.jpg"
+      ],
+      "inventory": {
+        "track_quantity": true,
+        "quantity": 3
+      },
+      "tags": ["luxury", "diamond", "necklace"],
+      "vendor": "BonJooJoo"
     }
-  ],
-  "categories": {
-    "engagement-rings": {
-      "name": "Engagement Rings",
-      "description": "Ethically crafted engagement rings featuring stunning lab-grown diamonds in timeless and contemporary designs.",
-      "subcategories": {
-        "solitaire": {
-          "name": "Solitaire",
-          "description": "Classic single-stone engagement rings that showcase the beauty of lab-grown diamonds."
-        },
-        "halo": {
-          "name": "Halo",
-          "description": "Brilliant center stones surrounded by sparkling diamond halos for maximum impact."
-        },
-        "vintage": {
-          "name": "Vintage",
-          "description": "Romantic vintage-inspired designs with intricate details and timeless appeal."
-        },
-        "three-stone": {
-          "name": "Three Stone",
-          "description": "Symbolic three-stone rings representing past, present, and future."
-        }
-      }
-    },
-    "necklaces": {
-      "name": "Necklaces",
-      "description": "Elegant lab-grown diamond necklaces from delicate pendants to statement pieces.",
-      "subcategories": {
-        "pendants": {
-          "name": "Pendants",
-          "description": "Beautiful diamond pendants for everyday elegance."
-        },
-        "tennis": {
-          "name": "Tennis Necklaces",
-          "description": "Continuous line of diamonds for ultimate luxury."
-        }
-      }
-    },
-    "earrings": {
-      "name": "Earrings",
-      "description": "Sparkling lab-grown diamond earrings from classic studs to dramatic drops.",
-      "subcategories": {
-        "studs": {
-          "name": "Stud Earrings",
-          "description": "Timeless diamond studs for everyday luxury."
-        },
-        "hoops": {
-          "name": "Hoop Earrings",
-          "description": "Diamond-set hoops for modern sophistication."
-        },
-        "drops": {
-          "name": "Drop Earrings",
-          "description": "Elegant dropping designs for special occasions."
-        }
-      }
-    },
-    "bracelets": {
-      "name": "Bracelets",
-      "description": "Luxurious lab-grown diamond bracelets and tennis bracelets.",
-      "subcategories": {
-        "tennis": {
-          "name": "Tennis Bracelets", 
-          "description": "Classic continuous line diamond bracelets."
-        },
-        "bangles": {
-          "name": "Bangles",
-          "description": "Elegant diamond-set bangle bracelets."
-        }
-      }
-    }
-  }
+  ]
 }
