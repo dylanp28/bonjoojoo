@@ -162,7 +162,15 @@ export function getRelatedProducts(productId: string, limit: number = 4): Produc
 
 // Legacy function for backward compatibility
 export function getProductWithVariants(id: string): Product | undefined {
-  return getProductById(id)
+  const product = getProductById(id)
+  if (!product) return undefined
+  
+  // Ensure the product has the expected structure
+  return {
+    ...product,
+    variants: product.variants || [],
+    isGrouped: product.isGrouped || false
+  }
 }
 
 export default getAllProducts
