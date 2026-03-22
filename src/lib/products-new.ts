@@ -160,9 +160,4 @@ export function getRelatedProducts(productId: string, limit: number = 4): Produc
     .slice(0, limit)
 }
 
-// Legacy function for backward compatibility
-export function getProductWithVariants(id: string): Product | undefined {
-  return getProductById(id)
-}
-
 export default getAllProducts
