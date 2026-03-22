@@ -8,19 +8,24 @@
       "subcategory": "bangles",
       "description": "A sophisticated gold band bracelet featuring elegant design and premium craftsmanship.",
       "short_description": "Premium gold band bracelet",
-      "price": 2450,
-      "compare_at_price": 3200,
+      "price": 1715,
+      "compare_at_price": 2450,
       "cost": 1225,
       "images": [
         "/images/products/b3406a-rg.jpg",
-        "/images/products/b3406a-wg.jpg", 
+        "/images/products/b3406a-wg.jpg",
         "/images/products/b3406a-yg.jpg"
       ],
       "inventory": {
         "track_quantity": true,
         "quantity": 8
       },
-      "tags": ["premium", "gold", "bracelet"],
+      "tags": [
+        "premium",
+        "gold",
+        "bracelet",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -31,8 +36,8 @@
       "subcategory": "pendants",
       "description": "An exquisite diamond pendant featuring brilliant lab-grown diamonds in premium setting.",
       "short_description": "Lab-grown diamond pendant",
-      "price": 3250,
-      "compare_at_price": 4200,
+      "price": 2275,
+      "compare_at_price": 3250,
       "cost": 1625,
       "images": [
         "/images/products/LHP3777A.jpg",
@@ -44,19 +49,24 @@
         "track_quantity": true,
         "quantity": 5
       },
-      "tags": ["luxury", "diamond", "pendant"],
+      "tags": [
+        "luxury",
+        "diamond",
+        "pendant",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
-      "id": "PENDANT-3778", 
+      "id": "PENDANT-3778",
       "sku": "BJ-PEND-3778",
       "name": "Elegant Diamond Pendant",
       "category": "necklaces",
-      "subcategory": "pendants", 
+      "subcategory": "pendants",
       "description": "A beautiful diamond pendant with sophisticated design and brilliant sparkle.",
       "short_description": "Diamond pendant with brilliant cut",
-      "price": 675,
-      "compare_at_price": 875,
+      "price": 472,
+      "compare_at_price": 675,
       "cost": 337,
       "images": [
         "/images/products/LHP3778A-R.jpg",
@@ -68,19 +78,24 @@
         "track_quantity": true,
         "quantity": 15
       },
-      "tags": ["elegant", "diamond", "pendant"],
+      "tags": [
+        "elegant",
+        "diamond",
+        "pendant",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
       "id": "PENDANT-3779",
-      "sku": "BJ-PEND-3779", 
+      "sku": "BJ-PEND-3779",
       "name": "Classic Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "A timeless diamond pendant featuring classic design and exceptional quality.",
       "short_description": "Classic diamond pendant design",
-      "price": 1150,
-      "compare_at_price": 1500,
+      "price": 805,
+      "compare_at_price": 1150,
       "cost": 575,
       "images": [
         "/images/products/LHP3779A.jpg"
@@ -89,19 +104,23 @@
         "track_quantity": true,
         "quantity": 10
       },
-      "tags": ["classic", "diamond", "pendant"],
+      "tags": [
+        "classic",
+        "diamond",
+        "pendant"
+      ],
       "vendor": "BonJooJoo"
     },
     {
       "id": "PENDANT-3780",
       "sku": "BJ-PEND-3780",
-      "name": "Modern Diamond Pendant", 
+      "name": "Modern Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "A contemporary diamond pendant with modern aesthetic and brilliant diamonds.",
       "short_description": "Modern diamond pendant style",
-      "price": 1450,
-      "compare_at_price": 1900,
+      "price": 1015,
+      "compare_at_price": 1450,
       "cost": 725,
       "images": [
         "/images/products/LHP3780A.jpg",
@@ -112,19 +131,23 @@
         "track_quantity": true,
         "quantity": 7
       },
-      "tags": ["modern", "diamond", "pendant"],
+      "tags": [
+        "modern",
+        "diamond",
+        "pendant"
+      ],
       "vendor": "BonJooJoo"
     },
     {
       "id": "BRACELET-3782",
       "sku": "BJ-BRAC-3782",
       "name": "Premium Diamond Bracelet",
-      "category": "bracelets", 
+      "category": "bracelets",
       "subcategory": "tennis",
       "description": "An exceptional diamond bracelet featuring premium lab-grown diamonds in luxurious setting.",
       "short_description": "Premium lab-grown diamond bracelet",
-      "price": 4500,
-      "compare_at_price": 5900,
+      "price": 3150,
+      "compare_at_price": 4500,
       "cost": 2250,
       "images": [
         "/images/products/LHBD3782A.jpg",
@@ -135,7 +158,12 @@
         "track_quantity": true,
         "quantity": 3
       },
-      "tags": ["premium", "diamond", "bracelet", "luxury"],
+      "tags": [
+        "premium",
+        "diamond",
+        "bracelet",
+        "luxury"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -143,11 +171,11 @@
       "sku": "BJ-BRAC-3783",
       "name": "Luxury Diamond Bracelet",
       "category": "bracelets",
-      "subcategory": "tennis", 
+      "subcategory": "tennis",
       "description": "A stunning diamond bracelet with exquisite craftsmanship and brilliant lab-grown diamonds.",
       "short_description": "Luxury diamond tennis bracelet",
-      "price": 3725,
-      "compare_at_price": 4850,
+      "price": 2608,
+      "compare_at_price": 3725,
       "cost": 1862,
       "images": [
         "/images/products/LHBD3783A.jpg",
@@ -158,7 +186,11 @@
         "track_quantity": true,
         "quantity": 4
       },
-      "tags": ["luxury", "diamond", "bracelet"],
+      "tags": [
+        "luxury",
+        "diamond",
+        "bracelet"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -168,9 +200,9 @@
       "category": "bracelets",
       "subcategory": "tennis",
       "description": "An extraordinary statement diamond bracelet featuring exceptional lab-grown diamonds.",
-      "short_description": "Statement diamond bracelet design", 
-      "price": 5250,
-      "compare_at_price": 6800,
+      "short_description": "Statement diamond bracelet design",
+      "price": 3675,
+      "compare_at_price": 5250,
       "cost": 2625,
       "images": [
         "/images/products/LHBD3784A.jpg",
@@ -181,7 +213,12 @@
         "track_quantity": true,
         "quantity": 2
       },
-      "tags": ["statement", "diamond", "bracelet", "premium"],
+      "tags": [
+        "statement",
+        "diamond",
+        "bracelet",
+        "premium"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -192,19 +229,24 @@
       "subcategory": "tennis",
       "description": "An elegant diamond bracelet with sophisticated design and premium quality.",
       "short_description": "Elegant diamond tennis bracelet",
-      "price": 1975,
-      "compare_at_price": 2575,
+      "price": 1383,
+      "compare_at_price": 1975,
       "cost": 987,
       "images": [
         "/images/products/LHBD3785A.jpg",
-        "/images/products/LHBD3785A-R.jpg", 
+        "/images/products/LHBD3785A-R.jpg",
         "/images/products/LHBD3785A-Y.jpg"
       ],
       "inventory": {
         "track_quantity": true,
         "quantity": 6
       },
-      "tags": ["elegant", "diamond", "bracelet"],
+      "tags": [
+        "elegant",
+        "diamond",
+        "bracelet",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -215,8 +257,8 @@
       "subcategory": "tennis",
       "description": "A beautiful eternity diamond bracelet featuring continuous sparkle and elegant design.",
       "short_description": "Eternity diamond bracelet",
-      "price": 2025,
-      "compare_at_price": 2650,
+      "price": 1418,
+      "compare_at_price": 2025,
       "cost": 1012,
       "images": [
         "/images/products/lhbd3786a-et.jpg",
@@ -227,7 +269,11 @@
         "track_quantity": true,
         "quantity": 5
       },
-      "tags": ["eternity", "diamond", "bracelet"],
+      "tags": [
+        "eternity",
+        "diamond",
+        "bracelet"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -238,8 +284,8 @@
       "subcategory": "tennis",
       "description": "Our signature diamond bracelet featuring exceptional quality and timeless design.",
       "short_description": "Signature diamond tennis bracelet",
-      "price": 4250,
-      "compare_at_price": 5525,
+      "price": 2975,
+      "compare_at_price": 4250,
       "cost": 2125,
       "images": [
         "/images/products/LHBD3787A.jpg",
@@ -250,19 +296,25 @@
         "track_quantity": true,
         "quantity": 3
       },
-      "tags": ["signature", "diamond", "bracelet", "premium"],
+      "tags": [
+        "signature",
+        "diamond",
+        "bracelet",
+        "premium",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
       "id": "BRACELET-3788",
-      "sku": "BJ-BRAC-3788", 
+      "sku": "BJ-BRAC-3788",
       "name": "Classic Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
       "description": "A classic diamond bracelet with timeless appeal and brilliant lab-grown diamonds.",
       "short_description": "Classic diamond tennis bracelet",
-      "price": 1250,
-      "compare_at_price": 1625,
+      "price": 875,
+      "compare_at_price": 1250,
       "cost": 625,
       "images": [
         "/images/products/LHBD3788A-R.jpg",
@@ -274,7 +326,12 @@
         "track_quantity": true,
         "quantity": 8
       },
-      "tags": ["classic", "diamond", "bracelet"],
+      "tags": [
+        "classic",
+        "diamond",
+        "bracelet",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -282,11 +339,11 @@
       "sku": "BJ-BRAC-3798",
       "name": "Refined Diamond Bracelet",
       "category": "bracelets",
-      "subcategory": "bangles", 
+      "subcategory": "bangles",
       "description": "A refined diamond bracelet featuring sophisticated styling and premium craftsmanship.",
       "short_description": "Refined diamond bangle bracelet",
-      "price": 1775,
-      "compare_at_price": 2300,
+      "price": 1243,
+      "compare_at_price": 1775,
       "cost": 887,
       "images": [
         "/images/products/LHB3798A.jpg"
@@ -295,19 +352,23 @@
         "track_quantity": true,
         "quantity": 6
       },
-      "tags": ["refined", "diamond", "bracelet"],
+      "tags": [
+        "refined",
+        "diamond",
+        "bracelet"
+      ],
       "vendor": "BonJooJoo"
     },
     {
       "id": "BRACELET-3799",
       "sku": "BJ-BRAC-3799",
       "name": "Designer Diamond Bracelet",
-      "category": "bracelets", 
+      "category": "bracelets",
       "subcategory": "bangles",
       "description": "A designer diamond bracelet with unique styling and exceptional quality diamonds.",
       "short_description": "Designer diamond bangle bracelet",
-      "price": 2325,
-      "compare_at_price": 3025,
+      "price": 1628,
+      "compare_at_price": 2325,
       "cost": 1162,
       "images": [
         "/images/products/LHB3799A.jpg"
@@ -316,7 +377,12 @@
         "track_quantity": true,
         "quantity": 4
       },
-      "tags": ["designer", "diamond", "bracelet"],
+      "tags": [
+        "designer",
+        "diamond",
+        "bracelet",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -327,8 +393,8 @@
       "subcategory": "statement",
       "description": "An elegant diamond necklace featuring beautiful lab-grown diamonds and sophisticated design.",
       "short_description": "Elegant diamond statement necklace",
-      "price": 1775,
-      "compare_at_price": 2300,
+      "price": 1243,
+      "compare_at_price": 1775,
       "cost": 887,
       "images": [
         "/images/products/LHN3800A.jpg"
@@ -337,7 +403,11 @@
         "track_quantity": true,
         "quantity": 5
       },
-      "tags": ["elegant", "diamond", "necklace"],
+      "tags": [
+        "elegant",
+        "diamond",
+        "necklace"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -348,8 +418,8 @@
       "subcategory": "pendants",
       "description": "A premium diamond pendant featuring exceptional quality and elegant design.",
       "short_description": "Premium diamond pendant",
-      "price": 2175,
-      "compare_at_price": 2825,
+      "price": 1523,
+      "compare_at_price": 2175,
       "cost": 1087,
       "images": [
         "/images/products/LHP3838A.jpg"
@@ -358,7 +428,11 @@
         "track_quantity": true,
         "quantity": 4
       },
-      "tags": ["premium", "diamond", "pendant"],
+      "tags": [
+        "premium",
+        "diamond",
+        "pendant"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -369,8 +443,8 @@
       "subcategory": "tennis",
       "description": "A contemporary diamond bracelet with modern styling and brilliant lab-grown diamonds.",
       "short_description": "Contemporary diamond tennis bracelet",
-      "price": 2150,
-      "compare_at_price": 2800,
+      "price": 1505,
+      "compare_at_price": 2150,
       "cost": 1075,
       "images": [
         "/images/products/LHBD3839A.jpg",
@@ -380,7 +454,11 @@
         "track_quantity": true,
         "quantity": 5
       },
-      "tags": ["contemporary", "diamond", "bracelet"],
+      "tags": [
+        "contemporary",
+        "diamond",
+        "bracelet"
+      ],
       "vendor": "BonJooJoo"
     },
     {
@@ -391,8 +469,8 @@
       "subcategory": "pendants",
       "description": "A sophisticated diamond pendant with refined design and premium quality.",
       "short_description": "Sophisticated diamond pendant",
-      "price": 1425,
-      "compare_at_price": 1850,
+      "price": 997,
+      "compare_at_price": 1425,
       "cost": 712,
       "images": [
         "/images/products/LHP3840A.jpg"
@@ -401,19 +479,23 @@
         "track_quantity": true,
         "quantity": 7
       },
-      "tags": ["sophisticated", "diamond", "pendant"],
+      "tags": [
+        "sophisticated",
+        "diamond",
+        "pendant"
+      ],
       "vendor": "BonJooJoo"
     },
     {
       "id": "NECKLACE-3881",
-      "sku": "BJ-NECK-3881", 
+      "sku": "BJ-NECK-3881",
       "name": "Luxury Diamond Necklace",
       "category": "necklaces",
       "subcategory": "statement",
       "description": "A luxury diamond necklace featuring exquisite craftsmanship and brilliant diamonds.",
       "short_description": "Luxury diamond statement necklace",
-      "price": 1800,
-      "compare_at_price": 2340,
+      "price": 1260,
+      "compare_at_price": 1800,
       "cost": 900,
       "images": [
         "/images/products/LHN3881A.jpg"
@@ -422,7 +504,12 @@
         "track_quantity": true,
         "quantity": 3
       },
-      "tags": ["luxury", "diamond", "necklace"],
+      "tags": [
+        "luxury",
+        "diamond",
+        "necklace",
+        "bestseller"
+      ],
       "vendor": "BonJooJoo"
     }
   ]
