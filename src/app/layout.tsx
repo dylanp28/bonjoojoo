@@ -4,6 +4,7 @@ import '../styles/pandora-animations.css'
 import { PerformanceOptimizer, CriticalResourceHints, MobilePerformanceOptimizer } from '@/components/PerformanceOptimizer'
 import { AuthProvider } from '@/hooks/useAuth'
 import { ClientLayout } from '@/components/ClientLayout'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'Bonjoojoo | Lab-Grown Diamond Jewelry',
@@ -36,6 +37,7 @@ export default function RootLayout({
             {children}
           </ClientLayout>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   )
