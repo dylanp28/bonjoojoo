@@ -33,6 +33,7 @@ interface ApiResponse {
   accessToken?: string
   refreshToken?: string
   code?: string
+  error?: string
   message?: string
   field?: string
 }
@@ -135,7 +136,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login', onSuccess, o
           onClose()
         }, 1000)
       } else {
-        setError(data.message || 'Login failed. Please try again.')
+        setError(data.error || data.message || 'Login failed. Please try again.')
       }
     } catch (err) {
       setError('Network error. Please check your connection and try again.')
@@ -203,7 +204,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login', onSuccess, o
           onClose()
         }, 2000)
       } else {
-        setError(data.message || 'Registration failed. Please try again.')
+        setError(data.error || data.message || 'Registration failed. Please try again.')
       }
     } catch (err) {
       setError('Network error. Please check your connection and try again.')

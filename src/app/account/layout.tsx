@@ -12,7 +12,7 @@ export default function AccountLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user, isAuthenticated, isLoading, logout } = useAuth()
+  const { user, isAuthenticated, isLoading, logout, refreshUser } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
@@ -91,12 +91,13 @@ export default function AccountLayout({
           </div>
         </div>
 
-        <AuthModal 
+        <AuthModal
           isOpen={isOpen}
           onClose={close}
           initialMode={mode}
           mode={mode}
           onSwitchMode={switchMode}
+          onSuccess={() => refreshUser()}
         />
       </div>
     )

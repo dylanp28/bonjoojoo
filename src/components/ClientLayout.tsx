@@ -62,7 +62,7 @@ const megaMenus: Record<string, { categories: { title: string; items: { label: s
 
 export function ClientLayout({ children }: ClientLayoutProps) {
   const pathname = usePathname()
-  const { user, isAuthenticated, logout, isLoading } = useAuth()
+  const { user, isAuthenticated, logout, isLoading, refreshUser } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const { totalItems, toggleCart } = useCart()
   const [showUserMenu, setShowUserMenu] = useState(false)
@@ -577,6 +577,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
         initialMode={mode}
         mode={mode}
         onSwitchMode={switchMode}
+        onSuccess={() => refreshUser()}
       />
     </>
   )

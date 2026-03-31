@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { AuthService } from '@/lib/auth/service'
+import { authService } from '@/lib/auth/service'
 
 export async function GET(request: NextRequest) {
   try {
     const authorization = request.headers.get('authorization')
-    
+
     if (!authorization || !authorization.startsWith('Bearer ')) {
       return NextResponse.json(
         { message: 'Authorization header required' },
@@ -13,10 +13,10 @@ export async function GET(request: NextRequest) {
     }
 
     const token = authorization.replace('Bearer ', '')
-    
+
     // Verify token and get user data
-    const user = await AuthService.verifyToken(token)
-    
+    const user = await authService.validateToken(token)
+
     if (!user) {
       return NextResponse.json(
         { message: 'Invalid token' },
