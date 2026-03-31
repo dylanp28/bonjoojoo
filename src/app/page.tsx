@@ -332,10 +332,11 @@ export default function HomePage() {
                     <div className="product-card">
                       <div className="aspect-[3/4] bg-white relative overflow-hidden product-image-container">
                         <Image
-                          src={product.images[0]}
+                          src={product.images?.[0] || '/images/products/placeholder-product.svg'}
                           alt={product.name}
                           fill
-                          className="object-cover product-grid-image"
+                          className="object-contain p-4 product-grid-image"
+                          onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
                         />
 
                         {/* Badges */}

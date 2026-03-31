@@ -160,19 +160,14 @@ export default function ProductDetailPage() {
           <div className="space-y-6">
             {/* Main Image */}
             <LuxuryReveal direction="left" className="relative aspect-square bg-white overflow-hidden">
-              {currentImages && currentImages[selectedImage] ? (
-                <Image
-                  src={currentImages[selectedImage]}
-                  alt={`${product.name} - ${selectedVariant?.name || 'Main'}`}
-                  fill
-                  className="object-cover img-editorial"
-                  priority={selectedImage === 0}
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-bj-gray-50">
-                  <span className="text-bj-gray-400 text-caption">Product Image</span>
-                </div>
-              )}
+              <Image
+                src={currentImages?.[selectedImage] || '/images/products/placeholder-product.svg'}
+                alt={`${product.name} - ${selectedVariant?.name || 'Main'}`}
+                fill
+                className="object-contain p-6 img-editorial"
+                priority={selectedImage === 0}
+                onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+              />
               
               {/* Image Navigation */}
               {currentImages && currentImages.length > 1 && (
@@ -221,11 +216,12 @@ export default function ProductDetailPage() {
                       }`}
                     >
                       <Image
-                        src={image}
+                        src={image || '/images/products/placeholder-product.svg'}
                         alt={`${product.name} - View ${index + 1}`}
                         width={120}
                         height={120}
-                        className="w-full h-full object-cover img-editorial"
+                        className="w-full h-full object-contain p-2 img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
                       />
                     </button>
                   ))}
@@ -471,18 +467,13 @@ export default function ProductDetailPage() {
                     onClick={() => router.push(`/product/${relatedProduct.id}`)}
                   >
                     <div className="product-image-container relative aspect-[4/5] bg-bj-gray-50 mb-4 overflow-hidden">
-                      {relatedProduct.images && relatedProduct.images[0] ? (
-                        <Image
-                          src={relatedProduct.images[0]}
-                          alt={relatedProduct.name}
-                          fill
-                          className="object-cover product-card-img img-editorial"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-bj-gray-400 text-caption">{relatedProduct.name}</span>
-                        </div>
-                      )}
+                      <Image
+                        src={relatedProduct.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={relatedProduct.name}
+                        fill
+                        className="object-contain p-4 product-card-img img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
 
                       {/* Wishlist */}
                       <button className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all">

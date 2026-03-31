@@ -7,6 +7,8 @@ import { Heart, ShoppingCart } from 'lucide-react'
 import { Product } from '@/data/products'
 import { useCart } from '@/store/useCart'
 
+const PLACEHOLDER_IMG = '/images/products/placeholder-product.svg'
+
 interface ProductGridProps {
   products: Product[]
   title?: string
@@ -54,19 +56,15 @@ export function ProductGrid({ products, title }: ProductGridProps) {
           <Link key={product.id} href={`/product/${product.id}`} className="group cursor-pointer">
             {/* Product Image */}
             <div className="relative aspect-square bg-gray-50 overflow-hidden mb-4">
-              {product.images && product.images.length > 0 ? (
-                <Image
-                  src={product.images[0]}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                  <span className="text-gray-400 text-sm">No Image</span>
-                </div>
-              )}
+              <Image
+                src={product.images?.[0] || PLACEHOLDER_IMG}
+                alt={product.name}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                unoptimized={(product.images?.[0] || '').endsWith('.svg')}
+                onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG }}
+              />
               
               {/* Sale Badge - Pandora Style */}
               {product.compare_at_price && product.compare_at_price > product.price && (

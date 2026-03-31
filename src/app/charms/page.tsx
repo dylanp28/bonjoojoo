@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { Heart, SlidersHorizontal } from 'lucide-react'
 import { LuxuryReveal } from '@/components/animations/LuxuryAnimationSystem'
 
+const PLACEHOLDER = '/images/products/placeholder-product.svg'
+
 const formatPrice = (price: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price)
 
@@ -21,7 +23,7 @@ const charms = [
     name: 'Eternal Heart Charm',
     price: 189,
     originalPrice: 249,
-    images: ['/images/products/charms/charm-001-main.jpg'],
+    images: ['/images/products/charms/charm-001-main.svg'],
     tags: ['heart', 'love', 'pavé', 'romantic'],
     isFeatured: true,
     isBestseller: true,
@@ -32,7 +34,7 @@ const charms = [
     name: 'Celestial Star Charm',
     price: 149,
     originalPrice: 199,
-    images: ['/images/products/charms/charm-002-main.jpg'],
+    images: ['/images/products/charms/charm-002-main.svg'],
     tags: ['star', 'celestial', 'minimalist'],
     isFeatured: false,
     isBestseller: false,
@@ -43,7 +45,7 @@ const charms = [
     name: 'Garden Butterfly Charm',
     price: 229,
     originalPrice: 299,
-    images: ['/images/products/charms/charm-003-main.jpg'],
+    images: ['/images/products/charms/charm-003-main.svg'],
     tags: ['butterfly', 'nature', 'gradient'],
     isFeatured: true,
     isBestseller: false,
@@ -54,7 +56,7 @@ const charms = [
     name: 'Vintage Lock Charm',
     price: 169,
     originalPrice: 219,
-    images: ['/images/products/charms/charm-004-main.jpg'],
+    images: ['/images/products/charms/charm-004-main.svg'],
     tags: ['vintage', 'lock', 'engraved'],
     isFeatured: false,
     isBestseller: true,
@@ -65,7 +67,7 @@ const charms = [
     name: 'Infinity Symbol Charm',
     price: 209,
     originalPrice: 279,
-    images: ['/images/products/charms/charm-005-main.jpg'],
+    images: ['/images/products/charms/charm-005-main.svg'],
     tags: ['infinity', 'eternal', 'pavé'],
     isFeatured: true,
     isBestseller: true,
@@ -76,7 +78,7 @@ const charms = [
     name: 'Lucky Horseshoe Charm',
     price: 179,
     originalPrice: null,
-    images: ['/images/products/charms/charm-006-main.jpg'],
+    images: ['/images/products/charms/charm-006-main.svg'],
     tags: ['horseshoe', 'lucky', 'traditional'],
     isFeatured: false,
     isBestseller: false,
@@ -87,7 +89,7 @@ const charms = [
     name: 'Blooming Flower Charm',
     price: 199,
     originalPrice: 259,
-    images: ['/images/products/charms/charm-007-main.jpg'],
+    images: ['/images/products/charms/charm-007-main.svg'],
     tags: ['flower', 'nature', 'bloom'],
     isFeatured: false,
     isBestseller: true,
@@ -98,7 +100,7 @@ const charms = [
     name: 'Faith Cross Charm',
     price: 159,
     originalPrice: 209,
-    images: ['/images/products/charms/charm-008-main.jpg'],
+    images: ['/images/products/charms/charm-008-main.svg'],
     tags: ['cross', 'faith', 'spiritual'],
     isFeatured: false,
     isBestseller: false,
@@ -111,6 +113,10 @@ const FILTERS = ['All', 'Bestsellers', 'Featured', 'On Sale']
 export default function CharmsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [wishlist, setWishlist] = useState<Set<string>>(new Set())
+  const [imgErrors, setImgErrors] = useState<Set<string>>(new Set())
+
+  const handleImgError = (id: string) =>
+    setImgErrors(prev => new Set(prev).add(id))
 
   const filtered = charms.filter(c => {
     if (activeFilter === 'Bestsellers') return c.isBestseller
@@ -179,10 +185,12 @@ export default function CharmsPage() {
                 <Link href={`/product/${charm.id}`} className="block">
                   <div className="relative aspect-square overflow-hidden bg-bj-gray-50 mb-4">
                     <Image
-                      src={charm.images[0]}
+                      src={imgErrors.has(charm.id) ? PLACEHOLDER : charm.images[0]}
                       alt={charm.name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized={charm.images[0].endsWith('.svg')}
+                      className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                      onError={() => handleImgError(charm.id)}
                     />
 
                     {/* Badges */}

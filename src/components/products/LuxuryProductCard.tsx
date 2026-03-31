@@ -31,6 +31,8 @@ interface LuxuryProductCardProps {
   className?: string
 }
 
+const PLACEHOLDER_IMG = '/images/products/placeholder-product.svg'
+
 export const LuxuryProductCard = ({
   product,
   loading = false,
@@ -41,6 +43,7 @@ export const LuxuryProductCard = ({
 }: LuxuryProductCardProps) => {
   const [isWishlisted, setIsWishlisted] = useState(product.isWishlisted ?? false)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [imgSrc, setImgSrc] = useState(product.images?.[0] || PLACEHOLDER_IMG)
 
   if (loading) {
     return (
@@ -85,20 +88,14 @@ export const LuxuryProductCard = ({
       <Link href={`/product/${product.id}`} className="block">
         <div className={`${aspectMap[variant]} bg-gradient-to-b from-bj-offwhite to-[#F0EBE5] relative overflow-hidden mb-4 product-hover`}>
           {/* Product image — contained with padding for clean e-commerce presentation */}
-          {product.images && product.images[0] ? (
-            <Image
-              src={product.images[0]}
-              alt={product.name}
-              fill
-              className="object-contain p-6 img-zoom img-warm"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-28 h-28 relative">
-                <div className="absolute inset-2 rounded-full border-[2px] border-gray-200/60"></div>
-              </div>
-            </div>
-          )}
+          <Image
+            src={imgSrc}
+            alt={product.name}
+            fill
+            unoptimized={imgSrc.endsWith('.svg')}
+            className="object-contain p-6 img-zoom img-warm"
+            onError={() => setImgSrc(PLACEHOLDER_IMG)}
+          />
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">

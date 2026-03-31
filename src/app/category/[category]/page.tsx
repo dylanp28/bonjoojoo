@@ -332,18 +332,13 @@ export default function CategoryPage() {
                   // Grid View - Pandora Style
                   <Link href={`/product/${product.id}`} className="group product-card block">
                     <div className="product-image-container relative aspect-[4/5] bg-white mb-4 overflow-hidden">
-                      {product.images && product.images[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-cover product-card-img img-editorial"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-bj-gray-50">
-                          <span className="text-bj-gray-400 text-caption">{product.name}</span>
-                        </div>
-                      )}
+                      <Image
+                        src={product.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-4 product-card-img img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
 
                       {/* Badges */}
                       {product.originalPrice && product.originalPrice > product.price && (
@@ -410,18 +405,13 @@ export default function CategoryPage() {
                   // List View
                   <Link href={`/product/${product.id}`} className="group flex gap-6 bg-white p-6 hover:shadow-lg transition-all duration-300">
                     <div className="relative w-32 h-32 bg-bj-gray-50 flex-shrink-0 overflow-hidden">
-                      {product.images && product.images[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-cover img-editorial"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-bj-gray-400 text-[10px]">{product.name}</span>
-                        </div>
-                      )}
+                      <Image
+                        src={product.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-2 img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
                     </div>
                     
                     <div className="flex-1 space-y-3">

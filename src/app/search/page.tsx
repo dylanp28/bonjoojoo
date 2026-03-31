@@ -295,17 +295,12 @@ function SearchPageContent() {
                     }`}
                   >
                     <div className={viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}>
-                      {product.images && product.images[0] ? (
-                        <img
-                          src={product.images[0]}
-                          alt={product.name}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-                          <span className="text-gray-400 text-sm">{product.name.charAt(0)}</span>
-                        </div>
-                      )}
+                      <img
+                        src={product.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={product.name}
+                        className="w-full h-full object-contain p-2 rounded-lg"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
                     </div>
 
                     <div className="flex-1">
