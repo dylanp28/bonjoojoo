@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift } from 'lucide-react'
 import Link from 'next/link'
@@ -8,6 +8,42 @@ import Image from 'next/image'
 import { searchProducts } from '@/lib/products'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+
+// ─── Lazy Video: only loads/plays when in viewport ───
+function LazyVideo({ src, className, eager = false }: { src: string; className?: string; eager?: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const [shouldLoad, setShouldLoad] = useState(eager)
+
+  useEffect(() => {
+    if (eager) return
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [eager])
+
+  return (
+    <video
+      ref={ref}
+      autoPlay={shouldLoad}
+      muted
+      loop
+      playsInline
+      className={className}
+    >
+      {shouldLoad && <source src={src} type="video/mp4" />}
+    </video>
+  )
+}
 
 // ─── Scroll-focus section: darkens when not in viewport center ───
 function FocusSection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
@@ -57,15 +93,11 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/model-hero-optimized.mp4"
+              eager={true}
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/model-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -130,15 +162,10 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/crowns-hero-optimized.mp4"
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/crowns-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -173,15 +200,10 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/bestsellers-hero-optimized.mp4"
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/bestsellers-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -256,15 +278,10 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/diamonds-hero-optimized.mp4"
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/diamonds-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -335,6 +352,7 @@ export default function HomePage() {
                           src={product.images[0]}
                           alt={product.name}
                           fill
+                          loading="lazy"
                           className="object-cover product-grid-image"
                         />
 
