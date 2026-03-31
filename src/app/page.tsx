@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { searchProducts } from '@/lib/products'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+import { LazyVideo } from '@/components/LazyVideo'
 
 // ─── Scroll-focus section: darkens when not in viewport center ───
 function FocusSection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
@@ -57,15 +58,11 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/model-hero.mp4"
+              eager
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/model-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -130,15 +127,10 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/crowns-hero.mp4"
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/crowns-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -173,15 +165,10 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/bestsellers-hero.mp4"
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/bestsellers-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
@@ -256,15 +243,10 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/videos/diamonds-hero.mp4"
               className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/videos/diamonds-hero.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
           </div>
