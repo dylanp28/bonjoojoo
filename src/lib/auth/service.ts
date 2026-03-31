@@ -582,7 +582,7 @@ export class AuthService {
       const decoded = jwt.verify(token, this.JWT_SECRET) as JWTPayload;
       const session = this.sessions.get(decoded.sessionId);
       const user = this.users.get(decoded.userId);
-      
+
       if (!session || !user || !session.isActive) {
         return null;
       }
@@ -595,6 +595,17 @@ export class AuthService {
     } catch (error) {
       return null;
     }
+  }
+
+  /**
+   * Verify JWT token — returns { success, user } shape expected by API routes
+   */
+  async verifyToken(token: string): Promise<{ success: boolean; user?: User }> {
+    const user = await this.validateToken(token);
+    if (!user) {
+      return { success: false };
+    }
+    return { success: true, user };
   }
 }
 
