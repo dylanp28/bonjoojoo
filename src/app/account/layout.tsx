@@ -105,7 +105,7 @@ export default function AccountLayout({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <div className="container-fluid py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
           {/* Sidebar */}

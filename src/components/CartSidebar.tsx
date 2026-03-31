@@ -104,7 +104,7 @@ export default function CartSidebar() {
                                   </h3>
                                   <button
                                     onClick={() => removeItem(item.id)}
-                                    className="flex-shrink-0 text-gray-300 hover:text-bj-black transition-colors"
+                                    className="flex-shrink-0 text-gray-300 hover:text-bj-black transition-colors p-2 -mt-1 -mr-1"
                                   >
                                     <X size={14} />
                                   </button>
@@ -120,14 +120,14 @@ export default function CartSidebar() {
                                   <div className="flex items-center border border-gray-200">
                                     <button
                                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                      className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-bj-black transition-colors"
+                                      className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-bj-black transition-colors"
                                     >
                                       <Minus size={12} />
                                     </button>
-                                    <span className="w-7 text-center text-[13px] font-medium text-bj-black">{item.quantity}</span>
+                                    <span className="w-8 text-center text-[13px] font-medium text-bj-black">{item.quantity}</span>
                                     <button
                                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                      className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-bj-black transition-colors"
+                                      className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-bj-black transition-colors"
                                     >
                                       <Plus size={12} />
                                     </button>

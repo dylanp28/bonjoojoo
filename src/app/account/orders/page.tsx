@@ -32,17 +32,29 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem('accessToken')
-      const response = await fetch('/api/orders', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      // Load orders from localStorage (placed via checkout flow)
+      const localOrders = JSON.parse(localStorage.getItem('bonjoojoo-orders') || '[]')
 
-      if (response.ok) {
-        const data = await response.json()
-        setOrders(data.orders)
-      }
+      // Also try the API for any server-side orders
+      try {
+        const token = localStorage.getItem('accessToken')
+        const response = await fetch('/api/orders', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        if (response.ok) {
+          const data = await response.json()
+          // Merge: local orders first, then any from API not already present
+          const apiOrders = data.orders || []
+          const merged = [...localOrders]
+          apiOrders.forEach((o: Order) => {
+            if (!merged.find((m: Order) => m.orderId === o.orderId)) merged.push(o)
+          })
+          setOrders(merged)
+          return
+        }
+      } catch {}
+
+      setOrders(localOrders)
     } catch (error) {
       console.error('Failed to fetch orders:', error)
     } finally {
@@ -113,8 +125,8 @@ export default function OrdersPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="border-b border-stone-200 mb-6">
-        <nav className="flex space-x-8">
+      <div className="border-b border-stone-200 mb-6 overflow-x-auto">
+        <nav className="flex space-x-4 sm:space-x-8 whitespace-nowrap">
           {[
             { id: 'all', label: 'All Orders', count: orders.length },
             { id: 'confirmed', label: 'Confirmed', count: orders.filter(o => o.status === 'confirmed').length },

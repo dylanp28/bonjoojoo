@@ -120,9 +120,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 py-12">
+    <div className="min-h-screen bg-stone-50 py-12 px-4">
       <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
           
           {/* Header */}
           <div className="text-center mb-8">

@@ -147,14 +147,14 @@ export default function ProductDetailPage() {
       {/* Breadcrumb Navigation */}
       <div className="bg-white border-b border-bj-gray-100 py-4">
         <div className="container-bj-wide">
-          <nav className="flex items-center space-x-3 text-[13px]">
-            <button onClick={() => router.push('/')} className="text-bj-gray-400 hover:text-bj-black transition-colors">Home</button>
-            <span className="text-bj-gray-300">/</span>
-            <button onClick={() => router.push(`/category/${product.category}`)} className="text-bj-gray-400 hover:text-bj-black transition-colors capitalize">
+          <nav className="flex items-center space-x-3 text-[13px] overflow-hidden">
+            <button onClick={() => router.push('/')} className="text-bj-gray-400 hover:text-bj-black transition-colors flex-shrink-0">Home</button>
+            <span className="text-bj-gray-300 flex-shrink-0">/</span>
+            <button onClick={() => router.push(`/category/${product.category}`)} className="text-bj-gray-400 hover:text-bj-black transition-colors capitalize flex-shrink-0">
               {product.category}
             </button>
-            <span className="text-bj-gray-300">/</span>
-            <span className="text-bj-black font-medium">{product.name}</span>
+            <span className="text-bj-gray-300 flex-shrink-0">/</span>
+            <span className="text-bj-black font-medium truncate min-w-0">{product.name}</span>
           </nav>
         </div>
       </div>

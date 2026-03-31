@@ -400,7 +400,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
         {/* ═══ MOBILE MENU ═══ */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 top-[68px] bg-white z-[95] overflow-y-auto">
+          <div className="lg:hidden fixed inset-0 top-[76px] bg-white z-[95] overflow-y-auto">
             <div className="p-6">
               <nav className="space-y-0">
                 {navItems.map((item) => (
