@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Store Locations - Bonjoojoo',
@@ -63,15 +64,19 @@ export default function StoresPage() {
                 </div>
                 
                 <div className="pt-4">
-                  <button className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
+                  <Link href="/contact" className="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
                     Book Appointment
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
             
-            <div className="bg-gray-100 h-96 rounded-lg flex items-center justify-center">
-              <span className="text-gray-400">Showroom Image</span>
+            <div className="relative h-96 rounded-lg overflow-hidden bg-gradient-to-br from-[#F5F0EB] to-[#EDE6DE] flex items-center justify-center">
+              <div className="text-center px-8">
+                <p className="text-[11px] tracking-[0.3em] uppercase text-gray-400 mb-3">Los Angeles</p>
+                <p className="text-2xl font-light text-gray-700 mb-2">Jewelry District</p>
+                <p className="text-sm text-gray-500">Private viewing by appointment</p>
+              </div>
             </div>
           </div>
         </div>
@@ -127,12 +132,12 @@ export default function StoresPage() {
             and help you find the perfect piece or create something uniquely yours.
           </p>
           <div className="space-x-4">
-            <button className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
+            <Link href="/contact" className="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
               Schedule Visit
-            </button>
-            <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
+            </Link>
+            <Link href="/contact" className="inline-block border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
               Virtual Consultation
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -142,9 +147,9 @@ export default function StoresPage() {
           <p className="text-gray-600 mb-8 max-w-xl mx-auto">
             Explore our full collection online with detailed photography, 360° views, and comprehensive diamond specifications.
           </p>
-          <a href="/" className="inline-block border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
+          <Link href="/search" className="inline-block border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
             Shop Online Collection
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -54,7 +54,7 @@ export default function FAQPage() {
       questions: [
         {
           q: "How long does shipping take?",
-          a: "Standard shipping takes 5-7 business days within the US and is free on orders over $500. Express (2-3 days) and overnight options are also available. International shipping takes 7-14 days standard or 3-5 days express."
+          a: "Standard shipping is free on all US orders and takes 3–5 business days via FedEx. Expedited shipping (1–2 business days) is $25, and overnight shipping is $45. International shipping takes 7–14 business days for $75 with a $500 minimum order."
         },
         {
           q: "Is shipping insured?",
@@ -207,20 +207,20 @@ export default function FAQPage() {
         <div className="mt-12 grid md:grid-cols-3 gap-6 text-center">
           <div>
             <h3 className="font-medium text-gray-900 mb-2">Need Sizing Help?</h3>
-            <a href="/sizing-guide" className="text-gray-600 hover:text-gray-900 underline">
-              Download Ring Sizer Guide
+            <a href="/contact" className="text-gray-600 hover:text-gray-900 underline">
+              Contact Our Jewelers
             </a>
           </div>
           <div>
             <h3 className="font-medium text-gray-900 mb-2">Learn About Diamonds</h3>
-            <a href="/education" className="text-gray-600 hover:text-gray-900 underline">
+            <a href="/education/lab-grown-diamonds" className="text-gray-600 hover:text-gray-900 underline">
               Diamond Education Center
             </a>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 mb-2">Care Instructions</h3>
-            <a href="/jewelry-care" className="text-gray-600 hover:text-gray-900 underline">
-              Jewelry Care Guide
+            <h3 className="font-medium text-gray-900 mb-2">Shipping &amp; Returns</h3>
+            <a href="/shipping" className="text-gray-600 hover:text-gray-900 underline">
+              Shipping Information
             </a>
           </div>
         </div>

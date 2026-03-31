@@ -133,10 +133,11 @@ export default function ReturnsPage() {
             <div>
               <h3 className="font-medium text-gray-900 mb-4">Not Eligible for Return</h3>
               <ul className="space-y-2 text-gray-600">
-                <li>• Custom or personalized items</li>
+                <li>• Earrings (hygiene reasons)</li>
+                <li>• Custom or engraved items</li>
                 <li>• Items damaged by customer</li>
                 <li>• Jewelry showing signs of wear</li>
-                <li>• Items resized after delivery</li>
+                <li>• Rings resized after delivery</li>
                 <li>• Returns after 30-day window</li>
               </ul>
             </div>

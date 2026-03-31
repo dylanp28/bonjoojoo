@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'About Us - Bonjoojoo',
@@ -80,25 +81,35 @@ export default function AboutPage() {
               <div>
                 <h3 className="text-2xl font-light text-gray-900 mb-4">Lab-Grown Innovation</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Our diamonds are created using cutting-edge technology that replicates the natural diamond formation process. 
-                  In controlled laboratory conditions, we grow diamonds that are chemically, physically, and optically identical to mined diamonds, 
+                  Our diamonds are created using cutting-edge technology that replicates the natural diamond formation process.
+                  In controlled laboratory conditions, we grow diamonds that are chemically, physically, and optically identical to mined diamonds,
                   but with a fraction of the environmental impact.
                 </p>
               </div>
-              <div className="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400">Lab Diamond Process Image</span>
+              <div className="relative h-64 rounded-lg overflow-hidden bg-gray-50">
+                <Image
+                  src="/images/lab-grown-education.png"
+                  alt="Lab-grown diamond formation process"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="bg-gray-100 h-64 rounded-lg flex items-center justify-center order-2 md:order-1">
-                <span className="text-gray-400">Artisan Crafting Image</span>
+              <div className="relative h-64 rounded-lg overflow-hidden bg-gray-50 order-2 md:order-1">
+                <Image
+                  src="/images/bonjoojoo-2.png"
+                  alt="Bonjoojoo artisan crafting jewelry"
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div className="order-1 md:order-2">
                 <h3 className="text-2xl font-light text-gray-900 mb-4">Artisan Craftsmanship</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Each piece is brought to life by our master jewelers in Los Angeles. From initial design concepts to final polish, 
-                  every step reflects our commitment to excellence. We combine time-honored techniques with contemporary design sensibilities 
+                  Each piece is brought to life by our master jewelers in Los Angeles. From initial design concepts to final polish,
+                  every step reflects our commitment to excellence. We combine time-honored techniques with contemporary design sensibilities
                   to create jewelry that transcends trends.
                 </p>
               </div>
@@ -128,13 +139,21 @@ export default function AboutPage() {
         </div>
 
         {/* Team Section */}
-        <div className="text-center">
+        <div className="text-center mb-16">
           <h2 className="text-3xl font-light text-gray-900 mb-8">Founded in Los Angeles</h2>
-          <p className="text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            Born from a passion for sustainable luxury and timeless design, Bonjoojoo represents a new generation of jewelry that honors 
-            both the wearer and the world we share. We're not just creating beautiful jewelry – we're crafting a more sustainable future 
+          <p className="text-gray-600 leading-relaxed max-w-2xl mx-auto mb-8">
+            Born from a passion for sustainable luxury and timeless design, Bonjoojoo represents a new generation of jewelry that honors
+            both the wearer and the world we share. We&apos;re not just creating beautiful jewelry &mdash; we&apos;re crafting a more sustainable future
             for luxury.
           </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="/search" className="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
+              Shop Our Collection
+            </Link>
+            <Link href="/education/lab-grown-diamonds" className="inline-block border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
+              Learn About Lab Diamonds
+            </Link>
+          </div>
         </div>
       </div>
     </div>
