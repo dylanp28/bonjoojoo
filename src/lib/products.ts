@@ -25,7 +25,16 @@ const getAllProducts = (): Product[] => {
     stock: p.inventory?.quantity || 10,
     availability_status: (p.inventory?.quantity || 10) > 0 ? 'in_stock' : 'out_of_stock',
     metal: '14k Gold',
-    variants: [],
+    variants: ((p as any).variants || []).map((v: any) => ({
+      id: v.id,
+      name: v.name,
+      metal: v.metal,
+      price: v.price,
+      originalPrice: v.originalPrice,
+      images: v.images || [],
+      inStock: v.inStock !== false,
+      sku: v.sku,
+    })),
     isGrouped: false
   }))
 }
@@ -41,7 +50,7 @@ export interface SearchOptions {
   featured?: boolean
   bestseller?: boolean
   tags?: string[]
-  sortBy?: 'price' | 'name' | 'newest' | 'rating'
+  sortBy?: 'price' | 'name' | 'newest' | 'rating' | 'popular'
   sortOrder?: 'asc' | 'desc'
   limit?: number
   offset?: number
@@ -113,6 +122,16 @@ export function searchProducts(options: SearchOptions = {}): SearchResult {
           break
         case 'rating':
           comparison = (b.rating || 0) - (a.rating || 0)
+          break
+        case 'popular': {
+          const aScore = (a.is_bestseller ? 100 : 0) + (a.rating || 0)
+          const bScore = (b.is_bestseller ? 100 : 0) + (b.rating || 0)
+          comparison = bScore - aScore
+          break
+        }
+        case 'newest':
+          // Maintain original DB order; no comparison needed
+          comparison = 0
           break
         default:
           comparison = 0
