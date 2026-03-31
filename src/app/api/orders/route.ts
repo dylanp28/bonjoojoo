@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import { createOrder, getOrdersByUserId } from '@/lib/database/orders'
 
 interface OrderItem {
   id: string
@@ -35,12 +36,8 @@ interface CreateOrderRequest {
   environmentalImpact: EnvironmentalImpact
 }
 
-// In-memory orders store (in production, use a proper database)
-const orders: any[] = []
-
 export async function POST(req: NextRequest) {
   try {
-    // Verify authentication
     const authHeader = req.headers.get('authorization')
     if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -68,32 +65,20 @@ export async function POST(req: NextRequest) {
       environmentalImpact
     } = body
 
-    // Generate order ID
     const orderId = `BJ-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
 
-    // Create order object
-    const order = {
+    const order = await createOrder({
       orderId,
       userId,
       paymentIntentId,
       items,
       shippingInfo,
-      billing: {
-        subtotal,
-        shipping,
-        tax,
-        total
-      },
+      billing: { subtotal, shipping, tax, total },
       environmentalImpact,
       status: 'confirmed',
       trackingNumber: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
-    }
-
-    // Store order (in production, save to database)
-    orders.push(order)
+      estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    })
 
     console.log('Order created:', {
       orderId: order.orderId,
@@ -119,7 +104,6 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    // Verify authentication
     const authHeader = req.headers.get('authorization')
     if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -135,10 +119,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
     }
 
-    // Get user's orders
-    const userOrders = orders
-      .filter(order => order.userId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    const userOrders = await getOrdersByUserId(userId)
 
     return NextResponse.json({
       success: true,
