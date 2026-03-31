@@ -6,7 +6,7 @@
       "name": "Classic Gold Band Bracelet",
       "category": "bracelets",
       "subcategory": "bangles",
-      "description": "A sophisticated gold band bracelet featuring elegant design and premium craftsmanship.",
+      "description": "Fluid lines meet precision craftsmanship in this sculptural gold band bracelet. Designed to sit close to the wrist, the burnished 14k gold surface catches and reflects light with every movement. Whether worn alone as a quiet statement or stacked with other pieces, this bangle speaks the language of effortless sophistication.",
       "short_description": "Premium gold band bracelet",
       "price": 1715,
       "compare_at_price": 2450,
@@ -26,7 +26,36 @@
         "bracelet",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3406-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/b3406a-yg.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3406-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/b3406a-rg.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3406-W",
+          "name": "White Gold",
+          "metal": "14k White Gold",
+          "images": [
+            "/images/products/b3406a-wg.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "PENDANT-3777",
@@ -34,7 +63,7 @@
       "name": "Luxury Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "An exquisite diamond pendant featuring brilliant lab-grown diamonds in premium setting.",
+      "description": "Suspended from a delicate chain, this diamond pendant captures brilliance in its purest form. A constellation of lab-grown diamonds \u2014 each cut to ideal proportions \u2014 creates a focal point that glitters from across the room. The open silhouette allows light to pass through, making this piece as luminous as it is modern.",
       "short_description": "Lab-grown diamond pendant",
       "price": 2275,
       "compare_at_price": 3250,
@@ -55,7 +84,30 @@
         "pendant",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "PENDANT-3777-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHP3777A.jpg",
+            "/images/products/LHP3777A-Y.jpg",
+            "/images/products/LHP3777A-TWR.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "PENDANT-3777-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHP3777A-R.jpg",
+            "/images/products/LHP3777A-TWR.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "PENDANT-3778",
@@ -63,7 +115,7 @@
       "name": "Elegant Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "A beautiful diamond pendant with sophisticated design and brilliant sparkle.",
+      "description": "A study in geometric elegance, this pendant pairs structural precision with the soft radiance of lab-grown diamonds. The layered design creates subtle depth, while prong-set stones catch light at every angle. Versatile enough for boardroom to dinner, it transitions effortlessly through your day.",
       "short_description": "Diamond pendant with brilliant cut",
       "price": 675,
       "compare_at_price": 675,
@@ -84,7 +136,39 @@
         "pendant",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "PENDANT-3778-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHP3778A-Y.jpg",
+            "/images/products/LHP3778A-YWR.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "PENDANT-3778-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHP3778A-R.jpg",
+            "/images/products/LHP3778A-YWR.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "PENDANT-3778-W",
+          "name": "White Gold",
+          "metal": "14k White Gold",
+          "images": [
+            "/images/products/LHP3778A-W.jpg",
+            "/images/products/LHP3778A-YWR.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "PENDANT-3779",
@@ -92,7 +176,7 @@
       "name": "Classic Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "A timeless diamond pendant featuring classic design and exceptional quality.",
+      "description": "Clean lines and exceptional diamond quality define this refined pendant. A single, carefully selected lab-grown diamond sits in a slim bezel setting, creating a minimalist focal point with maximum presence. For the wearer who believes less is always more.",
       "short_description": "Classic diamond pendant design",
       "price": 805,
       "compare_at_price": 1150,
@@ -109,7 +193,8 @@
         "diamond",
         "pendant"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "PENDANT-3780",
@@ -117,7 +202,7 @@
       "name": "Modern Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "A contemporary diamond pendant with modern aesthetic and brilliant diamonds.",
+      "description": "Bold curves and brilliant diamonds converge in this contemporary pendant design. The sculptural silhouette commands attention while the lab-grown diamonds scattered across its surface ensure it dazzles from every angle. A statement piece for those who wear confidence effortlessly.",
       "short_description": "Modern diamond pendant style",
       "price": 1015,
       "compare_at_price": 1450,
@@ -136,7 +221,28 @@
         "diamond",
         "pendant"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "PENDANT-3780-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHP3780A.jpg",
+            "/images/products/LHP3780A-Y.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "PENDANT-3780-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHP3780A-R.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3782",
@@ -144,7 +250,7 @@
       "name": "Premium Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "An exceptional diamond bracelet featuring premium lab-grown diamonds in luxurious setting.",
+      "description": "The quintessential tennis bracelet, elevated. A single row of perfectly matched lab-grown diamonds, secured in fine gold links, creates a continuous ribbon of light around the wrist. Each stone is precisely set to maximize brilliance, ensuring this bracelet catches the eye whether you're lifting a champagne glass or typing at your desk.",
       "short_description": "Premium lab-grown diamond bracelet",
       "price": 3150,
       "compare_at_price": 4500,
@@ -164,7 +270,36 @@
         "bracelet",
         "luxury"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3782-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHBD3782A.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3782-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3782A-R.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3782-W",
+          "name": "White Gold",
+          "metal": "14k White Gold",
+          "images": [
+            "/images/products/LHBD3782A-W.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3783",
@@ -172,7 +307,7 @@
       "name": "Luxury Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "A stunning diamond bracelet with exquisite craftsmanship and brilliant lab-grown diamonds.",
+      "description": "Intricate prong work showcases each lab-grown diamond to its fullest potential in this sophisticated tennis bracelet. The flexible chain moves naturally with your wrist, while the secure clasp ensures these precious stones stay exactly where they belong \u2014 with you.",
       "short_description": "Luxury diamond tennis bracelet",
       "price": 2608,
       "compare_at_price": 3725,
@@ -191,7 +326,28 @@
         "diamond",
         "bracelet"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3783-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHBD3783A.jpg",
+            "/images/products/LHBD3783A-Y.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3783-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3783A-R.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3784",
@@ -199,7 +355,7 @@
       "name": "Statement Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "An extraordinary statement diamond bracelet featuring exceptional lab-grown diamonds.",
+      "description": "For moments when subtlety is not on the agenda. This bold diamond bracelet features a dramatic cluster setting that transforms lab-grown diamonds into wearable art. The architectural structure is deceptively lightweight, making it as comfortable to wear all day as it is impressive to behold.",
       "short_description": "Statement diamond bracelet design",
       "price": 3675,
       "compare_at_price": 5250,
@@ -219,7 +375,28 @@
         "bracelet",
         "premium"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3784-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHBD3784A.jpg",
+            "/images/products/LHBD3784A-Y.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3784-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3784A-R.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3785",
@@ -227,7 +404,7 @@
       "name": "Elegant Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "An elegant diamond bracelet with sophisticated design and premium quality.",
+      "description": "Understated luxury at its finest. This elegant diamond bracelet pairs refined design with exceptional stone quality, resulting in a piece that works as hard as you do. The streamlined silhouette sits beautifully against the wrist, drawing the eye without demanding it.",
       "short_description": "Elegant diamond tennis bracelet",
       "price": 1383,
       "compare_at_price": 1975,
@@ -247,7 +424,28 @@
         "bracelet",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3785-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHBD3785A.jpg",
+            "/images/products/LHBD3785A-Y.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3785-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3785A-R.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3786",
@@ -255,7 +453,7 @@
       "name": "Eternity Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "A beautiful eternity diamond bracelet featuring continuous sparkle and elegant design.",
+      "description": "Inspired by the eternity band, this bracelet presents a continuous parade of lab-grown diamonds in a bold, modern setting. The open channel design allows each stone to breathe, creating maximum sparkle with minimal metal. A piece that symbolizes something without end.",
       "short_description": "Eternity diamond bracelet",
       "price": 1418,
       "compare_at_price": 2025,
@@ -274,7 +472,28 @@
         "diamond",
         "bracelet"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3786-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/lhbd3786a-et.jpg",
+            "/images/products/LHBD3786A-ET-Y.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3786-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3786A-ET-R.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3787",
@@ -282,7 +501,7 @@
       "name": "Signature Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "Our signature diamond bracelet featuring exceptional quality and timeless design.",
+      "description": "This is the piece Bonjoojoo built its reputation on. Our signature diamond bracelet marries traditional craftsmanship with a contemporary aesthetic, resulting in something that feels both timeless and entirely of the moment. The ideal first-and-forever fine jewelry investment.",
       "short_description": "Signature diamond tennis bracelet",
       "price": 2975,
       "compare_at_price": 4250,
@@ -303,7 +522,28 @@
         "premium",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3787-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHBD3787A.jpg",
+            "/images/products/LHBD3787A-Y.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3787-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3787A-R.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3788",
@@ -311,7 +551,7 @@
       "name": "Classic Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "A classic diamond bracelet with timeless appeal and brilliant lab-grown diamonds.",
+      "description": "Some designs endure because they are simply right. This classic diamond bracelet features a beautifully proportioned setting, exceptional stone quality, and a versatile silhouette that works with everything from vintage to streetwear. Available in three golds to suit every skin tone.",
       "short_description": "Classic diamond tennis bracelet",
       "price": 875,
       "compare_at_price": 1250,
@@ -332,7 +572,39 @@
         "bracelet",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": [
+        {
+          "id": "BRACELET-3788-Y",
+          "name": "Yellow Gold",
+          "metal": "14k Yellow Gold",
+          "images": [
+            "/images/products/LHBD3788A-Y.jpg",
+            "/images/products/LHBD3788A-YWR.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3788-R",
+          "name": "Rose Gold",
+          "metal": "14k Rose Gold",
+          "images": [
+            "/images/products/LHBD3788A-R.jpg",
+            "/images/products/LHBD3788A-YWR.jpg"
+          ],
+          "inStock": true
+        },
+        {
+          "id": "BRACELET-3788-W",
+          "name": "White Gold",
+          "metal": "14k White Gold",
+          "images": [
+            "/images/products/LHBD3788A-W.jpg",
+            "/images/products/LHBD3788A-YWR.jpg"
+          ],
+          "inStock": true
+        }
+      ]
     },
     {
       "id": "BRACELET-3798",
@@ -340,7 +612,7 @@
       "name": "Refined Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "bangles",
-      "description": "A refined diamond bracelet featuring sophisticated styling and premium craftsmanship.",
+      "description": "Precision meets poetry in this refined diamond bracelet. The architectural setting holds each lab-grown diamond at the perfect angle to catch every passing light source, while the polished gold links create a fluid, wearable structure that flatters any wrist.",
       "short_description": "Refined diamond bangle bracelet",
       "price": 1243,
       "compare_at_price": 1775,
@@ -357,7 +629,8 @@
         "diamond",
         "bracelet"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "BRACELET-3799",
@@ -365,7 +638,7 @@
       "name": "Designer Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "bangles",
-      "description": "A designer diamond bracelet with unique styling and exceptional quality diamonds.",
+      "description": "Thoughtful design details distinguish this bracelet from everything else in your collection. The unique setting allows each lab-grown diamond to float within its mounting, creating the illusion of stones suspended in light. A conversation piece that also happens to be impeccably crafted.",
       "short_description": "Designer diamond bangle bracelet",
       "price": 1628,
       "compare_at_price": 2325,
@@ -383,7 +656,8 @@
         "bracelet",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "NECKLACE-3800",
@@ -391,7 +665,7 @@
       "name": "Elegant Diamond Necklace",
       "category": "necklaces",
       "subcategory": "statement",
-      "description": "An elegant diamond necklace featuring beautiful lab-grown diamonds and sophisticated design.",
+      "description": "Architecture meets adornment. This statement necklace arranges lab-grown diamonds along a dramatic silhouette that commands the collarbone. The negative space between each cluster creates rhythm and movement, while the secure clasp ensures this investment piece stays close.",
       "short_description": "Elegant diamond statement necklace",
       "price": 1243,
       "compare_at_price": 1775,
@@ -408,7 +682,8 @@
         "diamond",
         "necklace"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "PENDANT-3838",
@@ -416,7 +691,7 @@
       "name": "Premium Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "A premium diamond pendant featuring exceptional quality and elegant design.",
+      "description": "Exceptional diamond quality in a setting designed to show it off. This premium pendant positions each lab-grown stone to maximize its natural brilliance, resulting in a piece that rewards close inspection and dazzles from a distance. Reserved for those who accept nothing but the finest.",
       "short_description": "Premium diamond pendant",
       "price": 1523,
       "compare_at_price": 2175,
@@ -433,7 +708,8 @@
         "diamond",
         "pendant"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "BRACELET-3839",
@@ -441,7 +717,7 @@
       "name": "Contemporary Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "tennis",
-      "description": "A contemporary diamond bracelet with modern styling and brilliant lab-grown diamonds.",
+      "description": "Where modern design sensibility meets fine jewelry tradition. This contemporary bracelet's clean, architectural silhouette provides the ideal backdrop for a continuous display of lab-grown diamonds. A bracelet for those who think about what they wear.",
       "short_description": "Contemporary diamond tennis bracelet",
       "price": 1505,
       "compare_at_price": 2150,
@@ -459,7 +735,8 @@
         "diamond",
         "bracelet"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "PENDANT-3840",
@@ -467,7 +744,7 @@
       "name": "Sophisticated Diamond Pendant",
       "category": "necklaces",
       "subcategory": "pendants",
-      "description": "A sophisticated diamond pendant with refined design and premium quality.",
+      "description": "The balance between restraint and impact is a difficult one to strike. This sophisticated pendant achieves it through intelligent stone selection and a setting that seems to vanish, leaving only the brilliance of each lab-grown diamond visible. For the collector who understands that the best jewelry is felt, not just seen.",
       "short_description": "Sophisticated diamond pendant",
       "price": 997,
       "compare_at_price": 1425,
@@ -484,7 +761,8 @@
         "diamond",
         "pendant"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     },
     {
       "id": "NECKLACE-3881",
@@ -492,7 +770,7 @@
       "name": "Luxury Diamond Necklace",
       "category": "necklaces",
       "subcategory": "statement",
-      "description": "A luxury diamond necklace featuring exquisite craftsmanship and brilliant diamonds.",
+      "description": "This necklace announces itself quietly. The exquisite diamonds \u2014 grown with minimal environmental impact \u2014 are arranged along a delicate frame that seems almost too fine to support such brilliance. Yet it does, evening after evening, year after year.",
       "short_description": "Luxury diamond statement necklace",
       "price": 1260,
       "compare_at_price": 1800,
@@ -510,7 +788,8 @@
         "necklace",
         "bestseller"
       ],
-      "vendor": "BonJooJoo"
+      "vendor": "BonJooJoo",
+      "variants": []
     }
   ]
 }

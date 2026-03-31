@@ -5,7 +5,7 @@ import productData from '../../data/product_database.json'
 
 // Load all products from our updated database
 const getAllProducts = (): Product[] => {
-  return productData.products.map(p => ({
+  return (productData as any).products.map((p: any) => ({
     id: p.id,
     sku: p.sku,
     name: p.name,

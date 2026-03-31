@@ -112,14 +112,19 @@ export default function ProductDetailPage() {
   }
 
   const handleAddToCart = () => {
-    const cartItem = {
+    const productForCart = {
       ...product,
-      quantity,
-      size: selectedSize,
-      variant: selectedVariant,
-      price: getCurrentPrice()
+      // Use variant ID so different metals are separate cart items
+      id: selectedVariant?.id || product.id,
+      name: selectedVariant ? `${product.name} — ${selectedVariant.name}` : product.name,
+      price: getCurrentPrice(),
+      images: selectedVariant?.images?.length ? selectedVariant.images : product.images,
     }
-    addItem(cartItem)
+    const options: { size?: string } = {}
+    if (selectedSize) options.size = selectedSize
+    for (let i = 0; i < quantity; i++) {
+      addItem(productForCart, options)
+    }
   }
 
   const formatPrice = (price: number) => {
