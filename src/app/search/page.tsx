@@ -31,12 +31,12 @@ interface SearchResponse {
 function SearchPageContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
-  
+
   const [results, setResults] = useState<SearchResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [sortBy, setSortBy] = useState('relevance')
+  const [sortBy, setSortBy] = useState(() => searchParams.get('sortBy') || 'relevance')
   const [showFilters, setShowFilters] = useState(false)
   
   const [filters, setFilters] = useState({

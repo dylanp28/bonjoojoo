@@ -16,7 +16,7 @@ interface ClientLayoutProps {
 }
 
 const navItems = [
-  { label: 'New & Featured', href: '/search?sort=newest' },
+  { label: 'New & Featured', href: '/search' },
   { label: 'Rings', href: '/category/rings', mega: true },
   { label: 'Necklaces', href: '/category/necklaces', mega: true },
   { label: 'Earrings', href: '/category/earrings', mega: true },
@@ -473,9 +473,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                   title: 'Resources', 
                   items: [
                     { label: 'Order Status', href: '/account/orders' },
-                    { label: 'Shipping', href: '/help/shipping' },
-                    { label: 'Returns & Exchanges', href: '/help/returns' },
-                    { label: 'FAQ', href: '/help/faq' },
+                    { label: 'Shipping', href: '/shipping' },
+                    { label: 'Returns & Exchanges', href: '/returns' },
+                    { label: 'FAQ', href: '/faq' },
                     { label: 'Contact Us', href: '/contact' },
                     { label: 'Product Care', href: '/help/care' },
                     { label: 'Warranty', href: '/help/warranty' },
