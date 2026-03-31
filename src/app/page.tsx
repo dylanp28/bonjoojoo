@@ -91,10 +91,10 @@ export default function HomePage() {
         {/* ═══════════════════════════════════════════════════════════
             HERO 1 — MAIN LANDING (model video)
             ═══════════════════════════════════════════════════════════ */}
-        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
-          <div className="fixed inset-0" style={{ height: '100vh' }}>
+        <FocusSection style={{ height: '70vh', clipPath: 'inset(0)' }}>
+          <div className="fixed inset-0" style={{ height: '70vh' }}>
             <LazyVideo
-              src="/videos/model-hero-optimized.mp4"
+              src="/videos/model-hero-studio.mp4"
               eager={true}
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -160,10 +160,10 @@ export default function HomePage() {
         {/* ═══════════════════════════════════════════════════════════
             HERO 3 — CROWN COLLECTION (video)
             ═══════════════════════════════════════════════════════════ */}
-        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
-          <div className="fixed inset-0" style={{ height: '100vh' }}>
+        <FocusSection style={{ height: '70vh', clipPath: 'inset(0)' }}>
+          <div className="fixed inset-0" style={{ height: '70vh' }}>
             <LazyVideo
-              src="/videos/crowns-hero-optimized.mp4"
+              src="/videos/crowns-hero-studio.mp4"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
@@ -198,10 +198,10 @@ export default function HomePage() {
         {/* ═══════════════════════════════════════════════════════════
             HERO 3 — BEST SELLERS (video)
             ═══════════════════════════════════════════════════════════ */}
-        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
-          <div className="fixed inset-0" style={{ height: '100vh' }}>
+        <FocusSection style={{ height: '70vh', clipPath: 'inset(0)' }}>
+          <div className="fixed inset-0" style={{ height: '70vh' }}>
             <LazyVideo
-              src="/videos/bestsellers-hero-optimized.mp4"
+              src="/videos/bestsellers-hero-studio.mp4"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
@@ -276,10 +276,10 @@ export default function HomePage() {
         {/* ═══════════════════════════════════════════════════════════
             HERO 4 — LAB-GROWN DIAMONDS (video)
             ═══════════════════════════════════════════════════════════ */}
-        <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
-          <div className="fixed inset-0" style={{ height: '100vh' }}>
+        <FocusSection style={{ height: '70vh', clipPath: 'inset(0)' }}>
+          <div className="fixed inset-0" style={{ height: '70vh' }}>
             <LazyVideo
-              src="/videos/diamonds-hero-optimized.mp4"
+              src="/videos/diamonds-hero-studio.mp4"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
