@@ -1,8 +1,10 @@
 'use client'
 
 import { useAuth } from '@/hooks/useAuth'
-import { useState } from 'react'
-import { User, Mail, Phone, MapPin, Save, Eye, EyeOff, Shield, CheckCircle2, AlertCircle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { User, Mail, Phone, Calendar, Save, Eye, EyeOff, Shield, CheckCircle2, AlertCircle } from 'lucide-react'
+
+const PROFILE_KEY = 'bonjoojoo-profile'
 
 export default function ProfilePage() {
   const { user, refreshUser } = useAuth()
@@ -17,11 +19,22 @@ export default function ProfilePage() {
     lastName: user?.lastName || '',
     email: user?.email || '',
     phone: '',
-    address: '',
-    city: '',
-    state: '',
-    zip: ''
+    birthday: '',
   })
+
+  // Load saved profile data from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}')
+      setProfileData(prev => ({
+        firstName: saved.firstName || user?.firstName || '',
+        lastName: saved.lastName || user?.lastName || '',
+        email: saved.email || user?.email || '',
+        phone: saved.phone || '',
+        birthday: saved.birthday || '',
+      }))
+    } catch {}
+  }, [user])
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -35,12 +48,9 @@ export default function ProfilePage() {
     setMessage(null)
 
     try {
-      // Simulate API call - in production, implement proper user update endpoint
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(profileData))
       setMessage({ type: 'success', text: 'Profile updated successfully!' })
-      await refreshUser()
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Failed to update profile. Please try again.' })
     } finally {
       setLoading(false)
@@ -175,40 +185,16 @@ export default function ProfilePage() {
 
             <div>
               <label className="block text-sm font-medium text-stone-700 mb-2 flex items-center">
-                <MapPin className="w-4 h-4 mr-1" />
-                Address
+                <Calendar className="w-4 h-4 mr-1" />
+                Birthday
               </label>
               <input
-                type="text"
-                value={profileData.address}
-                onChange={(e) => setProfileData(prev => ({ ...prev, address: e.target.value }))}
-                className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors mb-4"
-                placeholder="Street address"
+                type="date"
+                value={profileData.birthday}
+                onChange={(e) => setProfileData(prev => ({ ...prev, birthday: e.target.value }))}
+                className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
               />
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input
-                  type="text"
-                  value={profileData.city}
-                  onChange={(e) => setProfileData(prev => ({ ...prev, city: e.target.value }))}
-                  className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                  placeholder="City"
-                />
-                <input
-                  type="text"
-                  value={profileData.state}
-                  onChange={(e) => setProfileData(prev => ({ ...prev, state: e.target.value }))}
-                  className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                  placeholder="State"
-                />
-                <input
-                  type="text"
-                  value={profileData.zip}
-                  onChange={(e) => setProfileData(prev => ({ ...prev, zip: e.target.value }))}
-                  className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                  placeholder="ZIP Code"
-                />
-              </div>
+              <p className="text-xs text-stone-500 mt-1">Used to send you a special birthday offer.</p>
             </div>
 
             <div className="flex justify-end">

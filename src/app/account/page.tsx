@@ -3,6 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect, useState } from 'react'
 import { ShoppingBag, Package, Heart, Award, Calendar, MapPin } from 'lucide-react'
+import { useWishlist } from '@/store/useWishlist'
 
 interface Order {
   orderId: string
@@ -17,6 +18,7 @@ export default function AccountDashboard() {
   const { user } = useAuth()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
+  const wishlistItems = useWishlist(state => state.items)
 
   useEffect(() => {
     fetchRecentOrders()
@@ -112,7 +114,7 @@ export default function AccountDashboard() {
             </div>
             <div className="ml-4">
               <p className="text-sm text-purple-600 font-medium">Wishlist Items</p>
-              <p className="text-2xl font-bold text-purple-800">0</p>
+              <p className="text-2xl font-bold text-purple-800">{wishlistItems.length}</p>
             </div>
           </div>
         </div>

@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, ShoppingCart } from 'lucide-react'
 import { Product } from '@/data/products'
 import { useCart } from '@/store/useCart'
+import { useWishlist } from '@/store/useWishlist'
 
 const PLACEHOLDER_IMG = '/images/products/placeholder-product.svg'
 
@@ -15,17 +15,17 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, title }: ProductGridProps) {
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set())
   const addItem = useCart(state => state.addItem)
-  
-  const toggleWishlist = (productId: string) => {
-    const newWishlist = new Set(wishlist)
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId)
-    } else {
-      newWishlist.add(productId)
-    }
-    setWishlist(newWishlist)
+  const { isWishlisted, toggleItem } = useWishlist()
+
+  const toggleWishlist = (product: Product) => {
+    toggleItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.compare_at_price,
+      image: product.images?.[0] || PLACEHOLDER_IMG,
+    })
   }
 
   const handleAddToCart = (product: Product) => {
@@ -76,13 +76,13 @@ export function ProductGrid({ products, title }: ProductGridProps) {
               {/* Wishlist Button - Pandora Position */}
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <button
-                  onClick={() => toggleWishlist(product.id)}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product) }}
                   className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Heart
                     size={16}
                     className={`${
-                      wishlist.has(product.id)
+                      isWishlisted(product.id)
                         ? 'text-red-500 fill-current'
                         : 'text-gray-600'
                     }`}

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Heart, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useWishlist } from '@/store/useWishlist'
 
 interface Product {
   id: string
@@ -41,7 +42,8 @@ export const LuxuryProductCard = ({
   onAddToCart,
   className = ''
 }: LuxuryProductCardProps) => {
-  const [isWishlisted, setIsWishlisted] = useState(product.isWishlisted ?? false)
+  const { isWishlisted: checkWishlisted, toggleItem } = useWishlist()
+  const isWishlisted = checkWishlisted(product.id)
   const [addedToCart, setAddedToCart] = useState(false)
   const [imgSrc, setImgSrc] = useState(product.images?.[0] || PLACEHOLDER_IMG)
 
@@ -70,7 +72,14 @@ export const LuxuryProductCard = ({
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setIsWishlisted(!isWishlisted)
+    toggleItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.images?.[0] || PLACEHOLDER_IMG,
+      category: product.category,
+    })
     onWishlistToggle?.(product.id)
   }
 

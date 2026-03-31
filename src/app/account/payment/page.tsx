@@ -1,6 +1,7 @@
 'use client'
 
-import { CreditCard, Plus, Shield } from 'lucide-react'
+import { CreditCard, Shield, Lock } from 'lucide-react'
+import Link from 'next/link'
 
 export default function PaymentPage() {
   return (
@@ -8,32 +9,48 @@ export default function PaymentPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-serif font-medium text-stone-900 mb-2">Payment Methods</h1>
         <p className="text-stone-600">
-          Securely manage your payment information for faster checkout.
+          Manage your payment information.
         </p>
       </div>
 
-      <div className="text-center py-12">
-        <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CreditCard className="w-8 h-8 text-stone-400" />
+      <div className="max-w-md">
+        <div className="border border-stone-200 rounded-lg p-8 text-center">
+          <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CreditCard className="w-8 h-8 text-stone-500" />
+          </div>
+          <h3 className="text-lg font-medium text-stone-900 mb-2">Manage payment during checkout</h3>
+          <p className="text-stone-600 text-sm mb-6 leading-relaxed">
+            For your security, payment details are entered at checkout and processed securely through Stripe. No card information is stored in your account.
+          </p>
+          <Link
+            href="/checkout"
+            className="inline-flex items-center px-5 py-2.5 bg-stone-900 text-white text-sm font-medium rounded-lg hover:bg-stone-800 transition-colors"
+          >
+            Go to Checkout
+          </Link>
         </div>
-        <h3 className="text-lg font-medium text-stone-900 mb-2">No payment methods saved</h3>
-        <p className="text-stone-600 mb-4">
-          Add a payment method to make checkout faster and more convenient.
-        </p>
-        <button className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Payment Method
-        </button>
-      </div>
 
-      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-center">
-          <Shield className="w-5 h-5 text-blue-600 mr-3" />
-          <div>
-            <h4 className="font-medium text-blue-900">Secure Payment Processing</h4>
-            <p className="text-sm text-blue-700 mt-1">
-              All payment information is encrypted and processed securely through Stripe.
-            </p>
+        <div className="mt-6 bg-stone-50 border border-stone-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Shield className="w-5 h-5 text-stone-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h4 className="font-medium text-stone-900 text-sm">Secure Payment Processing</h4>
+              <p className="text-stone-600 text-sm mt-1">
+                All transactions are encrypted with TLS and processed via Stripe. Your card details are never stored on our servers.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 bg-stone-50 border border-stone-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Lock className="w-5 h-5 text-stone-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h4 className="font-medium text-stone-900 text-sm">Accepted Payment Methods</h4>
+              <p className="text-stone-600 text-sm mt-1">
+                We accept all major credit and debit cards — Visa, Mastercard, American Express, and Discover.
+              </p>
+            </div>
           </div>
         </div>
       </div>
