@@ -7,7 +7,6 @@ import productData from '../../data/product_database.json'
 // sold_out: disables Add to Cart, shows Notify Me form
 // low_stock: shows "Only X left" amber badge alongside Add to Cart
 const STOCK_OVERRIDES: Record<string, { status: 'low_stock' | 'sold_out'; count?: number }> = {
-  'BRACELET-3406': { status: 'sold_out' },
   'NECKLACE-3800': { status: 'sold_out' },
   'PENDANT-3779': { status: 'sold_out' },
   'BRACELET-3783': { status: 'low_stock', count: 3 },

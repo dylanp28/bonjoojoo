@@ -1,62 +1,6 @@
 {
   "products": [
-    {
-      "id": "BRACELET-3406",
-      "sku": "BJ-BRAC-3406",
-      "name": "Classic Gold Band Bracelet",
-      "category": "bracelets",
-      "subcategory": "bangles",
-      "description": "Fluid lines meet precision craftsmanship in this sculptural gold band bracelet. Designed to sit close to the wrist, the burnished 14k gold surface catches and reflects light with every movement. Whether worn alone as a quiet statement or stacked with other pieces, this bangle speaks the language of effortless sophistication.",
-      "short_description": "Premium gold band bracelet",
-      "price": 1715,
-      "compare_at_price": 2450,
-      "cost": 1225,
-      "images": [
-        "/images/products/b3406a-rg.jpg",
-        "/images/products/b3406a-wg.jpg",
-        "/images/products/b3406a-yg.jpg"
-      ],
-      "inventory": {
-        "track_quantity": true,
-        "quantity": 8
-      },
-      "tags": [
-        "premium",
-        "gold",
-        "bracelet",
-        "bestseller"
-      ],
-      "vendor": "BonJooJoo",
-      "variants": [
-        {
-          "id": "BRACELET-3406-Y",
-          "name": "Yellow Gold",
-          "metal": "14k Yellow Gold",
-          "images": [
-            "/images/products/b3406a-yg.jpg"
-          ],
-          "inStock": true
-        },
-        {
-          "id": "BRACELET-3406-R",
-          "name": "Rose Gold",
-          "metal": "14k Rose Gold",
-          "images": [
-            "/images/products/b3406a-rg.jpg"
-          ],
-          "inStock": true
-        },
-        {
-          "id": "BRACELET-3406-W",
-          "name": "White Gold",
-          "metal": "14k White Gold",
-          "images": [
-            "/images/products/b3406a-wg.jpg"
-          ],
-          "inStock": true
-        }
-      ]
-    },
+
     {
       "id": "PENDANT-3777",
       "sku": "BJ-PEND-3777",

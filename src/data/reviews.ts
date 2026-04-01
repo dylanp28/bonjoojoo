@@ -350,7 +350,6 @@ export const productReviewsMap: Record<string, ProductReviews> = {
   lhbd3788a: { productId: 'lhbd3788a', averageRating: 4.8, totalReviews: 67, reviews: ringReviews.slice(2, 6) },
   lhbd3839a: { productId: 'lhbd3839a', averageRating: 4.9, totalReviews: 45, reviews: ringReviews.slice(0, 5) },
   // Bracelets
-  b3406a: { productId: 'b3406a', averageRating: 4.8, totalReviews: 89, reviews: braceletReviews.slice(0, 5) },
   lhb3798a: { productId: 'lhb3798a', averageRating: 4.9, totalReviews: 74, reviews: braceletReviews.slice(0, 5) },
   lhb3799a: { productId: 'lhb3799a', averageRating: 4.7, totalReviews: 53, reviews: braceletReviews.slice(1, 5) },
   // Earrings

@@ -37,7 +37,6 @@ const navItems = [
   { label: 'Necklaces', href: '/category/necklaces', mega: true },
   { label: 'Earrings', href: '/category/earrings', mega: true },
   { label: 'Bracelets', href: '/category/bracelets', mega: true },
-  { label: 'Sets & Bundles', href: '/bundles' },
   { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
   { label: 'Gifts', href: '/search?tag=gift' },
   { label: 'Journal', href: '/blog' },
@@ -193,7 +192,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
   return (
     <>
-      <WaitlistBanner />
+      {/* <WaitlistBanner /> */}
 
       {/* ═══ MAIN HEADER ═══ */}
       <header ref={headerRef} className={`header-bj left-0 right-0 z-[100] transition-all duration-300 ${
@@ -527,7 +526,6 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                     { label: 'Necklaces & Pendants', href: '/category/necklaces' },
                     { label: 'Earrings', href: '/category/earrings' },
                     { label: 'Bracelets', href: '/category/bracelets' },
-                    { label: 'Sets & Bundles', href: '/bundles' },
                     { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
                     { label: 'Gifts', href: '/search?tag=gift' },
                     { label: 'Sale', href: '/search?tag=sale' }

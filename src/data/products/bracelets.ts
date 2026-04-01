@@ -2,23 +2,6 @@ import { ProductGroup } from '@/types/product'
 import { createProduct, createSimpleProduct } from '@/utils/productManager'
 
 export const braceletProducts: ProductGroup[] = [
-  createProduct({
-    id: 'b3406a',
-    name: 'Classic Gold Band Bracelet',
-    description: 'Timeless elegance meets modern sophistication in this classic gold band bracelet. Crafted with precision and designed for versatility, this sleek piece features a polished finish that catches the light beautifully. Perfect for everyday wear or layering with other pieces, this bracelet transitions seamlessly from day to night.',
-    category: 'bracelets',
-    subcategory: 'bands',
-    basePrice: 485,
-    originalPrice: 565,
-    variants: [
-      { name: 'Rose Gold', metal: '14k Rose Gold', image: 'b3406a-rg.jpg', sku: 'B3406A-RG' },
-      { name: 'White Gold', metal: '14k White Gold', image: 'b3406a-wg.jpg', sku: 'B3406A-WG' },
-      { name: 'Yellow Gold', metal: '14k Yellow Gold', image: 'b3406a-yg.jpg', sku: 'B3406A-YG' }
-    ],
-    tags: ['classic', 'stackable', 'versatile'],
-    featured: false,
-    bestseller: true
-  }),
 
   createProduct({
     id: 'lhb3798a',
