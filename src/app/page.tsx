@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift, CheckCircle, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift, CheckCircle, Star, Phone } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { searchProducts } from '@/lib/products'
@@ -499,6 +499,66 @@ export default function HomePage() {
         </FocusSection>
 
         {/* ═══════════════════════════════════════════════════════════
+            GIFTING — "Give the gift of forever" CTA
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection className="py-20 lg:py-28 bg-bj-offwhite border-t border-bj-gray-100">
+          <div className="container-bj">
+            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+              {/* Left: copy */}
+              <div className="flex-1 text-center lg:text-left">
+                <LuxuryReveal direction="up" delay={0.1}>
+                  <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
+                    <div className="w-8 h-px bg-bj-rose-gold/40" />
+                    <p className="text-overline text-bj-pink">The Perfect Gift</p>
+                    <div className="w-8 h-px bg-bj-rose-gold/40" />
+                  </div>
+                </LuxuryReveal>
+                <LuxuryReveal direction="up" delay={0.2}>
+                  <h2 className="text-display-lg text-bj-black mb-6 leading-tight">
+                    Give the gift<br />
+                    <span className="italic font-light text-bj-gray-500">of forever.</span>
+                  </h2>
+                </LuxuryReveal>
+                <LuxuryReveal direction="up" delay={0.3}>
+                  <p className="text-body text-bj-gray-500 mb-10 max-w-md mx-auto lg:mx-0">
+                    Lab-grown diamonds that last a lifetime — for birthdays, anniversaries, and every moment worth celebrating. Complimentary gift packaging on every order.
+                  </p>
+                </LuxuryReveal>
+                <LuxuryReveal direction="up" delay={0.4}>
+                  <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                    <Link href="/category/necklaces" className="btn-primary">
+                      Shop Necklaces
+                    </Link>
+                    <Link href="/category/bracelets" className="btn-ghost">
+                      Shop Bracelets
+                    </Link>
+                  </div>
+                </LuxuryReveal>
+              </div>
+              {/* Right: gift category tiles */}
+              <div className="flex-1 grid grid-cols-2 gap-4 w-full max-w-sm lg:max-w-none">
+                {[
+                  { label: 'Necklaces', href: '/category/necklaces', emoji: '✨' },
+                  { label: 'Bracelets', href: '/category/bracelets', emoji: '💎' },
+                  { label: 'Earrings', href: '/category/earrings', emoji: '🌟' },
+                  { label: 'Rings', href: '/category/rings', emoji: '💍' },
+                ].map(({ label, href, emoji }, i) => (
+                  <LuxuryReveal key={label} direction="up" delay={0.15 + i * 0.07}>
+                    <Link
+                      href={href}
+                      className="group flex flex-col items-center justify-center gap-3 bg-white border border-bj-gray-100 rounded-lg p-6 hover:border-bj-gray-300 hover:shadow-sm transition-all duration-300 aspect-square"
+                    >
+                      <span className="text-3xl">{emoji}</span>
+                      <span className="text-caption font-medium text-bj-black uppercase tracking-wider">{label}</span>
+                    </Link>
+                  </LuxuryReveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
             NEWSLETTER — Homepage email capture
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection className="py-24 lg:py-32 bg-[#1A1A1A] relative overflow-hidden">
@@ -559,6 +619,44 @@ export default function HomePage() {
               <p className="mt-5 text-[11px] text-white/30 tracking-[0.08em]">
                 No spam, ever. Unsubscribe anytime.
               </p>
+            </LuxuryReveal>
+          </div>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            CONSULTATION CTA — tasteful bottom section
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection className="py-16 bg-bj-blush border-t border-bj-rose-gold/10">
+          <div className="container-bj">
+            <LuxuryReveal direction="up">
+              <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-20">
+                <div className="flex-1 text-center lg:text-left">
+                  <p className="text-overline text-bj-pink mb-3">Free Consultation</p>
+                  <h2 className="text-display-sm text-bj-black mb-4">Need help choosing?<br className="hidden lg:block" /> Talk to a Specialist.</h2>
+                  <p className="text-body text-bj-gray-500 max-w-md mx-auto lg:mx-0 mb-8">
+                    Our diamond specialists are here to guide you through the 4Cs, help you find the perfect setting, and answer every question — free, with no pressure.
+                  </p>
+                  <Link href="/consultation" className="btn-primary inline-flex items-center gap-3 py-4 px-8">
+                    <Phone size={16} strokeWidth={1.5} />
+                    Book a Free Consultation
+                  </Link>
+                </div>
+                <div className="flex-shrink-0 grid grid-cols-1 gap-5 w-full lg:w-auto lg:min-w-[280px]">
+                  {[
+                    { label: 'Free 30-minute call', sub: 'One-on-one with a certified specialist' },
+                    { label: 'No pressure, ever', sub: 'We guide — the decision is yours' },
+                    { label: 'Expert 4Cs guidance', sub: 'Cut, clarity, color & carat explained' },
+                  ].map(({ label, sub }) => (
+                    <div key={label} className="flex items-center gap-4 bg-white/70 px-5 py-4">
+                      <div className="w-2 h-2 rounded-full bg-bj-pink flex-shrink-0" />
+                      <div>
+                        <p className="text-[13px] font-semibold text-bj-black">{label}</p>
+                        <p className="text-[12px] text-bj-gray-400">{sub}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </LuxuryReveal>
           </div>
         </FocusSection>

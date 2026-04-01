@@ -35,6 +35,7 @@ const navItems = [
   { label: 'Bracelets', href: '/category/bracelets', mega: true },
   { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
   { label: 'Gifts', href: '/search?tag=gift' },
+  { label: 'Book a Consultation', href: '/consultation' },
 ]
 
 const megaMenus: Record<string, { categories: { title: string; items: { label: string; href: string }[] }[]; featured?: { title: string; subtitle: string } }> = {
@@ -452,6 +453,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                 </Link>
                 <Link href="/stores" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-[14px] text-bj-gray-500">
                   <MapPin size={18} /> Find a Store
+                </Link>
+                <Link href="/consultation" onClick={() => setIsMobileMenuOpen(false)} className="inline-flex items-center gap-2 btn-primary py-3 px-6 text-[12px] mt-2">
+                  Book a Free Consultation
                 </Link>
               </div>
             </div>
