@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Copy, Check, Mail, Share2, Users, Gift, ArrowRight, Sparkles } from 'lucide-react'
@@ -24,7 +24,7 @@ function ShareButton({ icon, label, onClick, className }: {
   )
 }
 
-export default function ReferPage() {
+function ReferPageContent() {
   const { user } = useAuth()
   const searchParams = useSearchParams()
   const inboundCode = searchParams.get('code')
@@ -279,5 +279,13 @@ export default function ReferPage() {
         </div>
       </section>
     </div>
+  )
+}
+
+export default function ReferPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <ReferPageContent />
+    </Suspense>
   )
 }
