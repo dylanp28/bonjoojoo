@@ -9,7 +9,7 @@ export function ExitIntentPopup() {
   const [visible, setVisible] = useState(false)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const [promoCode, setPromoCode] = useState('')
+  const [count, setCount] = useState(47)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -18,28 +18,32 @@ export function ExitIntentPopup() {
     if (typeof window === 'undefined') return
     if (sessionStorage.getItem(EXIT_INTENT_KEY)) return
 
+    // Desktop only
     const isDesktop = window.innerWidth >= 1024
+    if (!isDesktop) return
 
-    if (isDesktop) {
-      const handleMouseLeave = (e: MouseEvent) => {
-        if (e.clientY <= 0) {
-          setVisible(true)
-          sessionStorage.setItem(EXIT_INTENT_KEY, '1')
-        }
-      }
-      document.addEventListener('mouseleave', handleMouseLeave)
-      return () => document.removeEventListener('mouseleave', handleMouseLeave)
-    } else {
-      // Mobile: show after 30 seconds
-      timerRef.current = setTimeout(() => {
-        if (!sessionStorage.getItem(EXIT_INTENT_KEY)) {
-          setVisible(true)
-          sessionStorage.setItem(EXIT_INTENT_KEY, '1')
-        }
-      }, 30000)
-      return () => {
-        if (timerRef.current) clearTimeout(timerRef.current)
-      }
+    const show = () => {
+      if (sessionStorage.getItem(EXIT_INTENT_KEY)) return
+      sessionStorage.setItem(EXIT_INTENT_KEY, '1')
+      setVisible(true)
+      fetch('/api/waitlist')
+        .then((r) => r.json())
+        .then((d) => { if (d.count) setCount(d.count) })
+        .catch(() => {})
+    }
+
+    // Exit intent: mouse leaves viewport from top
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) show()
+    }
+    document.addEventListener('mouseleave', handleMouseLeave)
+
+    // Also show after 30s on desktop
+    timerRef.current = setTimeout(show, 30000)
+
+    return () => {
+      document.removeEventListener('mouseleave', handleMouseLeave)
+      if (timerRef.current) clearTimeout(timerRef.current)
     }
   }, [])
 
@@ -52,13 +56,17 @@ export function ExitIntentPopup() {
     }
     setLoading(true)
     try {
-      const res = await fetch('/api/newsletter/subscribe', {
+      const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: trimmed }),
       })
       const data = await res.json()
-      setPromoCode(data.promoCode || 'WELCOME10')
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong.')
+        return
+      }
+      if (data.count) setCount(data.count)
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please try again.')
@@ -94,25 +102,28 @@ export function ExitIntentPopup() {
           </svg>
         </div>
 
-        <p className="text-overline text-bj-pink mb-3">Before You Go</p>
+        <p className="text-overline text-bj-pink mb-3">Launching Soon</p>
         <h2 className="font-display text-[30px] font-light text-bj-black mb-3 leading-snug">
-          Get 10% Off<br />
+          Get 15% Off<br />
           <span className="italic">Your First Order</span>
         </h2>
-        <p className="text-[14px] text-bj-gray-500 mb-6 leading-relaxed max-w-[280px] mx-auto">
-          Join our list for exclusive offers, new arrivals, and jewelry inspiration.
+        <p className="text-[14px] text-bj-gray-500 mb-2 leading-relaxed max-w-[280px] mx-auto">
+          Join the waitlist and be first to shop when we launch.
+        </p>
+        <p className="text-[12px] text-bj-gray-400 mb-6">
+          Join {count} others waiting
         </p>
 
         {submitted ? (
           <div className="flex flex-col items-center gap-3 py-4">
             <CheckCircle size={28} className="text-green-600" />
             <p className="text-[14px] font-medium text-bj-black">
-              You&apos;re in! Use code:
+              You&apos;re on the list! Use code:
             </p>
             <div className="border border-bj-black px-6 py-2 font-mono text-[18px] font-semibold tracking-widest text-bj-black">
-              {promoCode}
+              LAUNCH15
             </div>
-            <p className="text-[12px] text-bj-gray-400 mt-1">10% off your first order</p>
+            <p className="text-[12px] text-bj-gray-400 mt-1">15% off your first order at launch</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3">
@@ -130,7 +141,7 @@ export function ExitIntentPopup() {
               className="btn-primary w-full py-3.5 text-[12px] tracking-[0.12em] disabled:opacity-60"
               disabled={loading}
             >
-              {loading ? 'Claiming...' : 'Claim My 10% Off'}
+              {loading ? 'Joining...' : 'Join the Waitlist'}
             </button>
           </form>
         )}
@@ -139,7 +150,7 @@ export function ExitIntentPopup() {
           onClick={() => setVisible(false)}
           className="mt-5 text-[11px] text-bj-gray-400 hover:text-bj-gray-600 transition-colors underline underline-offset-2"
         >
-          No thanks, I&apos;ll pay full price
+          No thanks
         </button>
       </div>
     </div>

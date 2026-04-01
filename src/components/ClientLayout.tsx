@@ -12,6 +12,7 @@ import { useWishlist } from '@/store/useWishlist'
 import CartSidebar from '@/components/CartSidebar'
 import ChatWidget from '@/components/ChatWidget'
 import { ExitIntentPopup } from '@/components/ExitIntentPopup'
+import { WaitlistBanner } from '@/components/WaitlistBanner'
 import { FooterTrustStrip } from '@/components/TrustBadgeStrip'
 
 const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
@@ -190,6 +191,8 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
   return (
     <>
+      <WaitlistBanner />
+
       {/* ═══ MAIN HEADER ═══ */}
       <header ref={headerRef} className={`header-bj left-0 right-0 z-[100] transition-all duration-300 ${
         shouldHaveSolidHeader 
