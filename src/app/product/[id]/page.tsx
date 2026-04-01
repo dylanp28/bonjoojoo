@@ -18,6 +18,7 @@ import { useRecentlyViewed } from '@/hooks/useRecentlyViewed'
 import RecentlyViewedRow from '@/components/RecentlyViewedRow'
 import { SpottedInTheWild } from '@/components/UGCGallery'
 import { ProductTrustStrip } from '@/components/TrustBadgeStrip'
+import { getBundlesForProduct, Bundle } from '@/data/bundles'
 
 // ─── BNPL Learn More Modal ────────────────────────────────────────────────────
 
@@ -93,6 +94,7 @@ export default function ProductDetailPage() {
   const [notifyEmail, setNotifyEmail] = useState('')
   const [notifySubmitted, setNotifySubmitted] = useState(false)
   const [notifyError, setNotifyError] = useState('')
+  const [productBundles, setProductBundles] = useState<Bundle[]>([])
 
   // Engraving
   const ENGRAVING_PRICE = 25
@@ -121,7 +123,8 @@ export default function ProductDetailPage() {
         const data = await response.json()
         setProduct(data.product)
         setRelatedProducts(data.relatedProducts || [])
-        
+        setProductBundles(getBundlesForProduct(productId))
+
         // Set default variant if product has variants
         if (data.product.variants && data.product.variants.length > 0) {
           const defaultVariant = data.product.variants.find(v => 
@@ -1156,6 +1159,65 @@ export default function ProductDetailPage() {
                   </div>
                 </LuxuryReveal>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complete the Set — bundle callout */}
+      {productBundles.length > 0 && (
+        <div className="bg-white py-16 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-10">
+                <p className="text-overline text-bj-pink mb-3">Complete the Set</p>
+                <h2 className="text-display-lg text-bj-black">This Piece Belongs in a Set</h2>
+                <p className="text-body text-bj-gray-500 mt-2">
+                  Save up to 15% when you pair it with its perfect companions.
+                </p>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {productBundles.map((bundle, idx) => (
+                <LuxuryReveal key={bundle.id} direction="up" delay={idx * 0.1}>
+                  <Link
+                    href="/bundles"
+                    className="group flex items-center gap-5 border border-bj-gray-100 p-5 hover:border-bj-pink transition-colors duration-300"
+                  >
+                    <div className="flex-shrink-0 w-16 h-16 bg-bj-offwhite flex items-center justify-center">
+                      <span className="text-bj-pink text-2xl font-light">◇</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-bj-pink bg-bj-blush px-2 py-0.5">
+                          Save {bundle.discountPercent}%
+                        </span>
+                      </div>
+                      <h3 className="font-display text-[0.9rem] tracking-[0.04em] uppercase text-bj-black group-hover:text-bj-pink transition-colors line-clamp-1">
+                        {bundle.name}
+                      </h3>
+                      <p className="text-[12px] text-bj-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                        {bundle.description}
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0 text-bj-gray-300 group-hover:text-bj-pink transition-colors">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </Link>
+                </LuxuryReveal>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link
+                href="/bundles"
+                className="text-[12px] uppercase tracking-[0.12em] text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors"
+              >
+                View All Sets &amp; Bundles
+              </Link>
             </div>
           </div>
         </div>

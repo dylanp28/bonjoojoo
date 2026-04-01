@@ -12,6 +12,7 @@ import { LazyVideo } from '@/components/LazyVideo'
 import { homepageTestimonials } from '@/data/reviews'
 import { UGCGridSection } from '@/components/UGCGallery'
 import { HomepageTrustStrip } from '@/components/TrustBadgeStrip'
+import { getFeaturedBundles } from '@/data/bundles'
 
 const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
 
@@ -509,6 +510,77 @@ export default function HomePage() {
             UGC / INSTAGRAM GRID — #bonjoojoo community
             ═══════════════════════════════════════════════════════════ */}
         <UGCGridSection />
+
+        {/* ═══════════════════════════════════════════════════════════
+            SHOP THE SETS — Curated bundles
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection className="py-20 lg:py-28 bg-bj-offwhite border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="text-center mb-14">
+                <p className="text-overline text-bj-pink mb-3">Curated Collections</p>
+                <h2 className="text-display-lg text-bj-black">Shop the Sets</h2>
+                <p className="text-body text-bj-gray-500 mt-3 max-w-md mx-auto">
+                  Perfectly matched pieces, thoughtfully bundled. Save up to 15% on every set.
+                </p>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {getFeaturedBundles().map((bundle, index) => (
+                <LuxuryReveal key={bundle.id} direction="up" delay={index * 0.1}>
+                  <Link
+                    href="/bundles"
+                    className="group block bg-white border border-bj-gray-100 overflow-hidden hover:border-bj-pink transition-colors duration-300"
+                  >
+                    {/* Decorative tile */}
+                    <div className="relative aspect-[4/3] bg-gradient-to-br from-bj-offwhite to-bj-blush flex items-center justify-center overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center gap-3 p-6">
+                        <div className="w-2 h-2 rounded-full bg-bj-rose-gold/40" />
+                        <div className="w-12 h-px bg-bj-rose-gold/30" />
+                        <span className="font-display text-[3rem] text-bj-rose-gold/25 group-hover:text-bj-rose-gold/40 transition-colors">◇</span>
+                        <div className="w-12 h-px bg-bj-rose-gold/30" />
+                        <div className="w-2 h-2 rounded-full bg-bj-rose-gold/40" />
+                      </div>
+                      <span className="absolute top-3 left-3 bg-bj-pink text-white text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1">
+                        Save {bundle.discountPercent}%
+                      </span>
+                    </div>
+
+                    <div className="p-5">
+                      <p className="text-[10px] uppercase tracking-[0.15em] text-bj-pink mb-1">
+                        {bundle.tag.charAt(0).toUpperCase() + bundle.tag.slice(1)} Set
+                      </p>
+                      <h3 className="font-display text-[0.95rem] tracking-[0.04em] text-bj-black uppercase mb-2 group-hover:text-bj-pink transition-colors">
+                        {bundle.name}
+                      </h3>
+                      <p className="text-[12px] text-bj-gray-500 leading-relaxed line-clamp-2">
+                        {bundle.description}
+                      </p>
+                      <div className="mt-4 flex items-center gap-1.5 text-bj-pink">
+                        <span className="text-[11px] font-semibold uppercase tracking-wider">Shop Set</span>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </Link>
+                </LuxuryReveal>
+              ))}
+            </div>
+
+            <LuxuryReveal direction="up" delay={0.3}>
+              <div className="text-center mt-10">
+                <Link
+                  href="/bundles"
+                  className="btn-secondary inline-block px-10 py-3 text-[11px] uppercase tracking-[0.12em]"
+                >
+                  View All Sets &amp; Bundles
+                </Link>
+              </div>
+            </LuxuryReveal>
+          </div>
+        </FocusSection>
 
         {/* ═══════════════════════════════════════════════════════════
             GIFTING — "Give the gift of forever" CTA
