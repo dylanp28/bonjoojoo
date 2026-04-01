@@ -1,6 +1,4 @@
-import { MetadataRoute } from 'next'
-import { products } from '@/data/products'
-import { labGrownEducationData } from '@/data/labGrownEducation'
+import { productGroups } from '@/data/productGroups'
 
 export async function GET(): Promise<Response> {
   const baseUrl = 'https://bonjoojoo.com'
@@ -8,116 +6,31 @@ export async function GET(): Promise<Response> {
 
   // Static pages
   const staticPages = [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/education/lab-grown-diamonds`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/education/lab-grown-vs-mined-diamonds`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/category/rings`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/category/necklaces`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/category/earrings`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/sustainability`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/certification`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    }
+    { url: baseUrl, lastModified: currentDate, changeFrequency: 'weekly' as const, priority: 1.0 },
+    { url: `${baseUrl}/education`, lastModified: currentDate, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/education/lab-grown-diamonds`, lastModified: currentDate, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/category/rings`, lastModified: currentDate, changeFrequency: 'weekly' as const, priority: 0.8 },
+    { url: `${baseUrl}/category/necklaces`, lastModified: currentDate, changeFrequency: 'weekly' as const, priority: 0.8 },
+    { url: `${baseUrl}/category/earrings`, lastModified: currentDate, changeFrequency: 'weekly' as const, priority: 0.8 },
+    { url: `${baseUrl}/category/bracelets`, lastModified: currentDate, changeFrequency: 'weekly' as const, priority: 0.8 },
+    { url: `${baseUrl}/search`, lastModified: currentDate, changeFrequency: 'weekly' as const, priority: 0.7 },
+    { url: `${baseUrl}/about`, lastModified: currentDate, changeFrequency: 'monthly' as const, priority: 0.6 },
+    { url: `${baseUrl}/faq`, lastModified: currentDate, changeFrequency: 'monthly' as const, priority: 0.6 },
+    { url: `${baseUrl}/contact`, lastModified: currentDate, changeFrequency: 'monthly' as const, priority: 0.5 },
+    { url: `${baseUrl}/consultation`, lastModified: currentDate, changeFrequency: 'monthly' as const, priority: 0.5 },
   ]
 
-  // Product pages
-  const productPages = products.map(product => ({
-    url: `${baseUrl}/products/${product.id}`,
+  // Product pages — use the canonical /product/[id] route
+  const productPages = productGroups.map(product => ({
+    url: `${baseUrl}/product/${product.id}`,
     lastModified: currentDate,
     changeFrequency: 'weekly' as const,
-    priority: product.tags?.includes('bestseller') ? 0.8 : 0.7,
-  }))
-
-  // Education pages for each FAQ topic
-  const educationPages = labGrownEducationData.faq.questions.slice(0, 10).map((faq, index) => ({
-    url: `${baseUrl}/education/faq/${faq.question.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
-    lastModified: currentDate,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
-
-  // Category pages
-  const categoryPages = [
-    'rings',
-    'necklaces', 
-    'earrings',
-    'bracelets'
-  ].map(category => ({
-    url: `${baseUrl}/category/${category}`,
-    lastModified: currentDate,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
-
-  // Lab-grown specific category pages
-  const labGrownCategoryPages = [
-    'lab-grown-engagement-rings',
-    'lab-grown-wedding-bands',
-    'lab-grown-diamond-studs',
-    'lab-grown-tennis-necklaces'
-  ].map(category => ({
-    url: `${baseUrl}/search?tag=${category}`,
-    lastModified: currentDate,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
+    priority: product.bestseller ? 0.8 : 0.7,
   }))
 
   const allPages = [
     ...staticPages,
     ...productPages,
-    ...educationPages,
-    ...categoryPages,
-    ...labGrownCategoryPages
   ]
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
