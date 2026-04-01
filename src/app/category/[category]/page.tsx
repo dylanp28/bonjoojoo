@@ -341,25 +341,35 @@ export default function CategoryPage() {
                 {viewMode === 'grid' ? (
                   // Grid View - Pandora Style
                   <Link href={`/product/${product.id}`} className="group product-card block">
-                    <div className="product-image-container relative aspect-[4/5] bg-white mb-4 overflow-hidden">
+                    <div className={`product-image-container relative aspect-[4/5] mb-4 overflow-hidden ${(product as any).availability_status === 'sold_out' ? 'bg-bj-gray-100' : 'bg-white'}`}>
                       <Image
                         src={product.images?.[0] || '/images/products/placeholder-product.svg'}
                         alt={product.name}
                         fill
-                        className="object-contain p-4 product-card-img img-editorial"
+                        className={`object-contain p-4 product-card-img img-editorial transition-all ${(product as any).availability_status === 'sold_out' ? 'opacity-40 grayscale' : ''}`}
                         onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
                       />
 
                       {/* Badges */}
                       <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                        {product.originalPrice && product.originalPrice > product.price && (
-                          <span className="bg-bj-pink text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Sale</span>
-                        )}
-                        {product.tags.includes('bestseller') && !product.originalPrice && (
-                          <span className="bg-bj-black text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Best Seller</span>
-                        )}
-                        {product.category === 'rings' && (
-                          <span className="bg-white/90 text-bj-black text-[9px] font-medium tracking-wider uppercase px-2 py-1 border border-bj-gray-200">Free Resize</span>
+                        {(product as any).availability_status === 'sold_out' ? (
+                          <span className="bg-bj-gray-500 text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Sold Out</span>
+                        ) : (product as any).availability_status === 'low_stock' ? (
+                          <span className="bg-amber-500 text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">
+                            Only {(product as any).stockCount || 'few'} left
+                          </span>
+                        ) : (
+                          <>
+                            {product.originalPrice && product.originalPrice > product.price && (
+                              <span className="bg-bj-pink text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Sale</span>
+                            )}
+                            {product.tags.includes('bestseller') && !product.originalPrice && (
+                              <span className="bg-bj-black text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Best Seller</span>
+                            )}
+                            {product.category === 'rings' && (
+                              <span className="bg-white/90 text-bj-black text-[9px] font-medium tracking-wider uppercase px-2 py-1 border border-bj-gray-200">Free Resize</span>
+                            )}
+                          </>
                         )}
                       </div>
 
@@ -371,18 +381,19 @@ export default function CategoryPage() {
                         }}
                         className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all"
                       >
-                        <Heart 
-                          size={14} 
+                        <Heart
+                          size={14}
                           className={`transition-colors ${
-                            wishlist.has(product.id) 
-                              ? 'text-bj-pink fill-current' 
+                            wishlist.has(product.id)
+                              ? 'text-bj-pink fill-current'
                               : 'text-bj-gray-500 hover:text-bj-pink'
-                          }`} 
-                          strokeWidth={1.5} 
+                          }`}
+                          strokeWidth={1.5}
                         />
                       </button>
 
-                      {/* Quick Add */}
+                      {/* Quick Add — hidden for sold-out products */}
+                      {(product as any).availability_status !== 'sold_out' && (
                       <div className="quick-add absolute bottom-0 left-0 right-0">
                         <button
                           onClick={(e) => {
@@ -394,6 +405,7 @@ export default function CategoryPage() {
                           Quick Add
                         </button>
                       </div>
+                      )}
                     </div>
 
                     {/* Product info */}

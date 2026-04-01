@@ -63,7 +63,8 @@ export interface Product {
   is_featured?: boolean
   is_bestseller?: boolean
   stock?: number
-  availability_status?: string
+  availability_status?: 'in_stock' | 'low_stock' | 'sold_out' | 'out_of_stock' | string
+  stockCount?: number
   metal?: string
   diamond?: any
 }

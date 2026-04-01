@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2, RefreshCw } from 'lucide-react'
+import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2, RefreshCw, Gift, Phone, Bell, Users, Clock } from 'lucide-react'
+import Link from 'next/link'
 import { useCart } from '@/store/useCart'
 import { useWishlist } from '@/store/useWishlist'
 import { ProductWithVariants, ProductVariant } from '@/types/product'
@@ -33,6 +34,11 @@ export default function ProductDetailPage() {
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
   const [crossSellProducts, setCrossSellProducts] = useState<ProductWithVariants[]>([])
   const [alsoViewedProducts, setAlsoViewedProducts] = useState<ProductWithVariants[]>([])
+  const [viewerCount, setViewerCount] = useState(0)
+  const [shippingCountdown, setShippingCountdown] = useState('')
+  const [notifyEmail, setNotifyEmail] = useState('')
+  const [notifySubmitted, setNotifySubmitted] = useState(false)
+  const [notifyError, setNotifyError] = useState('')
 
   const addItem = useCart(state => state.addItem)
   const { isWishlisted: checkWishlisted, toggleItem: toggleWishlistItem } = useWishlist()
@@ -136,6 +142,50 @@ export default function ProductDetailPage() {
     fetchCrossSell()
     fetchAlsoBought()
   }, [product, addRecentlyViewed]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Viewer count — random 3-12, refreshes every 30s
+  useEffect(() => {
+    const randomCount = () => Math.floor(Math.random() * 10) + 3
+    setViewerCount(randomCount())
+    const interval = setInterval(() => setViewerCount(randomCount()), 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Shipping countdown to 5pm ET (22:00 UTC)
+  const getCountdown = useCallback(() => {
+    const now = new Date()
+    const cutoff = new Date()
+    cutoff.setUTCHours(22, 0, 0, 0) // 5pm ET = 22:00 UTC (EST; 21:00 during EDT)
+    if (now >= cutoff) cutoff.setUTCDate(cutoff.getUTCDate() + 1)
+    const diff = cutoff.getTime() - now.getTime()
+    const h = Math.floor(diff / 3600000)
+    const m = Math.floor((diff % 3600000) / 60000)
+    const s = Math.floor((diff % 60000) / 1000)
+    return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  }, [])
+
+  useEffect(() => {
+    setShippingCountdown(getCountdown())
+    const interval = setInterval(() => setShippingCountdown(getCountdown()), 1000)
+    return () => clearInterval(interval)
+  }, [getCountdown])
+
+  // Notify Me handler
+  const handleNotifySubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const email = notifyEmail.trim()
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setNotifyError('Please enter a valid email address.')
+      return
+    }
+    try {
+      const key = `bonjoojoo_notify_${productId}`
+      const list = JSON.parse(localStorage.getItem(key) || '[]') as string[]
+      if (!list.includes(email)) localStorage.setItem(key, JSON.stringify([...list, email]))
+    } catch { /* localStorage unavailable */ }
+    setNotifySubmitted(true)
+    setNotifyError('')
+  }
 
   // Handle variant selection
   const handleVariantChange = (variant: ProductVariant) => {
@@ -400,6 +450,16 @@ export default function ProductDetailPage() {
               </div>
             </LuxuryReveal>
 
+            {/* Perfect for gifting badge — shown on necklaces and bracelets */}
+            {(product.category === 'necklaces' || product.category === 'bracelets') && (
+              <LuxuryReveal direction="right" delay={0.08}>
+                <div className="inline-flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-full px-4 py-1.5">
+                  <Gift size={13} className="text-stone-500" strokeWidth={1.5} />
+                  <span className="text-[12px] font-medium text-stone-700 tracking-wide">Perfect for gifting</span>
+                </div>
+              </LuxuryReveal>
+            )}
+
             {/* Price */}
             <LuxuryReveal direction="right" delay={0.1}>
               <div className="space-y-3">
@@ -496,38 +556,113 @@ export default function ProductDetailPage() {
               </LuxuryReveal>
             )}
 
+            {/* Urgency signals */}
+            <LuxuryReveal direction="right" delay={0.28}>
+              <div className="space-y-2">
+                {/* Low stock badge */}
+                {product.availability_status === 'low_stock' && (
+                  <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-2 rounded">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse flex-shrink-0" />
+                    <span className="text-[12px] font-semibold text-amber-700">
+                      Only {product.stockCount || 'a few'} left in stock
+                    </span>
+                  </div>
+                )}
+                {/* Viewers */}
+                {viewerCount > 0 && product.availability_status !== 'sold_out' && (
+                  <div className="flex items-center gap-2 text-[12px] text-bj-gray-500">
+                    <Users size={13} className="text-bj-pink flex-shrink-0" />
+                    <span><span className="font-semibold text-bj-black">{viewerCount} people</span> are viewing this right now</span>
+                  </div>
+                )}
+                {/* Shipping countdown */}
+                {shippingCountdown && product.availability_status !== 'sold_out' && (
+                  <div className="flex items-center gap-2 text-[12px] text-bj-gray-500">
+                    <Clock size={13} className="text-bj-pink flex-shrink-0" />
+                    <span>Ships today if ordered within <span className="font-semibold text-bj-black tabular-nums">{shippingCountdown}</span></span>
+                  </div>
+                )}
+              </div>
+            </LuxuryReveal>
+
             {/* Quantity & Add to Cart */}
             <LuxuryReveal direction="right" delay={0.3}>
               <div className="space-y-6">
-                <div className="space-y-3">
-                  <h3 className="text-overline text-bj-black">Quantity</h3>
-                  <div className="flex items-center border border-bj-gray-300 w-32">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <span className="flex-1 text-center font-medium text-bj-black">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
-                    >
-                      <Plus size={16} />
-                    </button>
+                {product.availability_status !== 'sold_out' && (
+                  <div className="space-y-3">
+                    <h3 className="text-overline text-bj-black">Quantity</h3>
+                    <div className="flex items-center border border-bj-gray-300 w-32">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="flex-1 text-center font-medium text-bj-black">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="space-y-4">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={product.category === 'rings' && !selectedSize}
-                    className="w-full btn-primary py-5 disabled:bg-bj-gray-300 disabled:border-bj-gray-300 disabled:cursor-not-allowed flex items-center justify-center space-x-3"
-                  >
-                    <ShoppingBag size={20} />
-                    <span>Add to Bag</span>
-                  </button>
-                  
+                  {product.availability_status === 'sold_out' ? (
+                    /* Notify Me form for sold-out products */
+                    <div className="space-y-4 border border-bj-gray-200 p-5 bg-bj-gray-50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-bj-gray-200 flex items-center justify-center flex-shrink-0">
+                          <Bell size={15} className="text-bj-gray-500" />
+                        </div>
+                        <div>
+                          <p className="text-caption font-semibold text-bj-black">Out of Stock</p>
+                          <p className="text-[11px] text-bj-gray-500">This piece is currently unavailable</p>
+                        </div>
+                      </div>
+                      {notifySubmitted ? (
+                        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-4 py-3">
+                          <Check size={15} className="text-emerald-600 flex-shrink-0" />
+                          <p className="text-[12px] text-emerald-700 font-medium">
+                            You are on the list! We will email you when this is back.
+                          </p>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleNotifySubmit} className="space-y-3">
+                          <label className="text-overline text-bj-black block">Notify Me When Available</label>
+                          <div className="flex gap-2">
+                            <input
+                              type="email"
+                              value={notifyEmail}
+                              onChange={(e) => { setNotifyEmail(e.target.value); setNotifyError('') }}
+                              placeholder="your@email.com"
+                              className="flex-1 border border-bj-gray-300 px-4 py-3 text-caption text-bj-black placeholder-bj-gray-400 focus:outline-none focus:border-bj-black transition-colors bg-white"
+                            />
+                            <button
+                              type="submit"
+                              className="btn-primary px-5 py-3 flex items-center gap-2 whitespace-nowrap"
+                            >
+                              <Bell size={14} />
+                              <span className="text-[11px] uppercase tracking-wider">Notify Me</span>
+                            </button>
+                          </div>
+                          {notifyError && <p className="text-[11px] text-red-500">{notifyError}</p>}
+                        </form>
+                      )}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={product.category === 'rings' && !selectedSize}
+                      className="w-full btn-primary py-5 disabled:bg-bj-gray-300 disabled:border-bj-gray-300 disabled:cursor-not-allowed flex items-center justify-center space-x-3"
+                    >
+                      <ShoppingBag size={20} />
+                      <span>Add to Bag</span>
+                    </button>
+                  )}
+
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       onClick={handleWishlistToggle}
@@ -546,6 +681,24 @@ export default function ProductDetailPage() {
                       <span className="text-[11px]">Share</span>
                     </button>
                   </div>
+
+                  {/* Consultation CTA for engagement rings and high-value items */}
+                  {(product.category === 'rings' || currentPrice >= 2000) && (
+                    <div className="mt-2 p-5 bg-bj-blush border border-bj-rose-gold/20">
+                      <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                          <Phone size={16} className="text-bj-pink" strokeWidth={1.5} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[13px] font-semibold text-bj-black mb-0.5">Speak with a Diamond Specialist</p>
+                          <p className="text-[12px] text-bj-gray-500 mb-3">Get expert guidance on this piece — free, no pressure.</p>
+                          <Link href="/consultation" className="inline-block btn-secondary py-2 px-5 text-[11px] bg-white hover:bg-white">
+                            Book a Free Consultation
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </LuxuryReveal>

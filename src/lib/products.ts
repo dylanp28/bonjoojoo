@@ -3,40 +3,60 @@ import { Product, ProductGroup } from '@/types/product'
 // Load products directly from our updated database
 import productData from '../../data/product_database.json'
 
+// Stock override map — controls availability signals without touching raw DB
+// sold_out: disables Add to Cart, shows Notify Me form
+// low_stock: shows "Only X left" amber badge alongside Add to Cart
+const STOCK_OVERRIDES: Record<string, { status: 'low_stock' | 'sold_out'; count?: number }> = {
+  'BRACELET-3406': { status: 'sold_out' },
+  'NECKLACE-3800': { status: 'sold_out' },
+  'PENDANT-3779': { status: 'sold_out' },
+  'BRACELET-3783': { status: 'low_stock', count: 3 },
+  'BRACELET-3785': { status: 'low_stock', count: 4 },
+  'BRACELET-3787': { status: 'low_stock', count: 2 },
+  'PENDANT-3777': { status: 'low_stock', count: 5 },
+  'PENDANT-3780': { status: 'low_stock', count: 3 },
+  'BRACELET-3799': { status: 'low_stock', count: 4 },
+  'PENDANT-3778': { status: 'low_stock', count: 5 },
+}
+
 // Load all products from our updated database
 const getAllProducts = (): Product[] => {
-  return (productData as any).products.map((p: any) => ({
-    id: p.id,
-    sku: p.sku,
-    name: p.name,
-    category: p.category,
-    subcategory: p.subcategory,
-    description: p.description,
-    short_description: p.short_description || p.description.substring(0, 150) + '...',
-    price: p.price,
-    compare_at_price: p.compare_at_price,
-    images: p.images,
-    specifications: p.specifications || {},
-    tags: p.tags || [],
-    is_featured: p.tags?.includes('premium') || p.tags?.includes('luxury') || false,
-    is_bestseller: p.tags?.includes('bestseller') || p.tags?.includes('luxury') || p.tags?.includes('signature') || false,
-    rating: 4.8,
-    reviews: 127,
-    stock: p.inventory?.quantity || 10,
-    availability_status: (p.inventory?.quantity || 10) > 0 ? 'in_stock' : 'out_of_stock',
-    metal: '14k Gold',
-    variants: ((p as any).variants || []).map((v: any) => ({
-      id: v.id,
-      name: v.name,
-      metal: v.metal,
-      price: v.price,
-      originalPrice: v.originalPrice,
-      images: v.images || [],
-      inStock: v.inStock !== false,
-      sku: v.sku,
-    })),
-    isGrouped: false
-  }))
+  return (productData as any).products.map((p: any) => {
+    const override = STOCK_OVERRIDES[p.id]
+    return {
+      id: p.id,
+      sku: p.sku,
+      name: p.name,
+      category: p.category,
+      subcategory: p.subcategory,
+      description: p.description,
+      short_description: p.short_description || p.description.substring(0, 150) + '...',
+      price: p.price,
+      compare_at_price: p.compare_at_price,
+      images: p.images,
+      specifications: p.specifications || {},
+      tags: p.tags || [],
+      is_featured: p.tags?.includes('premium') || p.tags?.includes('luxury') || false,
+      is_bestseller: p.tags?.includes('bestseller') || p.tags?.includes('luxury') || p.tags?.includes('signature') || false,
+      rating: 4.8,
+      reviews: 127,
+      stock: p.inventory?.quantity || 10,
+      availability_status: override?.status || ((p.inventory?.quantity || 10) > 0 ? 'in_stock' : 'out_of_stock'),
+      stockCount: override?.count,
+      metal: '14k Gold',
+      variants: ((p as any).variants || []).map((v: any) => ({
+        id: v.id,
+        name: v.name,
+        metal: v.metal,
+        price: v.price,
+        originalPrice: v.originalPrice,
+        images: v.images || [],
+        inStock: v.inStock !== false,
+        sku: v.sku,
+      })),
+      isGrouped: false
+    }
+  })
 }
 
 // Enhanced search functionality
