@@ -36,6 +36,7 @@ const navItems = [
   { label: 'Bracelets', href: '/category/bracelets', mega: true },
   { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
   { label: 'Gifts', href: '/search?tag=gift' },
+  { label: 'Journal', href: '/blog' },
   { label: 'Book a Consultation', href: '/consultation' },
 ]
 
@@ -559,6 +560,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                     { label: 'Sustainability', href: '/about/sustainability' },
                     { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
                     { label: 'Craftsmanship', href: '/about/craftsmanship' },
+                    { label: 'Journal', href: '/blog' },
                     { label: 'Careers', href: '/careers' },
                     { label: 'Press', href: '/press' }
                   ] 
