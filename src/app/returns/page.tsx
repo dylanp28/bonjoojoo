@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Returns & Exchanges - Bonjoojoo',
@@ -11,9 +12,15 @@ export default function ReturnsPage() {
       <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-light text-gray-900 mb-4">Returns & Exchanges</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
             Your satisfaction is guaranteed. Learn about our flexible return policy and lifetime warranty.
           </p>
+          <Link
+            href="/returns/start"
+            className="inline-block bg-gray-900 text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium text-lg"
+          >
+            Start a Return
+          </Link>
         </div>
 
         {/* Policy Overview */}
@@ -215,16 +222,16 @@ export default function ReturnsPage() {
 
         {/* Contact for Returns */}
         <div className="bg-gray-50 rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-light text-gray-900 mb-4">Need to Start a Return?</h2>
+          <h2 className="text-2xl font-light text-gray-900 mb-4">Ready to Start Your Return?</h2>
           <p className="text-gray-600 mb-6">
-            Our customer service team is ready to help make your return or exchange process simple and stress-free.
+            Use our self-service portal to start a return or exchange in minutes — no phone calls needed.
           </p>
-          <div className="space-x-4">
-            <a href="mailto:returns@bonjoojoo.com" className="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/returns/start" className="inline-block bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors font-medium">
+              Start a Return
+            </Link>
+            <a href="mailto:returns@bonjoojoo.com" className="inline-block border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
               Email Returns Team
-            </a>
-            <a href="tel:1-800-BONJOOJOO" className="inline-block border border-gray-300 text-gray-700 px-8 py-3 rounded-md hover:bg-gray-50 transition-colors font-medium">
-              Call Customer Service
             </a>
           </div>
         </div>

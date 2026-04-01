@@ -1005,9 +1005,15 @@ function ConfirmationStep({
       </p>
 
       {/* Order number */}
-      <div className="inline-block bg-stone-50 border border-stone-200 rounded px-6 py-4 mb-8">
+      <div className="inline-block bg-stone-50 border border-stone-200 rounded px-6 py-4 mb-4">
         <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-1">Order Number</p>
         <p className="font-mono text-lg font-bold text-stone-900 tracking-widest">{orderNumber}</p>
+      </div>
+
+      {/* 30-day free returns reassurance */}
+      <div className="flex items-center justify-center gap-2 text-sm text-stone-500 mb-8">
+        <Check size={14} strokeWidth={2.5} className="text-green-600 flex-shrink-0" />
+        <span>30-day free returns — changed your mind? <a href="/returns/start" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">Start a return anytime.</a></span>
       </div>
 
       {/* Summary */}
