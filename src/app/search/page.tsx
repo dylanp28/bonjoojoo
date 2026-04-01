@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback, Suspense } from 'react'
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Grid, List, Heart } from 'lucide-react'
+import { Grid, List, Heart, SlidersHorizontal, X } from 'lucide-react'
 import type { Product } from '@/types/product'
 
 interface SearchResponse {
@@ -13,20 +13,21 @@ interface SearchResponse {
   hasMore: boolean
 }
 
+// ─── Filter constants ─────────────────────────────────────────────────────────
+
 const PRICE_RANGES = [
   { value: '', label: 'Any Price' },
-  { value: 'under-500', label: 'Under $500' },
-  { value: '500-1000', label: '$500 – $1,000' },
-  { value: '1000-2000', label: '$1,000 – $2,000' },
-  { value: '2000-plus', label: '$2,000+' },
+  { value: 'under-50', label: 'Under $50' },
+  { value: '50-100', label: '$50 – $100' },
+  { value: '100-plus', label: '$100+' },
 ]
 
 const SORT_OPTIONS = [
-  { value: 'relevance', label: 'Relevance' },
+  { value: 'best-selling', label: 'Best Selling' },
   { value: 'price-asc', label: 'Price: Low to High' },
   { value: 'price-desc', label: 'Price: High to Low' },
   { value: 'newest', label: 'Newest' },
-  { value: 'popular', label: 'Most Popular' },
+  { value: 'relevance', label: 'Relevance' },
 ]
 
 const CATEGORIES = [
@@ -36,7 +37,55 @@ const CATEGORIES = [
   { value: 'earrings', label: 'Earrings' },
   { value: 'bracelets', label: 'Bracelets' },
   { value: 'charms', label: 'Charms' },
+  { value: 'bundles', label: 'Bundles' },
 ]
+
+const METAL_OPTIONS = ['Gold', 'Silver', 'Rose Gold', 'Mixed'] as const
+type MetalOption = typeof METAL_OPTIONS[number]
+
+const OCCASION_OPTIONS = ['Everyday', 'Gift', 'Special Occasion', 'Bridal'] as const
+type OccasionOption = typeof OCCASION_OPTIONS[number]
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function getProductMetals(product: Product): MetalOption[] {
+  const metals = new Set<MetalOption>()
+  const variants: Array<{ metal?: string }> = (product as any).variants || []
+
+  const hasYellow = variants.some(v => v.metal?.includes('Yellow'))
+  const hasRose = variants.some(v => v.metal?.includes('Rose'))
+  const hasWhite = variants.some(v => v.metal?.includes('White'))
+
+  if (hasYellow || product.tags.includes('gold')) metals.add('Gold')
+  if (hasRose) metals.add('Rose Gold')
+  if (hasWhite) metals.add('Silver')
+
+  if (metals.size >= 2) metals.add('Mixed')
+  if (metals.size === 0) metals.add('Gold')
+
+  return Array.from(metals)
+}
+
+function getProductOccasions(product: Product): OccasionOption[] {
+  const occ = new Set<OccasionOption>()
+  const tags = product.tags
+
+  if (tags.some(t => ['classic', 'refined', 'contemporary', 'modern', 'elegant'].includes(t)))
+    occ.add('Everyday')
+  if (tags.some(t => ['bestseller', 'premium'].includes(t)))
+    occ.add('Gift')
+  if (tags.some(t => ['luxury', 'signature', 'statement', 'sophisticated', 'designer'].includes(t)))
+    occ.add('Special Occasion')
+  if (tags.some(t => ['eternity'].includes(t)))
+    occ.add('Bridal')
+
+  if (occ.size === 0) {
+    occ.add('Everyday')
+    occ.add('Gift')
+  }
+
+  return Array.from(occ)
+}
 
 function buildApiParams(
   query: string,
@@ -56,63 +105,88 @@ function buildApiParams(
     params.set('sortOrder', 'desc')
   } else if (sortBy === 'newest') {
     params.set('sortBy', 'newest')
-  } else if (sortBy === 'popular') {
+  } else if (sortBy === 'best-selling') {
     params.set('sortBy', 'popular')
+    params.set('sortOrder', 'desc')
   } else {
     params.set('sortBy', 'name')
   }
 
-  if (priceRange === 'under-500') {
-    params.set('maxPrice', '500')
-  } else if (priceRange === '500-1000') {
-    params.set('minPrice', '500')
-    params.set('maxPrice', '1000')
-  } else if (priceRange === '1000-2000') {
-    params.set('minPrice', '1000')
-    params.set('maxPrice', '2000')
-  } else if (priceRange === '2000-plus') {
-    params.set('minPrice', '2000')
+  if (priceRange === 'under-50') {
+    params.set('maxPrice', '50')
+  } else if (priceRange === '50-100') {
+    params.set('minPrice', '50')
+    params.set('maxPrice', '100')
+  } else if (priceRange === '100-plus') {
+    params.set('minPrice', '100')
   }
 
   if (category) params.set('category', category)
   if (availability === 'inStock') params.set('inStock', 'true')
-  params.set('limit', '24')
+  params.set('limit', '100')
   return params.toString()
 }
+
+// ─── Search page content ──────────────────────────────────────────────────────
 
 function SearchPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const query = searchParams.get('q') || ''
-  const sortBy = searchParams.get('sort') || 'relevance'
-  const category = searchParams.get('category') || ''
-  const priceRange = searchParams.get('price') || ''
-  const availability = searchParams.get('availability') || 'all'
+  const query = searchParams?.get('q') ?? ''
+  const sortBy = searchParams?.get('sort') ?? 'best-selling'
+  const category = searchParams?.get('category') ?? ''
+  const priceRange = searchParams?.get('price') ?? ''
+  const availability = searchParams?.get('availability') ?? 'all'
+  const selectedMetals = (searchParams?.getAll('metal') ?? []) as MetalOption[]
+  const selectedOccasions = (searchParams?.getAll('occasion') ?? []) as OccasionOption[]
 
-  const [results, setResults] = useState<SearchResponse | null>(null)
+  const [allApiResults, setAllApiResults] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [showFilters, setShowFilters] = useState(false)
 
-  const hasActiveFilters = Boolean(category || priceRange || availability !== 'all')
+  // ─── URL helpers ────────────────────────────────────────────────────────────
 
   const updateParam = useCallback((key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    if (value) {
-      params.set(key, value)
+    const p = new URLSearchParams(searchParams?.toString() ?? '')
+    if (value) p.set(key, value)
+    else p.delete(key)
+    router.push(`/search?${p.toString()}`)
+  }, [searchParams, router])
+
+  const toggleArrayParam = useCallback((key: string, value: string) => {
+    const p = new URLSearchParams(searchParams?.toString() ?? '')
+    const existing = p.getAll(key)
+    p.delete(key)
+    if (existing.includes(value)) {
+      existing.filter(v => v !== value).forEach(v => p.append(key, v))
     } else {
-      params.delete(key)
+      [...existing, value].forEach(v => p.append(key, v))
     }
-    router.push(`/search?${params.toString()}`)
+    router.push(`/search?${p.toString()}`)
+  }, [searchParams, router])
+
+  const removeFilterValue = useCallback((key: string, value?: string) => {
+    const p = new URLSearchParams(searchParams?.toString() ?? '')
+    if (value) {
+      const existing = p.getAll(key).filter(v => v !== value)
+      p.delete(key)
+      existing.forEach(v => p.append(key, v))
+    } else {
+      p.delete(key)
+    }
+    router.push(`/search?${p.toString()}`)
   }, [searchParams, router])
 
   const clearFilters = useCallback(() => {
-    const params = new URLSearchParams()
-    if (query) params.set('q', query)
-    if (sortBy && sortBy !== 'relevance') params.set('sort', sortBy)
-    router.push(`/search?${params.toString()}`)
-  }, [query, sortBy, router])
+    const p = new URLSearchParams()
+    if (query) p.set('q', query)
+    router.push(`/search?${p.toString()}`)
+  }, [query, router])
+
+  // ─── Fetch products ──────────────────────────────────────────────────────────
 
   const performSearch = useCallback(async () => {
     setLoading(true)
@@ -121,8 +195,8 @@ function SearchPageContent() {
       const apiParams = buildApiParams(query, sortBy, category, priceRange, availability)
       const response = await fetch(`/api/inventory/search?${apiParams}`)
       if (!response.ok) throw new Error('Search failed')
-      const data = await response.json()
-      setResults(data)
+      const data: SearchResponse = await response.json()
+      setAllApiResults(data.products || [])
     } catch {
       setError('Failed to load search results. Please try again.')
     } finally {
@@ -134,12 +208,59 @@ function SearchPageContent() {
     performSearch()
   }, [performSearch])
 
+  // ─── Client-side metal + occasion filtering ──────────────────────────────────
+
+  const filteredProducts = useMemo(() => {
+    let filtered = [...allApiResults]
+
+    if (selectedMetals.length > 0) {
+      filtered = filtered.filter(p =>
+        selectedMetals.some(m => getProductMetals(p).includes(m))
+      )
+    }
+
+    if (selectedOccasions.length > 0) {
+      filtered = filtered.filter(p =>
+        selectedOccasions.some(o => getProductOccasions(p).includes(o))
+      )
+    }
+
+    return filtered
+  }, [allApiResults, selectedMetals, selectedOccasions])
+
+  // Per-filter counts (from the API result set)
+  const filterCounts = useMemo(() => ({
+    metals: Object.fromEntries(
+      METAL_OPTIONS.map(m => [m, allApiResults.filter(p => getProductMetals(p).includes(m)).length])
+    ),
+    occasions: Object.fromEntries(
+      OCCASION_OPTIONS.map(o => [o, allApiResults.filter(p => getProductOccasions(p).includes(o)).length])
+    ),
+  }), [allApiResults])
+
+  // Active filter chips
+  const activeChips = useMemo(() => {
+    const chips: Array<{ label: string; onRemove: () => void }> = []
+    if (category) {
+      const cat = CATEGORIES.find(c => c.value === category)
+      chips.push({ label: cat?.label || category, onRemove: () => updateParam('category', '') })
+    }
+    if (priceRange) {
+      const pr = PRICE_RANGES.find(r => r.value === priceRange)
+      chips.push({ label: pr?.label || priceRange, onRemove: () => updateParam('price', '') })
+    }
+    if (availability === 'inStock') {
+      chips.push({ label: 'In Stock', onRemove: () => updateParam('availability', '') })
+    }
+    selectedMetals.forEach(m => chips.push({ label: m, onRemove: () => removeFilterValue('metal', m) }))
+    selectedOccasions.forEach(o => chips.push({ label: o, onRemove: () => removeFilterValue('occasion', o) }))
+    return chips
+  }, [category, priceRange, availability, selectedMetals, selectedOccasions, updateParam, removeFilterValue])
+
+  const hasActiveFilters = activeChips.length > 0
+
   const formatPrice = (price: number) =>
-    new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-    }).format(price)
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price)
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -162,8 +283,8 @@ function SearchPageContent() {
           {/* Filters sidebar */}
           <aside className="w-full lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-lg p-6 shadow-sm sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-medium text-gray-900">Filters</h3>
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="text-base font-semibold text-gray-900">Filters</h3>
                 {hasActiveFilters && (
                   <button
                     onClick={clearFilters}
@@ -174,40 +295,116 @@ function SearchPageContent() {
                 )}
               </div>
 
+              {/* Active filter chips */}
+              {hasActiveFilters && (
+                <div className="flex flex-wrap gap-1.5 mb-5 pb-5 border-b border-gray-100">
+                  {activeChips.map((chip, i) => (
+                    <button
+                      key={i}
+                      onClick={chip.onRemove}
+                      className="flex items-center gap-1 px-2.5 py-1 bg-gray-900 text-white text-[11px] font-medium rounded-full hover:bg-gray-700 transition-colors"
+                    >
+                      {chip.label}
+                      <X size={9} />
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div className="space-y-6">
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
                     Category
                   </label>
-                  <select
-                    value={category}
-                    onChange={(e) => updateParam('category', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                  >
+                  <div className="space-y-1.5">
                     {CATEGORIES.map(cat => (
-                      <option key={cat.value} value={cat.value}>{cat.label}</option>
+                      <label key={cat.value} className="flex items-center gap-2 cursor-pointer group">
+                        <input
+                          type="radio"
+                          name="category"
+                          value={cat.value}
+                          checked={category === cat.value}
+                          onChange={() => updateParam('category', cat.value)}
+                          className="w-3.5 h-3.5 text-gray-900 border-gray-300 focus:ring-gray-900"
+                        />
+                        <span className={`text-sm transition-colors ${category === cat.value ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                          {cat.label}
+                        </span>
+                      </label>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
                 {/* Price Range */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
                     Price Range
                   </label>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {PRICE_RANGES.map(range => (
-                      <label key={range.value} className="flex items-center cursor-pointer">
+                      <label key={range.value} className="flex items-center gap-2 cursor-pointer group">
                         <input
                           type="radio"
                           name="priceRange"
                           value={range.value}
                           checked={priceRange === range.value}
                           onChange={() => updateParam('price', range.value)}
-                          className="mr-2"
+                          className="w-3.5 h-3.5 text-gray-900 border-gray-300 focus:ring-gray-900"
                         />
-                        <span className="text-sm text-gray-700">{range.label}</span>
+                        <span className={`text-sm transition-colors ${priceRange === range.value ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                          {range.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Metal Type */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    Metal Type
+                  </label>
+                  <div className="space-y-1.5">
+                    {METAL_OPTIONS.map(metal => (
+                      <label key={metal} className="flex items-center justify-between cursor-pointer group">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedMetals.includes(metal)}
+                            onChange={() => toggleArrayParam('metal', metal)}
+                            className="w-3.5 h-3.5 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+                          />
+                          <span className={`text-sm transition-colors ${selectedMetals.includes(metal) ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                            {metal}
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-gray-400">({filterCounts.metals[metal] ?? 0})</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Occasion */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    Occasion
+                  </label>
+                  <div className="space-y-1.5">
+                    {OCCASION_OPTIONS.map(occ => (
+                      <label key={occ} className="flex items-center justify-between cursor-pointer group">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedOccasions.includes(occ)}
+                            onChange={() => toggleArrayParam('occasion', occ)}
+                            className="w-3.5 h-3.5 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+                          />
+                          <span className={`text-sm transition-colors ${selectedOccasions.includes(occ) ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                            {occ}
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-gray-400">({filterCounts.occasions[occ] ?? 0})</span>
                       </label>
                     ))}
                   </div>
@@ -215,12 +412,12 @@ function SearchPageContent() {
 
                 {/* Availability */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
                     Availability
                   </label>
                   <select
                     value={availability}
-                    onChange={(e) => updateParam('availability', e.target.value)}
+                    onChange={e => updateParam('availability', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                   >
                     <option value="all">All Items</option>
@@ -238,15 +435,13 @@ function SearchPageContent() {
               <div className="text-sm text-gray-600">
                 {loading
                   ? 'Loading...'
-                  : results
-                    ? `${results.total} product${results.total !== 1 ? 's' : ''} found`
-                    : ''}
+                  : `${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''} found${allApiResults.length !== filteredProducts.length ? ` (filtered from ${allApiResults.length})` : ''}`}
               </div>
 
               <div className="flex items-center space-x-3">
                 <select
                   value={sortBy}
-                  onChange={(e) => updateParam('sort', e.target.value)}
+                  onChange={e => updateParam('sort', e.target.value === 'best-selling' ? '' : e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-md text-sm"
                 >
                   {SORT_OPTIONS.map(option => (
@@ -294,19 +489,17 @@ function SearchPageContent() {
             )}
 
             {/* Product grid / list */}
-            {results && !loading && !error && results.products.length > 0 && (
+            {filteredProducts.length > 0 && !loading && !error && (
               <div className={
                 viewMode === 'grid'
                   ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
                   : 'space-y-4'
               }>
-                {results.products.map((product) => (
+                {filteredProducts.map(product => (
                   <Link
                     key={product.id}
                     href={`/product/${product.id}`}
-                    className={`bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow ${
-                      viewMode === 'list' ? 'flex space-x-4 p-4' : 'p-4'
-                    }`}
+                    className={`bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow ${viewMode === 'list' ? 'flex space-x-4 p-4' : 'p-4'}`}
                   >
                     <div className={`relative ${viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}`}>
                       <Image
@@ -340,13 +533,13 @@ function SearchPageContent() {
                         <button
                           className="p-1 text-gray-400 hover:text-red-500 transition-colors"
                           aria-label="Add to wishlist"
-                          onClick={(e) => e.preventDefault()}
+                          onClick={e => e.preventDefault()}
                         >
                           <Heart className="w-4 h-4" />
                         </button>
                       </div>
 
-                      {product.is_bestseller && (
+                      {(product as any).is_bestseller && (
                         <span className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mt-2">
                           Bestseller
                         </span>
@@ -358,7 +551,7 @@ function SearchPageContent() {
             )}
 
             {/* No results */}
-            {results && results.products.length === 0 && !loading && !error && (
+            {!loading && !error && filteredProducts.length === 0 && (
               <div className="text-center py-16">
                 <div className="text-5xl mb-4">&#128142;</div>
                 <h3 className="text-xl font-medium text-gray-900 mb-2">
