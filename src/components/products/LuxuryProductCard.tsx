@@ -126,6 +126,11 @@ export const LuxuryProductCard = ({
                 Sold Out
               </span>
             )}
+            {product.category === 'rings' && (
+              <span className="bg-white/90 text-bj-black text-[9px] font-medium tracking-wider uppercase px-2 py-1 border border-bj-gray-200">
+                Free Resize
+              </span>
+            )}
           </div>
 
           {/* Wishlist */}

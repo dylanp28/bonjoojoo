@@ -3,13 +3,16 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2 } from 'lucide-react'
+import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2, RefreshCw } from 'lucide-react'
 import { useCart } from '@/store/useCart'
 import { useWishlist } from '@/store/useWishlist'
 import { ProductWithVariants, ProductVariant } from '@/types/product'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 import { getProductReviews, type ProductReviews } from '@/data/reviews'
+import RingSizeGuideModal from '@/components/RingSizeGuideModal'
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed'
+import RecentlyViewedRow from '@/components/RecentlyViewedRow'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -27,9 +30,13 @@ export default function ProductDetailPage() {
   const [wishlistToast, setWishlistToast] = useState<'added' | 'removed' | null>(null)
   const [shareToast, setShareToast] = useState(false)
   const [reviews, setReviews] = useState<ProductReviews | null>(null)
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
+  const [crossSellProducts, setCrossSellProducts] = useState<ProductWithVariants[]>([])
+  const [alsoViewedProducts, setAlsoViewedProducts] = useState<ProductWithVariants[]>([])
 
   const addItem = useCart(state => state.addItem)
   const { isWishlisted: checkWishlisted, toggleItem: toggleWishlistItem } = useWishlist()
+  const addRecentlyViewed = useRecentlyViewed((s) => s.addProduct)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -70,6 +77,65 @@ export default function ProductDetailPage() {
       setReviews(getProductReviews(productId))
     }
   }, [productId])
+
+  // Track recently viewed + fetch cross-sell/also-bought products
+  useEffect(() => {
+    if (!product) return
+
+    // Track this view
+    addRecentlyViewed({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0] || '',
+      category: product.category,
+    })
+
+    // Determine pairing categories for "Complete the Look"
+    const pairingCategoryMap: Record<string, string[]> = {
+      rings: ['necklaces', 'earrings'],
+      necklaces: ['earrings', 'bracelets'],
+      bracelets: ['necklaces', 'earrings'],
+      earrings: ['necklaces', 'bracelets'],
+    }
+    const pairingCategories = pairingCategoryMap[product.category] || []
+
+    const fetchCrossSell = async () => {
+      if (pairingCategories.length === 0) return
+      try {
+        const responses = await Promise.all(
+          pairingCategories.map((cat) =>
+            fetch(`/api/inventory/search?category=${cat}&limit=2`).then((r) => r.json())
+          )
+        )
+        const combined: ProductWithVariants[] = responses
+          .flatMap((r) => r.products || [])
+          .slice(0, 3)
+        setCrossSellProducts(combined)
+      } catch {
+        // silently ignore
+      }
+    }
+
+    // Fetch "Customers Also Bought" — same category, skip first 4 (already in related)
+    const fetchAlsoBought = async () => {
+      try {
+        const r = await fetch(`/api/inventory/search?category=${product.category}&limit=8`)
+        const data = await r.json()
+        const all: ProductWithVariants[] = data.products || []
+        // Skip products already shown in related products section
+        const relatedIds = new Set(relatedProducts.map((p) => p.id))
+        relatedIds.add(product.id)
+        const candidates = all.filter((p) => !relatedIds.has(p.id)).slice(0, 4)
+        setAlsoViewedProducts(candidates)
+      } catch {
+        // silently ignore
+      }
+    }
+
+    fetchCrossSell()
+    fetchAlsoBought()
+  }, [product, addRecentlyViewed]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle variant selection
   const handleVariantChange = (variant: ProductVariant) => {
@@ -189,6 +255,17 @@ export default function ProductDetailPage() {
     <div className="product-page-content bg-bj-offwhite">
       {/* Film grain overlay */}
       <div className="grain-overlay" aria-hidden="true" />
+
+      {/* Ring Size Guide Modal */}
+      <RingSizeGuideModal
+        open={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
+        highlightSize={selectedSize}
+        onSizeSelect={(size) => {
+          setSelectedSize(size)
+          setSizeGuideOpen(false)
+        }}
+      />
 
       {/* Wishlist toast */}
       {wishlistToast && (
@@ -379,7 +456,12 @@ export default function ProductDetailPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-overline text-bj-black">Ring Size</h3>
-                    <button className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2">Size Guide</button>
+                    <button
+                      onClick={() => setSizeGuideOpen(true)}
+                      className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
+                    >
+                      Size Guide
+                    </button>
                   </div>
                   <div className="grid grid-cols-4 gap-2 max-w-xs">
                     {sizes.map((size) => (
@@ -396,6 +478,20 @@ export default function ProductDetailPage() {
                       </button>
                     ))}
                   </div>
+                  {/* Free resize badge */}
+                  <div className="flex items-center gap-2 text-[11px] text-bj-gray-500 mt-1">
+                    <RefreshCw size={12} className="text-bj-pink flex-shrink-0" />
+                    <span><span className="font-semibold text-bj-black">Free resize</span> within 30 days — order with confidence</span>
+                  </div>
+                  {/* Find my size CTA */}
+                  {!selectedSize && (
+                    <button
+                      onClick={() => setSizeGuideOpen(true)}
+                      className="text-[11px] font-medium text-bj-pink hover:text-bj-pink-hover transition-colors flex items-center gap-1.5"
+                    >
+                      Not sure of your size? Find it in 2 minutes →
+                    </button>
+                  )}
                 </div>
               </LuxuryReveal>
             )}
@@ -529,6 +625,62 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
+      {/* Complete the Look */}
+      {crossSellProducts.length > 0 && (
+        <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-12">
+                <p className="text-overline text-bj-pink mb-3">Style It Together</p>
+                <h2 className="text-display-lg text-bj-black">Complete the Look</h2>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+              {crossSellProducts.map((item, index) => (
+                <LuxuryReveal key={item.id} direction="up" delay={index * 0.1}>
+                  <div
+                    className="group cursor-pointer"
+                    onClick={() => router.push(`/product/${item.id}`)}
+                  >
+                    <div className="relative aspect-square bg-white overflow-hidden mb-4">
+                      <Image
+                        src={item.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-6 group-hover:scale-105 transition-transform duration-300 img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
+                      <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider bg-white text-bj-gray-500 px-2 py-1">
+                        {item.category}
+                      </span>
+                    </div>
+                    <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2 mb-1">
+                      {item.name}
+                    </h3>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-body font-medium text-bj-black">{formatPrice(item.price)}</span>
+                      {item.compare_at_price && item.compare_at_price > item.price && (
+                        <span className="text-caption text-bj-gray-400 line-through">{formatPrice(item.compare_at_price)}</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        addItem(item)
+                      }}
+                      className="w-full btn-secondary py-2.5 text-[11px] uppercase tracking-wider"
+                    >
+                      Add to Bag
+                    </button>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <div className="bg-white py-20">
@@ -613,6 +765,45 @@ export default function ProductDetailPage() {
         </div>
       )}
 
+      {/* Customers Also Bought */}
+      {alsoViewedProducts.length > 0 && (
+        <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-12">
+                <p className="text-overline text-bj-pink mb-3">Social Proof</p>
+                <h2 className="text-display-lg text-bj-black">Customers Also Bought</h2>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {alsoViewedProducts.map((item, index) => (
+                <LuxuryReveal key={item.id} direction="up" delay={index * 0.08}>
+                  <div
+                    className="group cursor-pointer product-card"
+                    onClick={() => router.push(`/product/${item.id}`)}
+                  >
+                    <div className="product-image-container relative aspect-square bg-white mb-3 overflow-hidden">
+                      <Image
+                        src={item.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-4 product-card-img img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
+                    </div>
+                    <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2 mb-1">
+                      {item.name}
+                    </h3>
+                    <span className="text-body font-medium text-bj-black">{formatPrice(item.price)}</span>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Reviews Section */}
       {reviews && (
         <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
@@ -680,6 +871,9 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Recently Viewed */}
+      <RecentlyViewedRow currentProductId={productId} />
     </div>
   )
 }
