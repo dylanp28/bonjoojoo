@@ -531,16 +531,17 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                     { label: 'Size Guide', href: '/help/sizing' }
                   ] 
                 },
-                { 
-                  title: 'Services', 
+                {
+                  title: 'Services',
                   items: [
                     { label: 'My Bonjoojoo', href: '/account' },
+                    { label: 'Refer a Friend', href: '/refer' },
                     { label: 'Buy Now Pay Later', href: '/help/financing' },
                     { label: 'Pick Up In Store', href: '/stores' },
                     { label: 'Engraving', href: '/services/engraving' },
                     { label: 'Gift Cards', href: '/gift-cards' },
                     { label: 'Custom Design', href: '/services/custom-design' }
-                  ] 
+                  ]
                 },
                 { 
                   title: 'Legal', 

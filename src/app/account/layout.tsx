@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { User, ShoppingBag, Heart, Settings, LogOut, Package, CreditCard } from 'lucide-react'
+import { User, ShoppingBag, Heart, Settings, LogOut, Package, CreditCard, Gift } from 'lucide-react'
 import { AuthModal } from '@/components/AuthModal'
 import { useAuthModal } from '@/hooks/useAuth'
 
@@ -170,7 +170,15 @@ export default function AccountLayout({
                   <CreditCard size={18} className="mr-3" />
                   Payment Methods
                 </a>
-                
+
+                <a
+                  href="/account/referral"
+                  className="flex items-center px-3 py-2 rounded-md text-stone-700 hover:bg-stone-50 transition-colors"
+                >
+                  <Gift size={18} className="mr-3" />
+                  Refer a Friend
+                </a>
+
                 <button
                   onClick={handleLogout}
                   className="flex items-center w-full px-3 py-2 rounded-md text-stone-700 hover:bg-stone-50 transition-colors"

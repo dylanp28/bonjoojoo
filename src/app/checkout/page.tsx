@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
-import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon } from 'lucide-react'
+import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon, Share2, Copy } from 'lucide-react'
+import { useReferral } from '@/hooks/useReferral'
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 import { CheckoutTrustStrip } from '@/components/TrustBadgeStrip'
 
@@ -911,6 +912,60 @@ function ReviewStep({
 
 // ─── Step: Confirmation ───────────────────────────────────────────────────────
 
+function ReferralCTA() {
+  const { referral, getReferralUrl } = useReferral()
+  const [copied, setCopied] = useState(false)
+
+  const referralUrl = referral ? getReferralUrl(referral.code) : ''
+
+  const handleCopy = async () => {
+    if (!referralUrl) return
+    try {
+      await navigator.clipboard.writeText(referralUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    } catch {
+      const el = document.createElement('textarea')
+      el.value = referralUrl
+      document.body.appendChild(el)
+      el.select()
+      document.execCommand('copy')
+      document.body.removeChild(el)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    }
+  }
+
+  return (
+    <div className="border border-bj-pink/30 rounded-lg bg-gradient-to-r from-pink-50 to-rose-50 p-5 mb-8 text-left">
+      <div className="flex items-start gap-3 mb-4">
+        <div className="flex-shrink-0 w-9 h-9 bg-bj-pink rounded-full flex items-center justify-center">
+          <Share2 size={16} className="text-white" />
+        </div>
+        <div>
+          <h4 className="text-[14px] font-semibold text-stone-900 mb-0.5">Love your new jewelry? Share it, earn $50</h4>
+          <p className="text-[13px] text-stone-600">Give a friend $50 off their first order — and get $50 credit when they buy.</p>
+        </div>
+      </div>
+      {referral && (
+        <div className="flex items-center gap-2 bg-white/80 border border-pink-200 rounded px-3 py-2">
+          <span className="flex-1 text-[12px] text-stone-600 font-mono truncate">{referralUrl}</span>
+          <button
+            onClick={handleCopy}
+            className="flex-shrink-0 flex items-center gap-1 text-[12px] font-medium text-bj-pink hover:text-bj-black transition-colors"
+          >
+            {copied ? (
+              <><Check size={13} strokeWidth={2.5} className="text-green-600" /><span className="text-green-600">Copied!</span></>
+            ) : (
+              <><Copy size={13} />Copy</>
+            )}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ConfirmationStep({
   orderNumber,
   items,
@@ -1043,6 +1098,9 @@ function ConfirmationStep({
         <p className="text-[13px] text-stone-600">{contact.city}, {contact.state} {contact.zip}</p>
         <p className="text-[13px] text-stone-500 mt-1">Estimated delivery: {shippingMethod.estimate}</p>
       </div>
+
+      {/* Referral CTA */}
+      <ReferralCTA />
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <Link
