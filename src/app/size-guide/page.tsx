@@ -1,70 +1,103 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { Printer } from 'lucide-react'
 
-type Tab = 'ring' | 'necklace' | 'bracelet'
+/* ── Data ─────────────────────────────────────────────────────────────────── */
 
-const ringSizes = [
-  { us: '3', uk: 'F', eu: '44', diameter: '14.1 mm', circumference: '44.2 mm' },
-  { us: '4', uk: 'H', eu: '47', diameter: '14.8 mm', circumference: '46.8 mm' },
-  { us: '5', uk: 'J', eu: '49', diameter: '15.7 mm', circumference: '49.3 mm' },
-  { us: '6', uk: 'L', eu: '52', diameter: '16.5 mm', circumference: '51.9 mm' },
-  { us: '7', uk: 'N', eu: '54', diameter: '17.3 mm', circumference: '54.4 mm' },
-  { us: '8', uk: 'P', eu: '57', diameter: '18.2 mm', circumference: '57.0 mm' },
-  { us: '9', uk: 'R', eu: '59', diameter: '19.0 mm', circumference: '59.5 mm' },
-  { us: '10', uk: 'T', eu: '62', diameter: '19.8 mm', circumference: '62.1 mm' },
-  { us: '11', uk: 'V', eu: '64', diameter: '20.6 mm', circumference: '64.6 mm' },
-  { us: '12', uk: 'X', eu: '67', diameter: '21.4 mm', circumference: '67.2 mm' },
+const RING_SIZES = [
+  { us: '4',    uk: 'H',  eu: '46.5', diameter: '14.8', circumference: '46.5' },
+  { us: '4.5',  uk: 'I',  eu: '48',   diameter: '15.3', circumference: '48.0' },
+  { us: '5',    uk: 'J',  eu: '49',   diameter: '15.7', circumference: '49.3' },
+  { us: '5.5',  uk: 'K',  eu: '50.5', diameter: '16.1', circumference: '50.6' },
+  { us: '6',    uk: 'L',  eu: '51.5', diameter: '16.5', circumference: '51.9' },
+  { us: '6.5',  uk: 'M',  eu: '53',   diameter: '16.9', circumference: '53.1' },
+  { us: '7',    uk: 'N',  eu: '54',   diameter: '17.3', circumference: '54.4' },
+  { us: '7.5',  uk: 'O',  eu: '55.5', diameter: '17.7', circumference: '55.7' },
+  { us: '8',    uk: 'P',  eu: '57',   diameter: '18.1', circumference: '57.0' },
+  { us: '8.5',  uk: 'Q',  eu: '58',   diameter: '18.5', circumference: '58.3' },
+  { us: '9',    uk: 'R',  eu: '59',   diameter: '18.9', circumference: '59.5' },
+  { us: '9.5',  uk: 'S',  eu: '60.5', diameter: '19.4', circumference: '61.0' },
+  { us: '10',   uk: 'T',  eu: '62',   diameter: '19.8', circumference: '62.1' },
+  { us: '10.5', uk: 'U',  eu: '63',   diameter: '20.2', circumference: '63.4' },
+  { us: '11',   uk: 'V',  eu: '64.5', diameter: '20.6', circumference: '64.7' },
+  { us: '12',   uk: 'X',  eu: '67',   diameter: '21.4', circumference: '67.2' },
 ]
 
-const necklaceLengths = [
-  { inches: '14"', cm: '35.5 cm', style: 'Choker', placement: 'Sits at the base of the neck', bestFor: 'V-necks, off-shoulder tops' },
-  { inches: '16"', cm: '40.6 cm', style: 'Collar', placement: 'Just below the collarbone', bestFor: 'Crew necks, boat necks' },
-  { inches: '18"', cm: '45.7 cm', style: 'Princess', placement: 'At or just below the collarbone', bestFor: 'Most necklines — our most popular length' },
-  { inches: '20"', cm: '50.8 cm', style: 'Matinee', placement: 'Above the bust', bestFor: 'High necklines, business wear' },
-  { inches: '24"', cm: '61.0 cm', style: 'Opera', placement: 'At or below the bust', bestFor: 'Layering, evening wear' },
-  { inches: '30"', cm: '76.2 cm', style: 'Rope', placement: 'Below the bust', bestFor: 'Layering, statement look' },
+const NECKLACE_LENGTHS = [
+  { inches: 14, name: 'Choker',   cm: '35.5', description: 'Sits snugly at the base of the neck.', tip: 'Best for V-necks and open necklines.' },
+  { inches: 16, name: 'Collar',   cm: '40.5', description: 'Falls just at the collarbone.', tip: 'Works with nearly any neckline.' },
+  { inches: 18, name: 'Princess', cm: '45.5', description: 'Rests just below the collarbone.', tip: 'Most popular; ideal for pendants.' },
+  { inches: 20, name: 'Matinee',  cm: '51',   description: 'Hangs between collarbone and bust.', tip: 'Great for layering or standalone.' },
+  { inches: 24, name: 'Opera',    cm: '61',   description: 'Falls at or below the bust.', tip: 'Elegant; can be doubled as a choker.' },
 ]
 
-const braceletSizes = [
-  { wrist: '5.5"', wristCm: '14 cm', bracelet: '6.5"', braceletCm: '16.5 cm', fit: 'Petite / Snug' },
-  { wrist: '6"', wristCm: '15.2 cm', bracelet: '7"', braceletCm: '17.8 cm', fit: 'Small / Comfortable' },
-  { wrist: '6.5"', wristCm: '16.5 cm', bracelet: '7.5"', braceletCm: '19.1 cm', fit: 'Medium / Standard' },
-  { wrist: '7"', wristCm: '17.8 cm', bracelet: '8"', braceletCm: '20.3 cm', fit: 'Large / Relaxed' },
-  { wrist: '7.5"', wristCm: '19.1 cm', bracelet: '8.5"', braceletCm: '21.6 cm', fit: 'XL / Loose' },
+const BRACELET_SIZES = [
+  { label: 'XS', wristMin: 0,   wristMax: 5.5, braceletIn: '6.5"', braceletCm: '16.5' },
+  { label: 'S',  wristMin: 5.5, wristMax: 6.5, braceletIn: '7.0"', braceletCm: '17.8' },
+  { label: 'M',  wristMin: 6.5, wristMax: 7.0, braceletIn: '7.5"', braceletCm: '19.0' },
+  { label: 'L',  wristMin: 7.0, wristMax: 7.5, braceletIn: '8.0"', braceletCm: '20.3' },
+  { label: 'XL', wristMin: 7.5, wristMax: 99,  braceletIn: '8.5"+', braceletCm: '21.5+' },
 ]
+
+/* ── Component ────────────────────────────────────────────────────────────── */
+
+type GuideTab = 'rings' | 'necklaces' | 'bracelets'
 
 export default function SizeGuidePage() {
-  const [activeTab, setActiveTab] = useState<Tab>('ring')
+  const [activeTab, setActiveTab] = useState<GuideTab>('rings')
+  const [ringSizeSystem, setRingSizeSystem] = useState<'us' | 'eu' | 'uk'>('us')
+  const [ringMm, setRingMm] = useState('')
+  const [wristInput, setWristInput] = useState('')
+  const [wristUnit, setWristUnit] = useState<'in' | 'cm'>('in')
+
+  /* Ring lookup */
+  const parsedRingMm = parseFloat(ringMm)
+  const suggestedRing = !isNaN(parsedRingMm) && parsedRingMm > 10
+    ? RING_SIZES.reduce((prev, curr) =>
+        Math.abs(parseFloat(curr.diameter) - parsedRingMm) < Math.abs(parseFloat(prev.diameter) - parsedRingMm)
+          ? curr : prev)
+    : null
+
+  /* Bracelet lookup */
+  const wristInches = wristUnit === 'in' ? parseFloat(wristInput) : parseFloat(wristInput) / 2.54
+  const suggestedBracelet = !isNaN(wristInches) && wristInches > 3
+    ? BRACELET_SIZES.find(s => wristInches >= s.wristMin && wristInches < s.wristMax) ?? BRACELET_SIZES[BRACELET_SIZES.length - 1]
+    : null
+
+  const tabs: { id: GuideTab; label: string }[] = [
+    { id: 'rings',     label: 'Rings' },
+    { id: 'necklaces', label: 'Necklaces' },
+    { id: 'bracelets', label: 'Bracelets' },
+  ]
 
   return (
-    <div className="min-h-screen bg-bj-offwhite pt-[124px]">
-      {/* Hero */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="container-bj py-14 text-center">
-          <p className="text-overline text-bj-pink mb-3">Fit Guide</p>
-          <h1 className="text-display-lg text-bj-black mb-4">Size Guide</h1>
-          <p className="text-body text-bj-gray-500 max-w-xl mx-auto">
-            Find your perfect fit with our comprehensive sizing charts. Not sure? Our consultants are happy to help.
+    <div className="min-h-screen bg-bj-offwhite">
+      {/* Page header */}
+      <div className="bg-white border-b border-bj-gray-100">
+        <div className="max-w-3xl mx-auto px-6 py-10">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-bj-gray-400 mb-2">
+            <Link href="/" className="hover:text-bj-black transition-colors">Home</Link>
+            <span className="mx-2">/</span>
+            Sizing Guide
           </p>
+          <h1 className="text-[28px] sm:text-[36px] font-light text-bj-black tracking-tight">Sizing Guide</h1>
+          <p className="text-[13px] text-bj-gray-500 mt-2">Find the perfect fit for every piece — rings, necklaces, and bracelets.</p>
         </div>
       </div>
 
-      <div className="container-bj py-16">
-        <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
 
-          {/* Tabs */}
-          <div className="flex border-b border-gray-200 mb-10">
-            {([
-              { key: 'ring', label: 'Rings' },
-              { key: 'necklace', label: 'Necklaces' },
-              { key: 'bracelet', label: 'Bracelets' },
-            ] as { key: Tab; label: string }[]).map(tab => (
+        {/* Tab navigation */}
+        <div className="bg-white border border-bj-gray-100">
+          <div className="flex border-b border-bj-gray-100">
+            {tabs.map(tab => (
               <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`px-8 py-3.5 text-[13px] font-medium tracking-[0.08em] uppercase transition-colors border-b-2 -mb-px ${
-                  activeTab === tab.key
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 py-4 text-[11px] font-medium tracking-[0.12em] uppercase transition-colors border-b-2 ${
+                  activeTab === tab.id
                     ? 'border-bj-black text-bj-black'
                     : 'border-transparent text-bj-gray-400 hover:text-bj-black'
                 }`}
@@ -74,150 +107,281 @@ export default function SizeGuidePage() {
             ))}
           </div>
 
-          {/* Ring tab */}
-          {activeTab === 'ring' && (
-            <div>
-              <div className="grid md:grid-cols-2 gap-10 mb-10">
-                <div>
-                  <h2 className="text-[16px] font-semibold text-bj-black mb-4">How to Measure</h2>
-                  <ol className="space-y-3 text-[14px] text-bj-gray-500">
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">1</span>Cut a strip of paper about 10 cm long and 1 cm wide.</li>
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">2</span>Wrap it snugly around the base of the finger you plan to wear the ring on.</li>
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">3</span>Mark where the paper overlaps and measure the length in mm — that&apos;s your circumference.</li>
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">4</span>Match the measurement to the chart below.</li>
-                  </ol>
-                </div>
-                <div className="bg-white p-6 border border-gray-100">
-                  <h3 className="text-[13px] font-semibold text-bj-black mb-3">Pro Tips</h3>
-                  <ul className="space-y-2 text-[13px] text-bj-gray-500">
-                    <li>• Measure at end of day when fingers are largest</li>
-                    <li>• Fingers swell in heat — measure at room temperature</li>
-                    <li>• Between sizes? Size up for comfort</li>
-                    <li>• Wide bands fit tighter — consider half size up</li>
-                    <li>• Measure 3–4 times for accuracy</li>
-                  </ul>
+          {/* ── RINGS ──────────────────────────────────────────────────── */}
+          {activeTab === 'rings' && (
+            <div className="p-6 sm:p-8 space-y-8">
+
+              {/* Size system toggle */}
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] text-bj-gray-500 uppercase tracking-wider">Size system:</span>
+                {(['us', 'eu', 'uk'] as const).map(sys => (
+                  <button
+                    key={sys}
+                    onClick={() => setRingSizeSystem(sys)}
+                    className={`px-3 py-1 text-[11px] uppercase font-medium transition-colors ${
+                      ringSizeSystem === sys ? 'bg-bj-black text-white' : 'border border-bj-gray-200 text-bj-gray-600 hover:border-bj-black'
+                    }`}
+                  >
+                    {sys}
+                  </button>
+                ))}
+                <button
+                  onClick={() => window.print()}
+                  className="ml-auto flex items-center gap-1.5 text-[11px] text-bj-gray-400 hover:text-bj-black transition-colors print:hidden"
+                >
+                  <Printer size={13} />
+                  Print
+                </button>
+              </div>
+
+              {/* Measure at home */}
+              <div className="bg-bj-offwhite p-5 space-y-3">
+                <p className="text-[11px] uppercase tracking-wider font-medium text-bj-gray-400">Find Your Ring Size from Measurement</p>
+                <p className="text-[12px] text-bj-gray-600">Enter your finger circumference or ring diameter in mm to get your size instantly.</p>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="number"
+                    value={ringMm}
+                    onChange={e => setRingMm(e.target.value)}
+                    placeholder="e.g. 17.3 (diameter)"
+                    className="w-44 border border-bj-gray-300 px-3 py-2 text-[13px] focus:outline-none focus:border-bj-black bg-white"
+                  />
+                  <span className="text-[11px] text-bj-gray-400">mm</span>
+                  {suggestedRing && (
+                    <div className="flex items-center gap-2 bg-white border border-bj-gray-100 px-4 py-2">
+                      <p className="text-[10px] uppercase tracking-wider text-bj-gray-400">Match:</p>
+                      <p className="text-[14px] font-bold text-bj-black">US {suggestedRing.us}</p>
+                      <p className="text-[11px] text-bj-gray-500">/ EU {suggestedRing.eu} / UK {suggestedRing.uk}</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
+              {/* Size table */}
               <div className="overflow-x-auto">
-                <table className="w-full text-[13px]">
+                <table className="w-full text-[12px]">
                   <thead>
-                    <tr className="border-b-2 border-bj-black">
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">US Size</th>
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">UK Size</th>
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">EU Size</th>
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Diameter</th>
-                      <th className="text-left py-3 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Circumference</th>
+                    <tr className="border-b border-bj-gray-200">
+                      <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">US</th>
+                      <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">UK</th>
+                      <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">EU</th>
+                      <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Diameter (mm)</th>
+                      <th className="text-left py-3 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Circ. (mm)</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {ringSizes.map((row, i) => (
-                      <tr key={row.us} className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : ''}`}>
-                        <td className="py-3 pr-4 font-medium text-bj-black">{row.us}</td>
-                        <td className="py-3 pr-4 text-bj-gray-500">{row.uk}</td>
-                        <td className="py-3 pr-4 text-bj-gray-500">{row.eu}</td>
-                        <td className="py-3 pr-4 text-bj-gray-500">{row.diameter}</td>
-                        <td className="py-3 text-bj-gray-500">{row.circumference}</td>
-                      </tr>
-                    ))}
+                    {RING_SIZES.map(size => {
+                      const isMatch = suggestedRing?.us === size.us
+                      return (
+                        <tr key={size.us} className={`border-b border-bj-gray-50 ${isMatch ? 'bg-bj-blush' : 'hover:bg-bj-offwhite'} transition-colors`}>
+                          <td className="py-3 pr-4 font-semibold text-bj-black">{size.us}</td>
+                          <td className="py-3 pr-4 text-bj-gray-600">{size.uk}</td>
+                          <td className="py-3 pr-4 text-bj-gray-600">{size.eu}</td>
+                          <td className="py-3 pr-4 text-bj-gray-600">{size.diameter}</td>
+                          <td className="py-3 text-bj-gray-600">{size.circumference}</td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
+              </div>
+
+              <div className="bg-bj-pink/5 border border-bj-pink/20 p-4">
+                <p className="text-[12px] text-bj-gray-600">
+                  <span className="font-semibold text-bj-black">Free resize within 30 days</span> — order with confidence, we'll make it fit perfectly.
+                </p>
               </div>
             </div>
           )}
 
-          {/* Necklace tab */}
-          {activeTab === 'necklace' && (
-            <div>
-              <div className="mb-8">
-                <h2 className="text-[16px] font-semibold text-bj-black mb-2">Necklace Lengths</h2>
-                <p className="text-[14px] text-bj-gray-500">All lengths are total necklace length. Add 1–2&quot; if you prefer a looser fit.</p>
+          {/* ── NECKLACES ──────────────────────────────────────────────── */}
+          {activeTab === 'necklaces' && (
+            <div className="p-6 sm:p-8 space-y-8">
+
+              {/* Visual diagram */}
+              <div className="bg-bj-offwhite p-6">
+                <p className="text-[10px] uppercase tracking-wider font-medium text-bj-gray-400 mb-5 text-center">Necklace Lengths at a Glance</p>
+                <div className="flex items-start justify-center gap-8">
+                  <svg viewBox="0 0 120 280" className="w-28 flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="60" cy="28" rx="18" ry="22" fill="#e8e0d8" />
+                    <rect x="53" y="48" width="14" height="18" fill="#e8e0d8" />
+                    <path d="M20 66 Q60 58 100 66 L108 160 Q60 168 12 160 Z" fill="#e8e0d8" />
+                    <line x1="46" y1="72" x2="74" y2="72" stroke="#c8a4a4" strokeWidth="1.5" strokeDasharray="3,2" />
+                    <line x1="38" y1="84" x2="82" y2="84" stroke="#c8a4a4" strokeWidth="1.5" strokeDasharray="3,2" />
+                    <line x1="30" y1="100" x2="90" y2="100" stroke="#c8a4a4" strokeWidth="1.5" strokeDasharray="3,2" />
+                    <line x1="24" y1="118" x2="96" y2="118" stroke="#c8a4a4" strokeWidth="1.5" strokeDasharray="3,2" />
+                    <line x1="20" y1="144" x2="100" y2="144" stroke="#c8a4a4" strokeWidth="1.5" strokeDasharray="3,2" />
+                  </svg>
+                  <div className="flex flex-col gap-3 pt-2">
+                    {NECKLACE_LENGTHS.map(l => (
+                      <div key={l.inches} className="flex items-center gap-3">
+                        <div className="w-8 h-0.5 border-t border-dashed border-bj-pink/70 flex-shrink-0" />
+                        <span className="text-[12px] font-bold text-bj-black w-8">{l.inches}"</span>
+                        <span className="text-[12px] text-bj-gray-700 font-medium">{l.name}</span>
+                        <span className="text-[11px] text-bj-gray-400">{l.cm} cm</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                {necklaceLengths.map(row => (
-                  <div key={row.inches} className="bg-white border border-gray-100 p-6 flex gap-6 items-start">
-                    <div className="w-16 h-16 rounded-full border-2 border-bj-black flex items-center justify-center flex-shrink-0">
-                      <span className="text-[14px] font-bold text-bj-black">{row.inches}</span>
+              {/* Length cards */}
+              <div className="space-y-3">
+                <h3 className="text-[11px] uppercase tracking-wider font-medium text-bj-gray-400">Length Details</h3>
+                {NECKLACE_LENGTHS.map(l => (
+                  <div key={l.inches} className="border border-bj-gray-100 p-4 space-y-2 bg-white">
+                    <div className="flex items-center gap-3">
+                      <span className="bg-bj-black text-white px-2.5 py-1 text-[11px] font-bold tracking-wider">{l.inches}"</span>
+                      <span className="text-[13px] font-semibold text-bj-black uppercase tracking-wider">{l.name}</span>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-baseline gap-3 mb-1">
-                        <span className="text-[15px] font-semibold text-bj-black">{row.style}</span>
-                        <span className="text-[13px] text-bj-gray-400">{row.inches} / {row.cm}</span>
-                      </div>
-                      <p className="text-[13px] text-bj-gray-500 mb-1">{row.placement}</p>
-                      <p className="text-[12px] text-bj-pink">Best for: {row.bestFor}</p>
+                    <p className="text-[12px] text-bj-gray-600">{l.description}</p>
+                    <p className="text-[11px] text-bj-gray-500"><span className="font-medium text-bj-black">Style tip:</span> {l.tip}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* How to measure */}
+              <div className="bg-bj-offwhite p-5 space-y-3">
+                <p className="text-[11px] uppercase tracking-wider font-medium text-bj-gray-400">How to Measure</p>
+                <ol className="space-y-2">
+                  {[
+                    'Use a soft tape measure or a piece of string.',
+                    'Hold the end at the center of your collarbone and let it fall to your desired drop point.',
+                    'Note the length in inches or centimeters.',
+                    'Compare to the chart above to select your ideal necklace length.',
+                  ].map((step, i) => (
+                    <li key={i} className="flex gap-3">
+                      <span className="text-[11px] font-bold text-bj-pink flex-shrink-0">{i + 1}.</span>
+                      <p className="text-[12px] text-bj-gray-600">{step}</p>
+                    </li>
+                  ))}
+                </ol>
+                <p className="text-[11px] text-bj-gray-500 border-t border-bj-gray-200 pt-3">
+                  <span className="font-semibold text-bj-black">Layering tip:</span> For a layered look, choose necklace lengths at least 2" apart — for example 16" + 18" + 22".
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ── BRACELETS ──────────────────────────────────────────────── */}
+          {activeTab === 'bracelets' && (
+            <div className="p-6 sm:p-8 space-y-8">
+
+              {/* Wrist finder */}
+              <div className="bg-bj-offwhite p-5 space-y-4">
+                <p className="text-[11px] uppercase tracking-wider font-medium text-bj-gray-400">Find Your Bracelet Size</p>
+                <p className="text-[12px] text-bj-gray-600">Wrap a soft tape measure snugly around the widest part of your wrist and enter your measurement below.</p>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={wristInput}
+                    onChange={e => setWristInput(e.target.value)}
+                    placeholder={wristUnit === 'in' ? 'e.g. 6.5' : 'e.g. 16.5'}
+                    className="w-32 border border-bj-gray-300 px-3 py-2 text-[13px] focus:outline-none focus:border-bj-black bg-white"
+                  />
+                  <div className="flex">
+                    {(['in', 'cm'] as const).map(u => (
+                      <button
+                        key={u}
+                        onClick={() => { setWristUnit(u); setWristInput('') }}
+                        className={`px-3 py-2 text-[11px] font-medium uppercase border transition-colors ${
+                          wristUnit === u ? 'bg-bj-black text-white border-bj-black' : 'border-bj-gray-200 text-bj-gray-500 hover:border-bj-black'
+                        }`}
+                      >
+                        {u}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {suggestedBracelet && (
+                  <div className="bg-white border border-bj-gray-100 p-4 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-bj-black rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-[12px] font-bold text-white">{suggestedBracelet.label}</span>
                     </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-bj-gray-400">Recommended</p>
+                      <p className="text-[14px] font-bold text-bj-black">Size {suggestedBracelet.label} — Bracelet {suggestedBracelet.braceletIn}</p>
+                    </div>
+                  </div>
+                )}
+                <p className="text-[11px] text-bj-gray-500">
+                  <span className="font-semibold text-bj-black">Comfort tip:</span> Add 0.5" to your wrist measurement for a comfortable everyday fit.
+                </p>
+              </div>
+
+              {/* Size chart */}
+              <div className="space-y-3">
+                <h3 className="text-[11px] uppercase tracking-wider font-medium text-bj-gray-400">Bracelet Size Chart</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-[12px]">
+                    <thead>
+                      <tr className="border-b border-bj-gray-200">
+                        <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Size</th>
+                        <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Wrist (inches)</th>
+                        <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Bracelet (in)</th>
+                        <th className="text-left py-3 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Bracelet (cm)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {BRACELET_SIZES.map(size => {
+                        const isMatch = suggestedBracelet?.label === size.label
+                        return (
+                          <tr key={size.label} className={`border-b border-bj-gray-50 transition-colors ${isMatch ? 'bg-bj-blush' : 'hover:bg-bj-offwhite'}`}>
+                            <td className="py-3 pr-4 font-bold text-bj-black">{size.label}</td>
+                            <td className="py-3 pr-4 text-bj-gray-600">
+                              {size.wristMin === 0
+                                ? `< ${size.wristMax}"`
+                                : size.wristMax === 99
+                                ? `> ${size.wristMin}"`
+                                : `${size.wristMin}" – ${size.wristMax}"`}
+                            </td>
+                            <td className="py-3 pr-4 text-bj-gray-600">{size.braceletIn}</td>
+                            <td className="py-3 text-bj-gray-600">{size.braceletCm}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Fit style guide */}
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { type: 'Snug', extra: '+0.25"', desc: 'Minimal movement. Ideal for bangles.' },
+                  { type: 'Comfort', extra: '+0.5"', desc: 'Slight movement. Most popular fit.' },
+                  { type: 'Loose', extra: '+1"', desc: 'Relaxed, stackable look.' },
+                ].map(f => (
+                  <div key={f.type} className="bg-bj-offwhite p-4 text-center space-y-1">
+                    <p className="text-[12px] font-semibold text-bj-black">{f.type}</p>
+                    <p className="text-[11px] text-bj-pink font-medium">{f.extra}</p>
+                    <p className="text-[10px] text-bj-gray-500">{f.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           )}
+        </div>
 
-          {/* Bracelet tab */}
-          {activeTab === 'bracelet' && (
-            <div>
-              <div className="grid md:grid-cols-2 gap-10 mb-10">
-                <div>
-                  <h2 className="text-[16px] font-semibold text-bj-black mb-4">How to Measure Your Wrist</h2>
-                  <ol className="space-y-3 text-[14px] text-bj-gray-500">
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">1</span>Use a flexible tape measure or a strip of paper.</li>
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">2</span>Wrap it around your wrist just below the wrist bone.</li>
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">3</span>Note the measurement where the tape meets itself.</li>
-                    <li className="flex gap-3"><span className="w-5 h-5 rounded-full bg-bj-black text-white text-[11px] flex items-center justify-center flex-shrink-0 mt-0.5">4</span>Add 0.5–1&quot; for a comfortable fit, 1–1.5&quot; for a relaxed fit.</li>
-                  </ol>
-                </div>
-                <div className="bg-white p-6 border border-gray-100">
-                  <h3 className="text-[13px] font-semibold text-bj-black mb-3">Fit Preferences</h3>
-                  <ul className="space-y-2 text-[13px] text-bj-gray-500">
-                    <li>• <strong>Snug:</strong> Add 0.25–0.5&quot; to wrist size</li>
-                    <li>• <strong>Comfortable:</strong> Add 0.75–1&quot; (most popular)</li>
-                    <li>• <strong>Relaxed:</strong> Add 1.25–1.5&quot;</li>
-                    <li>• Tennis bracelets are typically worn snug</li>
-                    <li>• Chain bracelets look best at comfortable fit</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-[13px]">
-                  <thead>
-                    <tr className="border-b-2 border-bj-black">
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Wrist Size</th>
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Wrist (cm)</th>
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Bracelet Size</th>
-                      <th className="text-left py-3 pr-4 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Bracelet (cm)</th>
-                      <th className="text-left py-3 font-semibold tracking-[0.08em] uppercase text-[11px] text-bj-black">Fit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {braceletSizes.map((row, i) => (
-                      <tr key={row.wrist} className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : ''}`}>
-                        <td className="py-3 pr-4 font-medium text-bj-black">{row.wrist}</td>
-                        <td className="py-3 pr-4 text-bj-gray-500">{row.wristCm}</td>
-                        <td className="py-3 pr-4 text-bj-gray-500">{row.bracelet}</td>
-                        <td className="py-3 pr-4 text-bj-gray-500">{row.braceletCm}</td>
-                        <td className="py-3 text-bj-gray-500">{row.fit}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* CTA */}
-          <div className="mt-14 bg-bj-blush p-8 text-center">
-            <p className="text-overline text-bj-pink mb-2">Need Help?</p>
-            <h3 className="text-display-sm text-bj-black mb-3">Not Sure of Your Size?</h3>
-            <p className="text-body text-bj-gray-500 mb-6">
-              Book a complimentary consultation and one of our jewelry experts will help you find the perfect fit.
-            </p>
-            <a href="/consultation" className="btn-primary inline-block">
-              Book a Consultation
-            </a>
+        {/* Bottom help row */}
+        <div className="flex flex-col sm:flex-row gap-4 text-center sm:text-left">
+          <div className="flex-1 bg-white border border-bj-gray-100 p-5 space-y-2">
+            <p className="text-[13px] font-semibold text-bj-black">Still unsure?</p>
+            <p className="text-[12px] text-bj-gray-500">Our jewelry consultants can help you find the perfect fit.</p>
+            <Link href="/contact" className="text-[11px] text-bj-pink underline underline-offset-2 hover:text-bj-pink-hover transition-colors font-medium">
+              Contact us →
+            </Link>
+          </div>
+          <div className="flex-1 bg-white border border-bj-gray-100 p-5 space-y-2">
+            <p className="text-[13px] font-semibold text-bj-black">Book a consultation</p>
+            <p className="text-[12px] text-bj-gray-500">Get personalized sizing advice via virtual or in-store appointment.</p>
+            <Link href="/consultation" className="text-[11px] text-bj-pink underline underline-offset-2 hover:text-bj-pink-hover transition-colors font-medium">
+              Book now →
+            </Link>
           </div>
         </div>
+
       </div>
     </div>
   )

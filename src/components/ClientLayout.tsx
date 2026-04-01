@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Search, User, Heart, LogOut, Settings, ShoppingBag, Menu, X, MapPin, ChevronDown } from 'lucide-react'
+import { Search, User, Heart, LogOut, Settings, ShoppingBag, Menu, X, MapPin, ChevronDown, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -10,20 +10,35 @@ import { useAuth, useAuthModal } from '@/hooks/useAuth'
 import { useCart } from '@/store/useCart'
 import CartSidebar from '@/components/CartSidebar'
 import ChatWidget from '@/components/ChatWidget'
+import { ExitIntentPopup } from '@/components/ExitIntentPopup'
+import { FooterTrustStrip } from '@/components/TrustBadgeStrip'
+
+const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
+
+function storeNewsletterEmail(email: string) {
+  try {
+    const list = JSON.parse(localStorage.getItem(EMAIL_LIST_KEY) || '[]') as string[]
+    if (!list.includes(email)) {
+      localStorage.setItem(EMAIL_LIST_KEY, JSON.stringify([...list, email]))
+    }
+  } catch {}
+}
 
 interface ClientLayoutProps {
   children: React.ReactNode
 }
 
 const navItems = [
-  { label: 'New & Featured', href: '/search?sort=newest' },
+  { label: 'New & Featured', href: '/search' },
   { label: 'Rings', href: '/category/rings', mega: true },
   { label: 'Necklaces', href: '/category/necklaces', mega: true },
   { label: 'Earrings', href: '/category/earrings', mega: true },
   { label: 'Bracelets', href: '/category/bracelets', mega: true },
+  { label: 'Sets & Bundles', href: '/bundles' },
   { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
-  { label: 'Size Guide', href: '/size-guide' },
-  { label: 'Consultation', href: '/consultation' },
+  { label: 'Gifts', href: '/search?tag=gift' },
+  { label: 'Journal', href: '/blog' },
+  { label: 'Book a Consultation', href: '/consultation' },
 ]
 
 const megaMenus: Record<string, { categories: { title: string; items: { label: string; href: string }[] }[]; featured?: { title: string; subtitle: string } }> = {
@@ -63,7 +78,7 @@ const megaMenus: Record<string, { categories: { title: string; items: { label: s
 
 export function ClientLayout({ children }: ClientLayoutProps) {
   const pathname = usePathname()
-  const { user, isAuthenticated, logout, isLoading } = useAuth()
+  const { user, isAuthenticated, logout, isLoading, refreshUser } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const { totalItems, toggleCart } = useCart()
   const [showUserMenu, setShowUserMenu] = useState(false)
@@ -74,6 +89,22 @@ export function ClientLayout({ children }: ClientLayoutProps) {
   const menuTimeoutRef = useRef<NodeJS.Timeout>()
   const lastScrollY = useRef(0)
   const headerRef = useRef<HTMLElement>(null)
+
+  // Footer newsletter state
+  const [footerEmail, setFooterEmail] = useState('')
+  const [footerSubmitted, setFooterSubmitted] = useState(false)
+  const [footerError, setFooterError] = useState('')
+
+  const handleFooterSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = footerEmail.trim()
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setFooterError('Please enter a valid email address.')
+      return
+    }
+    storeNewsletterEmail(trimmed)
+    setFooterSubmitted(true)
+  }
 
   // Determine if current page should have solid header (all pages except homepage)
   const isHomepage = pathname === '/'
@@ -236,10 +267,11 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               <button
                 onClick={() => isAuthenticated ? setShowUserMenu(!showUserMenu) : openLogin()}
                 className={`p-2.5 transition-colors hidden sm:flex ${
-                  shouldHaveSolidHeader || stickyHeader
-                    ? 'text-bj-black hover:text-bj-gray-500'
+                  shouldHaveSolidHeader || stickyHeader 
+                    ? 'text-bj-black hover:text-bj-gray-500' 
                     : 'text-white hover:text-white/70'
                 }`}
+                disabled={isLoading}
                 aria-label="Account"
               >
                 <User size={20} strokeWidth={1.5} />
@@ -400,7 +432,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
         {/* ═══ MOBILE MENU ═══ */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 top-[68px] bg-white z-[95] overflow-y-auto">
+          <div className="lg:hidden fixed inset-0 top-[76px] bg-white z-[95] overflow-y-auto">
             <div className="p-6">
               <nav className="space-y-0">
                 {navItems.map((item) => (
@@ -425,6 +457,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                 <Link href="/stores" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-[14px] text-bj-gray-500">
                   <MapPin size={18} /> Find a Store
                 </Link>
+                <Link href="/consultation" onClick={() => setIsMobileMenuOpen(false)} className="inline-flex items-center gap-2 btn-primary py-3 px-6 text-[12px] mt-2">
+                  Book a Free Consultation
+                </Link>
               </div>
             </div>
           </div>
@@ -444,10 +479,26 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               <p className="text-overline text-bj-pink mb-3">Exclusive Access</p>
               <h3 className="text-display-sm text-bj-black mb-3">Join the Bonjoojoo Club</h3>
               <p className="text-body mb-8">Be the first to discover new collections, receive exclusive offers, and get 10% off your first order.</p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 max-w-md mx-auto">
-                <input type="email" placeholder="Enter your email" className="input-bj flex-1 sm:border-r-0 text-[13px]" />
-                <button className="btn-primary whitespace-nowrap text-[11px] px-6">Sign Up</button>
-              </div>
+              {footerSubmitted ? (
+                <div className="flex items-center justify-center gap-2 text-green-700 py-2">
+                  <CheckCircle size={18} />
+                  <span className="text-[14px] font-medium">You&apos;re on the list! Welcome to the club.</span>
+                </div>
+              ) : (
+                <form onSubmit={handleFooterSubmit}>
+                  <div className="flex gap-0 max-w-md mx-auto">
+                    <input
+                      type="email"
+                      value={footerEmail}
+                      onChange={(e) => { setFooterEmail(e.target.value); setFooterError('') }}
+                      placeholder="Enter your email"
+                      className="input-bj flex-1 border-r-0 text-[13px]"
+                    />
+                    <button type="submit" className="btn-primary whitespace-nowrap text-[11px] px-6">Sign Up</button>
+                  </div>
+                  {footerError && <p className="mt-2 text-[12px] text-red-500">{footerError}</p>}
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -464,6 +515,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                     { label: 'Necklaces & Pendants', href: '/category/necklaces' },
                     { label: 'Earrings', href: '/category/earrings' },
                     { label: 'Bracelets', href: '/category/bracelets' },
+                    { label: 'Sets & Bundles', href: '/bundles' },
                     { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
                     { label: 'Gifts', href: '/search?tag=gift' },
                     { label: 'Sale', href: '/search?tag=sale' }
@@ -473,26 +525,26 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                   title: 'Resources', 
                   items: [
                     { label: 'Order Status', href: '/account/orders' },
-                    { label: 'Shipping', href: '/help/shipping' },
-                    { label: 'Returns & Exchanges', href: '/help/returns' },
-                    { label: 'FAQ', href: '/help/faq' },
+                    { label: 'Shipping', href: '/shipping' },
+                    { label: 'Returns & Exchanges', href: '/returns' },
+                    { label: 'FAQ', href: '/faq' },
                     { label: 'Contact Us', href: '/contact' },
                     { label: 'Product Care', href: '/help/care' },
                     { label: 'Warranty', href: '/help/warranty' },
-                    { label: 'Size Guide', href: '/size-guide' }
-                  ]
+                    { label: 'Size Guide', href: '/help/sizing' }
+                  ] 
                 },
                 {
                   title: 'Services',
                   items: [
                     { label: 'My Bonjoojoo', href: '/account' },
-                    { label: 'Book a Consultation', href: '/consultation' },
+                    { label: 'Refer a Friend', href: '/refer' },
                     { label: 'Buy Now Pay Later', href: '/help/financing' },
                     { label: 'Pick Up In Store', href: '/stores' },
                     { label: 'Engraving', href: '/services/engraving' },
                     { label: 'Gift Cards', href: '/gift-cards' },
                     { label: 'Custom Design', href: '/services/custom-design' }
-                  ] 
+                  ]
                 },
                 { 
                   title: 'Legal', 
@@ -510,6 +562,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                     { label: 'Sustainability', href: '/about/sustainability' },
                     { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
                     { label: 'Craftsmanship', href: '/about/craftsmanship' },
+                    { label: 'Journal', href: '/blog' },
                     { label: 'Careers', href: '/careers' },
                     { label: 'Press', href: '/press' }
                   ] 
@@ -529,6 +582,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
             </div>
           </div>
         </div>
+
+        {/* Footer trust strip */}
+        <FooterTrustStrip />
 
         {/* Footer bottom bar */}
         <div className="bg-white border-t border-gray-200">
@@ -571,6 +627,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
       <CartSidebar />
       <ChatWidget />
+      <ExitIntentPopup />
 
       <AuthModal
         isOpen={isOpen}
@@ -578,6 +635,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
         initialMode={mode}
         mode={mode}
         onSwitchMode={switchMode}
+        onSuccess={() => refreshUser()}
       />
     </>
   )

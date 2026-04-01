@@ -33,6 +33,7 @@ export interface ProductGroup {
   // Product flags
   featured?: boolean
   bestseller?: boolean
+  supportsEngraving?: boolean
   
   // Product gallery - all images from variants
   allImages: string[]
@@ -56,6 +57,9 @@ export interface Product {
   inStock: boolean
   tags: string[]
   
+  // Personalization
+  supportsEngraving?: boolean
+
   // Additional properties for API compatibility
   sku?: string
   short_description?: string
@@ -63,7 +67,8 @@ export interface Product {
   is_featured?: boolean
   is_bestseller?: boolean
   stock?: number
-  availability_status?: string
+  availability_status?: 'in_stock' | 'low_stock' | 'sold_out' | 'out_of_stock' | string
+  stockCount?: number
   metal?: string
   diamond?: any
 }

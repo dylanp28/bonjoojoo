@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, SlidersHorizontal, ChevronDown, Grid3X3, List } from 'lucide-react'
+import { Heart, SlidersHorizontal, ChevronDown, Grid3X3, List, Star } from 'lucide-react'
 import { Product } from '@/data/products'
 import { LuxuryReveal } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+import { getProductReviews } from '@/data/reviews'
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest'
 type ViewMode = 'grid' | 'list'
@@ -162,6 +163,15 @@ export default function CategoryPage() {
               {category === 'bracelets' && 'Luxurious bracelets that add sparkle to every moment, crafted with sustainable lab-grown diamonds.'}
               {!['rings', 'necklaces', 'earrings', 'bracelets'].includes(category) && 'Discover our exquisite selection of fine jewelry, handcrafted with lab-grown diamonds.'}
             </p>
+            {category === 'rings' && (
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <Link href="/help/sizing" className="text-[12px] text-bj-gray-500 hover:text-bj-black underline underline-offset-2 transition-colors">
+                  Ring Size Guide
+                </Link>
+                <span className="text-bj-gray-300">·</span>
+                <span className="text-[12px] text-bj-gray-500">Free resize within 30 days</span>
+              </div>
+            )}
           </LuxuryReveal>
         </div>
       </div>
@@ -331,28 +341,37 @@ export default function CategoryPage() {
                 {viewMode === 'grid' ? (
                   // Grid View - Pandora Style
                   <Link href={`/product/${product.id}`} className="group product-card block">
-                    <div className="product-image-container relative aspect-[4/5] bg-white mb-4 overflow-hidden">
-                      {product.images && product.images[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          loading={index < 4 ? 'eager' : 'lazy'}
-                          className="object-cover product-card-img img-editorial"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-bj-gray-50">
-                          <span className="text-bj-gray-400 text-caption">{product.name}</span>
-                        </div>
-                      )}
+                    <div className={`product-image-container relative aspect-[4/5] mb-4 overflow-hidden ${(product as any).availability_status === 'sold_out' ? 'bg-bj-gray-100' : 'bg-white'}`}>
+                      <Image
+                        src={product.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={product.name}
+                        fill
+                        className={`object-contain p-4 product-card-img img-editorial transition-all ${(product as any).availability_status === 'sold_out' ? 'opacity-40 grayscale' : ''}`}
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
 
                       {/* Badges */}
-                      {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="absolute top-3 left-3 bg-bj-pink text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Sale</span>
-                      )}
-                      {product.tags.includes('bestseller') && !product.originalPrice && (
-                        <span className="absolute top-3 left-3 bg-bj-black text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Best Seller</span>
-                      )}
+                      <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                        {(product as any).availability_status === 'sold_out' ? (
+                          <span className="bg-bj-gray-500 text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Sold Out</span>
+                        ) : (product as any).availability_status === 'low_stock' ? (
+                          <span className="bg-amber-500 text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">
+                            Only {(product as any).stockCount || 'few'} left
+                          </span>
+                        ) : (
+                          <>
+                            {product.originalPrice && product.originalPrice > product.price && (
+                              <span className="bg-bj-pink text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Sale</span>
+                            )}
+                            {product.tags.includes('bestseller') && !product.originalPrice && (
+                              <span className="bg-bj-black text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1">Best Seller</span>
+                            )}
+                            {product.category === 'rings' && (
+                              <span className="bg-white/90 text-bj-black text-[9px] font-medium tracking-wider uppercase px-2 py-1 border border-bj-gray-200">Free Resize</span>
+                            )}
+                          </>
+                        )}
+                      </div>
 
                       {/* Wishlist */}
                       <button
@@ -362,18 +381,19 @@ export default function CategoryPage() {
                         }}
                         className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all"
                       >
-                        <Heart 
-                          size={14} 
+                        <Heart
+                          size={14}
                           className={`transition-colors ${
-                            wishlist.has(product.id) 
-                              ? 'text-bj-pink fill-current' 
+                            wishlist.has(product.id)
+                              ? 'text-bj-pink fill-current'
                               : 'text-bj-gray-500 hover:text-bj-pink'
-                          }`} 
-                          strokeWidth={1.5} 
+                          }`}
+                          strokeWidth={1.5}
                         />
                       </button>
 
-                      {/* Quick Add */}
+                      {/* Quick Add — hidden for sold-out products */}
+                      {(product as any).availability_status !== 'sold_out' && (
                       <div className="quick-add absolute bottom-0 left-0 right-0">
                         <button
                           onClick={(e) => {
@@ -385,6 +405,7 @@ export default function CategoryPage() {
                           Quick Add
                         </button>
                       </div>
+                      )}
                     </div>
 
                     {/* Product info */}
@@ -392,6 +413,21 @@ export default function CategoryPage() {
                       <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2">
                         {product.name}
                       </h3>
+
+                      {/* Star rating */}
+                      {(() => {
+                        const r = getProductReviews(product.id)
+                        return (
+                          <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-0.5">
+                              {[1,2,3,4,5].map((s) => (
+                                <Star key={s} size={11} className={s <= Math.round(r.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'} />
+                              ))}
+                            </div>
+                            <span className="text-[11px] text-bj-gray-400">({r.totalReviews})</span>
+                          </div>
+                        )
+                      })()}
 
                       <div className="flex items-center gap-2">
                         <span className="text-body font-medium text-bj-black">{formatPrice(product.price)}</span>
@@ -405,24 +441,22 @@ export default function CategoryPage() {
                         <div className="w-3 h-3 rounded-full bg-bj-gold border border-bj-gray-200" />
                         <div className="w-3 h-3 rounded-full bg-gray-400 border border-bj-gray-200" />
                       </div>
+                      {product.category === 'rings' && (
+                        <p className="text-[10px] text-bj-gray-400">US 4–12 available · Free resize</p>
+                      )}
                     </div>
                   </Link>
                 ) : (
                   // List View
                   <Link href={`/product/${product.id}`} className="group flex gap-6 bg-white p-6 hover:shadow-lg transition-all duration-300">
                     <div className="relative w-32 h-32 bg-bj-gray-50 flex-shrink-0 overflow-hidden">
-                      {product.images && product.images[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-cover img-editorial"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-bj-gray-400 text-[10px]">{product.name}</span>
-                        </div>
-                      )}
+                      <Image
+                        src={product.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-2 img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
                     </div>
                     
                     <div className="flex-1 space-y-3">
@@ -430,9 +464,21 @@ export default function CategoryPage() {
                         <h3 className="text-body font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors">
                           {product.name}
                         </h3>
-
+                        {(() => {
+                          const r = getProductReviews(product.id)
+                          return (
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <div className="flex items-center gap-0.5">
+                                {[1,2,3,4,5].map((s) => (
+                                  <Star key={s} size={12} className={s <= Math.round(r.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'} />
+                                ))}
+                              </div>
+                              <span className="text-[11px] text-bj-gray-400">{r.averageRating} ({r.totalReviews})</span>
+                            </div>
+                          )
+                        })()}
                       </div>
-                      
+
                       <p className="text-caption text-bj-gray-500 line-clamp-2">{product.description}</p>
                       
                       <div className="flex items-center justify-between">

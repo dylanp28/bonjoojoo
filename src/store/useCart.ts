@@ -12,14 +12,15 @@ export interface CartItem {
   quantity: number
   size?: string
   engraving?: string
+  engravingFont?: string
 }
 
 interface CartState {
   items: CartItem[]
   isOpen: boolean
-  
+
   // Actions
-  addItem: (product: any, options?: { size?: string; engraving?: string }) => void
+  addItem: (product: any, options?: { size?: string; engraving?: string; engravingFont?: string }) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   clearCart: () => void
@@ -38,10 +39,10 @@ export const useCart = create<CartState>()(
       
       addItem: (product, options = {}) => {
         const { items } = get()
-        const cartId = `${product.id}-${options.size || 'default'}-${options.engraving || 'none'}`
-        
+        const cartId = `${product.id}-${options.size || 'default'}-${options.engraving || 'none'}-${options.engravingFont || 'none'}`
+
         const existingItem = items.find(item => item.id === cartId)
-        
+
         if (existingItem) {
           set({
             items: items.map(item =>
@@ -58,7 +59,8 @@ export const useCart = create<CartState>()(
             image: product.images?.[0] || '',
             quantity: 1,
             size: options.size,
-            engraving: options.engraving
+            engraving: options.engraving,
+            engravingFont: options.engravingFont,
           }
           
           set({

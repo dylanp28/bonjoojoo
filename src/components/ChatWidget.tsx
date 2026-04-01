@@ -1,161 +1,163 @@
 'use client'
 
-import { useState, useRef, useEffect, FormEvent } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X, Send, Sparkles, Loader2, ChevronRight, ArrowLeft, CheckCircle } from 'lucide-react'
-import ReactMarkdown from 'react-markdown'
+import { MessageCircle, X, ChevronRight } from 'lucide-react'
 import { useChatStore, ChatMessage } from '@/store/useChatStore'
 
-const QUICK_ACTIONS = [
-  { label: 'Shipping info', message: 'What are your shipping options and delivery times?' },
-  { label: 'Ring sizing', message: 'How do I find my ring size?' },
-  { label: 'Return policy', message: "What's your return policy?" },
-  { label: 'Browse collections', message: 'What collections do you have available?' },
+// ─── Quick reply buttons ────────────────────────────────────────────────────
+
+type FlowKey = 'track_order' | 'ring_sizing' | 'product_questions' | 'returns'
+
+const QUICK_REPLIES: { label: string; flow: FlowKey }[] = [
+  { label: 'Track my order', flow: 'track_order' },
+  { label: 'Ring sizing help', flow: 'ring_sizing' },
+  { label: 'Product questions', flow: 'product_questions' },
+  { label: 'Returns & exchanges', flow: 'returns' },
 ]
+
+// ─── Rule-based response engine ─────────────────────────────────────────────
+
+type FlowState = { stage: string } | null
+
+function getBotResponse(
+  userText: string,
+  flowState: FlowState,
+  setFlowState: (s: FlowState) => void
+): string {
+  const lower = userText.toLowerCase().trim()
+
+  // ── Track order flow ──
+  if (lower === 'track my order') {
+    setFlowState({ stage: 'awaiting_order_number' })
+    return "Sure! Please share your order number (e.g. BJ-12345) and I'll pull up your tracking status."
+  }
+  if (flowState?.stage === 'awaiting_order_number') {
+    setFlowState(null)
+    const mockStatuses = [
+      '📦 **In transit** — Your order left our LA workshop and is on its way. Estimated delivery: **2–3 business days**.',
+      '✅ **Out for delivery** — Your package is with the courier today. Expected by end of day.',
+      '🔧 **Being crafted** — Your piece is currently being handcrafted and quality-checked. Estimated ship date: **tomorrow**.',
+    ]
+    const status = mockStatuses[Math.floor(Math.random() * mockStatuses.length)]
+    return `Here's the latest on your order:\n\n${status}\n\nNeed anything else? Our team is also reachable at **hello@bonjoojoo.com**.`
+  }
+
+  // ── Ring sizing flow ──
+  if (lower === 'ring sizing help') {
+    setFlowState(null)
+    return `We want your ring to fit perfectly! Here are a few ways to find your size:\n\n**1. Use our Ring Size Guide** — [View guide →](/education/ring-sizing)\n**2. Measure at home** — Use a piece of string or a ring sizer strip, measure in mm and compare to our chart.\n**3. Visit a local jeweler** — They can measure your finger for free in minutes.\n\nStill unsure? Type your question below and I'll help!`
+  }
+
+  // ── Product questions flow ──
+  if (lower === 'product questions') {
+    setFlowState(null)
+    return `Here are our most common product questions:\n\n**Q: Are your diamonds certified?**\nYes — all diamonds are IGI or GIA certified, with full grading reports included.\n\n**Q: What's the difference between lab-grown and mined diamonds?**\nLab-grown diamonds are chemically identical to mined ones, but created sustainably with ~95% less environmental impact — and significantly better value.\n\n**Q: Do you offer custom sizing or engraving?**\nAbsolutely! Most pieces can be resized or engraved. Add a note at checkout or email us at hello@bonjoojoo.com.\n\nHave a different question? Type it below and I'll connect you with a specialist.`
+  }
+
+  // ── Returns flow ──
+  if (lower === 'returns & exchanges') {
+    setFlowState(null)
+    return `Here's a quick summary of our **Returns & Exchanges** policy:\n\n- **30-day returns** on unworn, unaltered items in original packaging\n- **Free return shipping** on all US orders\n- **Exchanges** processed within 5–7 business days\n- Custom-engraved or resized pieces are final sale\n\n[View full policy →](/returns)\n\nTo start a return, email **hello@bonjoojoo.com** with your order number and reason.`
+  }
+
+  // ── Fallback ──
+  setFlowState(null)
+  return `Thanks for reaching out! Our team will be happy to help with that.\n\nFor fastest assistance, email us at **hello@bonjoojoo.com** or use the quick options below to get instant answers.`
+}
+
+// ─── Availability helper ─────────────────────────────────────────────────────
+
+function isBusinessHours(): boolean {
+  // 9am–6pm ET
+  const now = new Date()
+  const etOffset = -5 // EST (no DST adjustment for simplicity)
+  const etHour = (now.getUTCHours() + 24 + etOffset) % 24
+  return etHour >= 9 && etHour < 18
+}
+
+// ─── Typing indicator ────────────────────────────────────────────────────────
+
+function TypingIndicator() {
+  return (
+    <div className="flex items-end gap-2">
+      <div className="w-6 h-6 bg-bj-offwhite flex items-center justify-center shrink-0">
+        <span className="text-xs font-bold text-bj-black">B</span>
+      </div>
+      <div className="bg-bj-offwhite px-4 py-3 rounded-none flex items-center gap-1">
+        {[0, 0.15, 0.3].map((delay, i) => (
+          <motion.span
+            key={i}
+            className="w-1.5 h-1.5 rounded-full bg-bj-charcoal block"
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay, ease: 'easeInOut' }}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function ChatWidget() {
   const {
     messages,
     isOpen,
     isLoading,
-    showTicketForm,
     addMessage,
-    updateLastAssistantMessage,
     toggleChat,
-    setShowTicketForm,
     setIsLoading,
   } = useChatStore()
 
-  const [input, setInput] = useState('')
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [flowState, setFlowState] = useState<FlowState>(null)
+  const [online, setOnline] = useState(false)
 
-  // Ticket form state
-  const [ticketName, setTicketName] = useState('')
-  const [ticketEmail, setTicketEmail] = useState('')
-  const [ticketOrder, setTicketOrder] = useState('')
-  const [ticketIssue, setTicketIssue] = useState('')
-  const [ticketSubmitted, setTicketSubmitted] = useState(false)
-  const [ticketLoading, setTicketLoading] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setOnline(isBusinessHours())
+    const timer = setInterval(() => setOnline(isBusinessHours()), 60_000)
+    return () => clearInterval(timer)
+  }, [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages, isLoading])
 
-  useEffect(() => {
-    if (isOpen && !showTicketForm) {
-      setTimeout(() => inputRef.current?.focus(), 300)
+  function handleQuickReply(flow: FlowKey) {
+    const labelMap: Record<FlowKey, string> = {
+      track_order: 'Track my order',
+      ring_sizing: 'Ring sizing help',
+      product_questions: 'Product questions',
+      returns: 'Returns & exchanges',
     }
-  }, [isOpen, showTicketForm])
+    const userText = labelMap[flow]
+    sendMessage(userText)
+  }
 
-  async function sendMessage(content: string) {
-    if (!content.trim() || isLoading) return
+  function sendMessage(userText: string) {
+    if (!userText.trim() || isLoading) return
 
-    const userMessage: ChatMessage = { role: 'user', content: content.trim() }
-    addMessage(userMessage)
-    setInput('')
+    const userMsg: ChatMessage = { role: 'user', content: userText.trim() }
+    addMessage(userMsg)
     setIsLoading(true)
 
-    // Add empty assistant message for streaming
-    addMessage({ role: 'assistant', content: '' })
+    // Simulate typing delay
+    const delay = 800 + Math.random() * 600
 
-    const allMessages = [...messages, userMessage].map((m) => ({
-      role: m.role,
-      content: m.content,
-    }))
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: allMessages }),
-      })
-
-      if (!response.ok) throw new Error('Chat request failed')
-
-      const reader = response.body?.getReader()
-      if (!reader) throw new Error('No response stream')
-
-      const decoder = new TextDecoder()
-      let accumulated = ''
-
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-
-        const chunk = decoder.decode(value, { stream: true })
-        const lines = chunk.split('\n')
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6)
-            if (data === '[DONE]') break
-            try {
-              const parsed = JSON.parse(data)
-              if (parsed.text) {
-                accumulated += parsed.text
-                updateLastAssistantMessage(accumulated)
-              }
-            } catch {
-              // skip malformed chunks
-            }
-          }
-        }
-      }
-
-      // Check for escalation marker
-      if (accumulated.includes('[ESCALATE]')) {
-        updateLastAssistantMessage(accumulated.replace('[ESCALATE]', '').trim())
-        setTimeout(() => setShowTicketForm(true), 500)
-      }
-    } catch {
-      updateLastAssistantMessage(
-        "I'm sorry, I'm having trouble connecting right now. Please try again or email us at hello@bonjoojoo.com."
-      )
-    } finally {
+    setTimeout(() => {
+      const botText = getBotResponse(userText.trim(), flowState, setFlowState)
+      addMessage({ role: 'assistant', content: botText })
       setIsLoading(false)
-    }
+    }, delay)
   }
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    sendMessage(input)
-  }
-
-  async function handleTicketSubmit(e: FormEvent) {
-    e.preventDefault()
-    setTicketLoading(true)
-
-    const transcript = messages
-      .map((m) => `${m.role === 'user' ? 'Customer' : 'Bot'}: ${m.content}`)
-      .join('\n')
-
-    try {
-      const response = await fetch('/api/chat/ticket', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: ticketName,
-          email: ticketEmail,
-          orderNumber: ticketOrder,
-          issue: ticketIssue,
-          chatTranscript: transcript,
-        }),
-      })
-
-      if (response.ok) {
-        setTicketSubmitted(true)
-      }
-    } catch {
-      // silently fail, user can retry
-    } finally {
-      setTicketLoading(false)
-    }
-  }
+  const showQuickReplies = messages.length === 0
 
   return (
     <>
-      {/* Floating chat button - FIXED: Now visible immediately */}
+      {/* Floating button */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
@@ -184,10 +186,20 @@ export default function ChatWidget() {
           >
             {/* Header */}
             <div className="bg-bj-black text-white px-4 py-3 flex items-center justify-between shrink-0">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">
+                  B
+                </div>
                 <div>
-                  <p className="font-medium text-sm font-body">Bonjoojoo AI</p>
+                  <p className="font-medium text-sm font-body leading-tight">Bonjoojoo Support</p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span
+                      className={`w-2 h-2 rounded-full ${online ? 'bg-green-400' : 'bg-gray-400'}`}
+                    />
+                    <span className="text-xs text-white/70">
+                      {online ? 'Online now' : 'Away — we\'ll reply soon'}
+                    </span>
+                  </div>
                 </div>
               </div>
               <button
@@ -199,187 +211,102 @@ export default function ChatWidget() {
               </button>
             </div>
 
-            {/* Ticket form */}
-            {showTicketForm ? (
-              <div className="flex-1 overflow-y-auto p-4">
-                {ticketSubmitted ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center gap-3">
-                    <CheckCircle className="w-12 h-12 text-green-500" />
-                    <p className="font-medium font-body text-bj-black">Ticket submitted!</p>
-                    <p className="text-sm text-bj-charcoal">
-                      Our team will get back to you within 24 hours.
-                    </p>
-                    <button
-                      onClick={() => {
-                        setShowTicketForm(false)
-                        setTicketSubmitted(false)
-                      }}
-                      className="mt-2 text-sm text-bj-black hover:underline"
-                    >
-                      Back to chat
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => setShowTicketForm(false)}
-                      className="flex items-center gap-1 text-sm text-bj-charcoal hover:text-bj-black mb-3"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                      Back to chat
-                    </button>
-                    <h3 className="font-display text-lg font-semibold text-bj-black mb-1">
-                      Contact our team
-                    </h3>
-                    <p className="text-xs text-bj-charcoal mb-4">
-                      We&apos;ll include your chat history with the ticket.
-                    </p>
-                    <form onSubmit={handleTicketSubmit} className="space-y-3">
-                      <input
-                        required
-                        value={ticketName}
-                        onChange={(e) => setTicketName(e.target.value)}
-                        placeholder="Your name"
-                        className="w-full px-3 py-2 text-sm border border-gray-200 focus:border-bj-black focus:outline-none transition-colors"
-                      />
-                      <input
-                        required
-                        type="email"
-                        value={ticketEmail}
-                        onChange={(e) => setTicketEmail(e.target.value)}
-                        placeholder="Email address"
-                        className="w-full px-3 py-2 text-sm border border-gray-200 focus:border-bj-black focus:outline-none transition-colors"
-                      />
-                      <input
-                        value={ticketOrder}
-                        onChange={(e) => setTicketOrder(e.target.value)}
-                        placeholder="Order number (optional)"
-                        className="w-full px-3 py-2 text-sm border border-gray-200 focus:border-bj-black focus:outline-none transition-colors"
-                      />
-                      <textarea
-                        required
-                        value={ticketIssue}
-                        onChange={(e) => setTicketIssue(e.target.value)}
-                        placeholder="Describe your issue..."
-                        rows={3}
-                        className="w-full px-3 py-2 text-sm border border-gray-200 focus:border-bj-black focus:outline-none transition-colors resize-none"
-                      />
-                      <button
-                        type="submit"
-                        disabled={ticketLoading}
-                        className="w-full py-2 bg-bj-black text-white text-sm font-medium hover:bg-bj-charcoal transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-                      >
-                        {ticketLoading ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          'Submit ticket'
-                        )}
-                      </button>
-                    </form>
-                  </>
-                )}
-              </div>
-            ) : (
-              <>
-                {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                  {messages.length === 0 ? (
-                    <div className="flex flex-col h-full">
-                      <div className="flex-1 flex flex-col items-center justify-center text-center px-2">
-                        <Sparkles className="w-10 h-10 text-bj-black mb-3" />
-                        <h3 className="font-display text-lg font-semibold text-bj-black">
-                          Welcome to Bonjoojoo
-                        </h3>
-                        <p className="text-sm text-bj-charcoal mt-1">
-                          How can I help you today?
-                        </p>
+            {/* Messages area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {showQuickReplies ? (
+                <div className="flex flex-col h-full">
+                  {/* Welcome */}
+                  <div className="flex-1 flex flex-col justify-center">
+                    <div className="flex items-start gap-2 mb-4">
+                      <div className="w-6 h-6 bg-bj-offwhite flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-xs font-bold text-bj-black">B</span>
                       </div>
-                      <div className="space-y-2 mt-4">
-                        {QUICK_ACTIONS.map((action) => (
-                          <button
-                            key={action.label}
-                            onClick={() => sendMessage(action.message)}
-                            className="w-full text-left px-3 py-2 text-sm border border-gray-200 hover:border-bj-black hover:bg-bj-offwhite transition-colors flex items-center justify-between group"
-                          >
-                            <span className="text-bj-charcoal group-hover:text-bj-black">
-                              {action.label}
-                            </span>
-                            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-bj-black" />
-                          </button>
-                        ))}
+                      <div className="bg-bj-offwhite px-3 py-2 text-sm text-bj-black leading-relaxed max-w-[85%]">
+                        Hi! How can we help you today? Our experts are here for you.
                       </div>
                     </div>
-                  ) : (
-                    <>
-                      {messages.map((msg, i) => (
-                        <div
-                          key={i}
-                          className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                        >
-                          {msg.role === 'assistant' && (
-                            <div className="w-6 h-6 bg-bj-offwhite flex items-center justify-center shrink-0 mr-2 mt-1">
-                              <Sparkles className="w-3.5 h-3.5 text-bj-black" />
-                            </div>
-                          )}
-                          <div
-                            className={`max-w-[75%] px-3 py-2 text-sm leading-relaxed ${
-                              msg.role === 'user'
-                                ? 'bg-bj-black text-white'
-                                : 'bg-bj-offwhite text-bj-black'
-                            }`}
-                          >
-                            {msg.content ? (
-                              msg.role === 'assistant' ? (
-                                <ReactMarkdown
-                                  components={{
-                                    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                                    strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-                                    ul: ({ children }) => <ul className="list-disc pl-4 mb-2 last:mb-0 space-y-1">{children}</ul>,
-                                    ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 last:mb-0 space-y-1">{children}</ol>,
-                                    li: ({ children }) => <li>{children}</li>,
-                                  }}
-                                >
-                                  {msg.content}
-                                </ReactMarkdown>
-                              ) : (
-                                msg.content
-                              )
-                            ) : (
-                              <Loader2 className="w-4 h-4 animate-spin text-bj-charcoal" />
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                      <div ref={messagesEndRef} />
-                    </>
-                  )}
-                </div>
 
-                {/* Input */}
-                <form
-                  onSubmit={handleSubmit}
-                  className="border-t border-gray-100 px-3 py-2 flex items-center gap-2 shrink-0"
-                >
-                  <input
-                    ref={inputRef}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type a message..."
-                    maxLength={2000}
-                    disabled={isLoading}
-                    className="flex-1 text-sm py-2 px-2 bg-transparent focus:outline-none placeholder:text-gray-400 disabled:opacity-50"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!input.trim() || isLoading}
-                    className="w-8 h-8 flex items-center justify-center text-bj-black hover:bg-bj-cream rounded-full transition-colors disabled:opacity-30"
-                    aria-label="Send message"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </form>
-              </>
+                    {/* Quick reply buttons */}
+                    <div className="space-y-2">
+                      {QUICK_REPLIES.map((qr) => (
+                        <button
+                          key={qr.flow}
+                          onClick={() => handleQuickReply(qr.flow)}
+                          className="w-full text-left px-3 py-2 text-sm border border-gray-200 hover:border-bj-black hover:bg-bj-offwhite transition-colors flex items-center justify-between group"
+                        >
+                          <span className="text-bj-charcoal group-hover:text-bj-black">{qr.label}</span>
+                          <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-bj-black" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {messages.map((msg, i) => (
+                    <div
+                      key={i}
+                      className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      {msg.role === 'assistant' && (
+                        <div className="w-6 h-6 bg-bj-offwhite flex items-center justify-center shrink-0 mr-2 mt-1">
+                          <span className="text-xs font-bold text-bj-black">B</span>
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[75%] px-3 py-2 text-sm leading-relaxed ${
+                          msg.role === 'user'
+                            ? 'bg-bj-black text-white'
+                            : 'bg-bj-offwhite text-bj-black'
+                        }`}
+                      >
+                        {msg.role === 'assistant' ? (
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: msg.content
+                                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                                .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="underline hover:no-underline" target="_self">$1</a>')
+                                .replace(/\n\n/g, '<br/><br/>')
+                                .replace(/\n/g, '<br/>'),
+                            }}
+                          />
+                        ) : (
+                          msg.content
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Typing indicator */}
+                  {isLoading && <TypingIndicator />}
+
+                  <div ref={messagesEndRef} />
+                </>
+              )}
+            </div>
+
+            {/* Quick reply buttons after first message */}
+            {!showQuickReplies && !isLoading && (
+              <div className="border-t border-gray-100 px-3 py-2 shrink-0">
+                <div className="flex flex-wrap gap-1.5">
+                  {QUICK_REPLIES.map((qr) => (
+                    <button
+                      key={qr.flow}
+                      onClick={() => handleQuickReply(qr.flow)}
+                      className="text-xs px-2.5 py-1 border border-gray-200 text-bj-charcoal hover:border-bj-black hover:text-bj-black transition-colors"
+                    >
+                      {qr.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
+
+            {/* Footer label */}
+            <div className="border-t border-gray-100 px-4 py-2 shrink-0 flex items-center justify-between">
+              <span className="text-xs text-gray-400">Bonjoojoo Support</span>
+              <span className="text-xs text-gray-300">Typically replies in minutes</span>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

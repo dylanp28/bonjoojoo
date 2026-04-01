@@ -1,67 +1,127 @@
 'use client'
 
 import { useState } from 'react'
-import { Calendar, Clock, User, Mail, Phone, MessageSquare, CheckCircle2 } from 'lucide-react'
+import Link from 'next/link'
+import { CheckCircle, Clock, Shield, Award } from 'lucide-react'
 
-type TimeSlot = '10:00 AM' | '11:00 AM' | '1:00 PM' | '2:00 PM' | '3:00 PM' | '4:00 PM'
+const CONSULTATION_STORAGE_KEY = 'bonjoojoo_consultations'
 
-const timeSlots: TimeSlot[] = ['10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM']
+interface ConsultationForm {
+  name: string
+  email: string
+  phone: string
+  shoppingFor: string
+  budget: string
+  preferredDate: string
+  preferredTime: string
+  notes: string
+}
 
-const consultationTypes = [
-  { value: 'engagement', label: 'Engagement Ring Design' },
-  { value: 'wedding', label: 'Wedding Band Selection' },
-  { value: 'custom', label: 'Custom Jewelry Design' },
-  { value: 'lab-diamonds', label: 'Lab-Grown Diamond Education' },
-  { value: 'general', label: 'General Jewelry Consultation' },
-]
+function getAvailableDates(): string[] {
+  const dates: string[] = []
+  const today = new Date()
+  let count = 0
+  let d = new Date(today)
+  d.setDate(d.getDate() + 1) // Start from tomorrow
+  while (count < 10) {
+    const day = d.getDay()
+    if (day !== 0 && day !== 6) {
+      dates.push(d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }))
+      count++
+    }
+    d.setDate(d.getDate() + 1)
+  }
+  return dates
+}
+
+const TIME_SLOTS = ['10:00 AM', '1:00 PM', '4:00 PM']
 
 export default function ConsultationPage() {
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [selectedTime, setSelectedTime] = useState<TimeSlot | ''>('')
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+  const [form, setForm] = useState<ConsultationForm>({
+    name: '',
     email: '',
     phone: '',
-    consultationType: '',
+    shoppingFor: '',
+    budget: '',
     preferredDate: '',
-    message: '',
+    preferredTime: '',
+    notes: '',
   })
+  const [errors, setErrors] = useState<Partial<ConsultationForm>>({})
+  const [submitted, setSubmitted] = useState(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+  const availableDates = getAvailableDates()
+
+  const validate = () => {
+    const errs: Partial<ConsultationForm> = {}
+    if (!form.name.trim()) errs.name = 'Name is required'
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      errs.email = 'Valid email is required'
+    if (!form.shoppingFor) errs.shoppingFor = 'Please select what you are shopping for'
+    if (!form.budget) errs.budget = 'Please select a budget range'
+    if (!form.preferredDate) errs.preferredDate = 'Please select a preferred date'
+    if (!form.preferredTime) errs.preferredTime = 'Please select a time slot'
+    return errs
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1200))
-    setLoading(false)
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
+      return
+    }
+    try {
+      const existing = JSON.parse(localStorage.getItem(CONSULTATION_STORAGE_KEY) || '[]')
+      existing.push({ ...form, bookedAt: new Date().toISOString(), id: Date.now() })
+      localStorage.setItem(CONSULTATION_STORAGE_KEY, JSON.stringify(existing))
+    } catch {}
     setSubmitted(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleChange = (field: keyof ConsultationForm, value: string) => {
+    setForm(prev => ({ ...prev, [field]: value }))
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined }))
   }
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-bj-offwhite pt-[124px]">
-        <div className="container-bj py-20 text-center">
-          <div className="max-w-lg mx-auto">
-            <div className="w-20 h-20 bg-bj-blush rounded-full flex items-center justify-center mx-auto mb-8">
-              <CheckCircle2 className="w-10 h-10 text-bj-pink" />
+      <div className="min-h-screen bg-bj-offwhite flex items-center justify-center py-20 px-4">
+        <div className="max-w-lg w-full text-center">
+          <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8">
+            <CheckCircle size={40} className="text-green-600" />
+          </div>
+          <p className="text-overline text-bj-pink mb-3">Consultation Booked</p>
+          <h1 className="text-display-sm text-bj-black mb-4">We&apos;ll See You Soon</h1>
+          <p className="text-body text-bj-gray-500 mb-4">
+            Thank you, <strong>{form.name}</strong>. Your consultation is confirmed for{' '}
+            <strong>{form.preferredDate}</strong> at <strong>{form.preferredTime}</strong>.
+          </p>
+          <p className="text-body text-bj-gray-500 mb-10">
+            A confirmation will be sent to <strong>{form.email}</strong>. Our specialist will reach out 24 hours before your appointment with a private call link.
+          </p>
+          <div className="space-y-4">
+            <div className="bg-white border border-gray-100 p-6 text-left rounded-sm">
+              <h3 className="text-[13px] font-semibold text-bj-black uppercase tracking-wider mb-4">What to Expect</h3>
+              <ul className="space-y-3 text-[14px] text-bj-gray-500">
+                <li className="flex items-start gap-3">
+                  <CheckCircle size={15} className="text-bj-pink mt-0.5 flex-shrink-0" />
+                  A private 30-minute video or phone call with your dedicated specialist
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle size={15} className="text-bj-pink mt-0.5 flex-shrink-0" />
+                  Personalized guidance on diamond quality, settings, and styles
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle size={15} className="text-bj-pink mt-0.5 flex-shrink-0" />
+                  No obligation to purchase — we&apos;re here to help you find the perfect piece
+                </li>
+              </ul>
             </div>
-            <h1 className="text-display-md text-bj-black mb-4">Consultation Booked</h1>
-            <p className="text-body text-bj-gray-500 mb-4">
-              Thank you, {formData.firstName}! Your consultation has been scheduled for{' '}
-              <strong>{formData.preferredDate}</strong> at <strong>{selectedTime}</strong>.
-            </p>
-            <p className="text-body text-bj-gray-500 mb-10">
-              We&apos;ll send a confirmation to <strong>{formData.email}</strong> with everything you need to know before your appointment.
-            </p>
-            <a href="/" className="btn-primary inline-block">
-              Continue Shopping
-            </a>
+            <Link href="/" className="btn-secondary inline-block py-3 px-8 text-[12px]">
+              Continue Browsing
+            </Link>
           </div>
         </div>
       </div>
@@ -69,199 +129,218 @@ export default function ConsultationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bj-offwhite pt-[124px]">
-      {/* Hero */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="container-bj py-14 text-center">
-          <p className="text-overline text-bj-pink mb-3">Personalized Service</p>
-          <h1 className="text-display-lg text-bj-black mb-4">Book a Consultation</h1>
-          <p className="text-body text-bj-gray-500 max-w-xl mx-auto">
-            Meet with our jewelry experts to design your perfect piece, learn about lab-grown diamonds, or find the ideal gift. All consultations are complimentary.
-          </p>
+    <div className="min-h-screen bg-bj-offwhite">
+      {/* ═══ HERO ═══ */}
+      <section className="bg-white border-b border-gray-100">
+        <div className="container-bj py-16 lg:py-20">
+          <div className="max-w-2xl">
+            <p className="text-overline text-bj-pink mb-4">Free Consultation</p>
+            <h1 className="text-display text-bj-black mb-6">
+              Speak with a Bonjoojoo<br />Diamond Specialist
+            </h1>
+            <p className="text-body text-bj-gray-500 max-w-xl">
+              Finding the perfect piece of fine jewelry is a deeply personal journey. Our specialists are here to guide you — with no pressure, just expertise.
+            </p>
+          </div>
         </div>
-      </div>
+        {/* Decorative bar */}
+        <div className="h-px bg-gradient-to-r from-bj-rose-gold/40 via-bj-pink/20 to-transparent" />
+      </section>
 
-      {/* Form */}
-      <div className="container-bj py-16">
-        <div className="max-w-2xl mx-auto">
-          <form onSubmit={handleSubmit} className="bg-white border border-gray-100 p-10 space-y-8">
-
-            {/* Name */}
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                  First Name <span className="text-bj-pink">*</span>
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bj-gray-400" />
-                  <input
-                    type="text"
-                    name="firstName"
-                    required
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="input-bj pl-10 w-full"
-                    placeholder="Jane"
-                  />
+      {/* ═══ VALUE PROPS ═══ */}
+      <section className="bg-white py-12 border-b border-gray-100">
+        <div className="container-bj">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Clock,
+                title: 'Free 30-Minute Call',
+                desc: 'Dedicated time with a certified specialist — at no cost.',
+              },
+              {
+                icon: Shield,
+                title: 'No Pressure, Ever',
+                desc: 'We guide and inform. The decision is always yours.',
+              },
+              {
+                icon: Award,
+                title: 'Expert Guidance on the 4Cs',
+                desc: 'Understand cut, clarity, color, and carat to find your ideal diamond.',
+              },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="flex items-start gap-5">
+                <div className="w-12 h-12 bg-bj-blush rounded-full flex items-center justify-center flex-shrink-0">
+                  <Icon size={20} className="text-bj-pink" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="text-[14px] font-semibold text-bj-black mb-1">{title}</h3>
+                  <p className="text-[13px] text-bj-gray-500 leading-relaxed">{desc}</p>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ BOOKING FORM ═══ */}
+      <section className="py-16 lg:py-20">
+        <div className="container-bj max-w-2xl">
+          <div className="bg-white border border-gray-100 p-8 lg:p-12">
+            <h2 className="text-display-sm text-bj-black mb-2">Book Your Free Consultation</h2>
+            <p className="text-[14px] text-bj-gray-400 mb-10">Fields marked * are required.</p>
+
+            <form onSubmit={handleSubmit} noValidate className="space-y-7">
+              {/* Name */}
               <div>
-                <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                  Last Name <span className="text-bj-pink">*</span>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Full Name *
                 </label>
                 <input
                   type="text"
-                  name="lastName"
-                  required
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="input-bj w-full"
-                  placeholder="Smith"
+                  value={form.name}
+                  onChange={e => handleChange('name', e.target.value)}
+                  placeholder="Your full name"
+                  className={`input-bj w-full ${errors.name ? 'border-red-400' : ''}`}
                 />
+                {errors.name && <p className="mt-1 text-[12px] text-red-500">{errors.name}</p>}
               </div>
-            </div>
 
-            {/* Contact */}
-            <div className="grid grid-cols-2 gap-6">
+              {/* Email */}
               <div>
-                <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                  Email <span className="text-bj-pink">*</span>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Email Address *
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bj-gray-400" />
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="input-bj pl-10 w-full"
-                    placeholder="jane@example.com"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                  Phone
-                </label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bj-gray-400" />
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="input-bj pl-10 w-full"
-                    placeholder="+1 (555) 000-0000"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Consultation type */}
-            <div>
-              <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                Consultation Type <span className="text-bj-pink">*</span>
-              </label>
-              <select
-                name="consultationType"
-                required
-                value={formData.consultationType}
-                onChange={handleChange}
-                className="input-bj w-full"
-              >
-                <option value="">Select a topic</option>
-                {consultationTypes.map(t => (
-                  <option key={t.value} value={t.value}>{t.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Date */}
-            <div>
-              <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                Preferred Date <span className="text-bj-pink">*</span>
-              </label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bj-gray-400" />
                 <input
-                  type="date"
-                  name="preferredDate"
-                  required
-                  value={formData.preferredDate}
-                  onChange={handleChange}
-                  min={new Date().toISOString().split('T')[0]}
-                  className="input-bj pl-10 w-full"
+                  type="email"
+                  value={form.email}
+                  onChange={e => handleChange('email', e.target.value)}
+                  placeholder="you@email.com"
+                  className={`input-bj w-full ${errors.email ? 'border-red-400' : ''}`}
+                />
+                {errors.email && <p className="mt-1 text-[12px] text-red-500">{errors.email}</p>}
+              </div>
+
+              {/* Phone (optional) */}
+              <div>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Phone <span className="font-normal text-bj-gray-400 normal-case tracking-normal">(optional)</span>
+                </label>
+                <input
+                  type="tel"
+                  value={form.phone}
+                  onChange={e => handleChange('phone', e.target.value)}
+                  placeholder="+1 (555) 000-0000"
+                  className="input-bj w-full"
                 />
               </div>
-            </div>
 
-            {/* Time slots */}
-            <div>
-              <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-3">
-                Preferred Time <span className="text-bj-pink">*</span>
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {timeSlots.map(slot => (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => setSelectedTime(slot)}
-                    className={`py-2.5 text-[13px] border transition-colors ${
-                      selectedTime === slot
-                        ? 'bg-bj-black text-white border-bj-black'
-                        : 'border-gray-200 text-bj-gray-500 hover:border-bj-black hover:text-bj-black'
-                    }`}
-                  >
-                    <Clock className="inline w-3.5 h-3.5 mr-1.5 -mt-0.5" />
-                    {slot}
-                  </button>
-                ))}
+              {/* What are you shopping for */}
+              <div>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  What Are You Shopping For? *
+                </label>
+                <select
+                  value={form.shoppingFor}
+                  onChange={e => handleChange('shoppingFor', e.target.value)}
+                  className={`input-bj w-full bg-white ${errors.shoppingFor ? 'border-red-400' : ''}`}
+                >
+                  <option value="">Select an option</option>
+                  <option value="Engagement Ring">Engagement Ring</option>
+                  <option value="Anniversary Gift">Anniversary Gift</option>
+                  <option value="Self Purchase">Self Purchase</option>
+                  <option value="Other">Other</option>
+                </select>
+                {errors.shoppingFor && <p className="mt-1 text-[12px] text-red-500">{errors.shoppingFor}</p>}
               </div>
-              {!selectedTime && (
-                <input type="hidden" required name="time" value="" />
-              )}
-            </div>
 
-            {/* Message */}
-            <div>
-              <label className="block text-[12px] font-semibold tracking-[0.1em] uppercase text-bj-black mb-2">
-                Additional Notes
-              </label>
-              <div className="relative">
-                <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-bj-gray-400" />
+              {/* Budget range */}
+              <div>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Budget Range *
+                </label>
+                <select
+                  value={form.budget}
+                  onChange={e => handleChange('budget', e.target.value)}
+                  className={`input-bj w-full bg-white ${errors.budget ? 'border-red-400' : ''}`}
+                >
+                  <option value="">Select a range</option>
+                  <option value="Under $1,000">Under $1,000</option>
+                  <option value="$1,000 – $2,500">$1,000 – $2,500</option>
+                  <option value="$2,500 – $5,000">$2,500 – $5,000</option>
+                  <option value="$5,000+">$5,000+</option>
+                </select>
+                {errors.budget && <p className="mt-1 text-[12px] text-red-500">{errors.budget}</p>}
+              </div>
+
+              {/* Preferred date */}
+              <div>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Preferred Date * <span className="font-normal text-bj-gray-400 normal-case tracking-normal">(Mon – Fri)</span>
+                </label>
+                <select
+                  value={form.preferredDate}
+                  onChange={e => handleChange('preferredDate', e.target.value)}
+                  className={`input-bj w-full bg-white ${errors.preferredDate ? 'border-red-400' : ''}`}
+                >
+                  <option value="">Select a date</option>
+                  {availableDates.map(d => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+                {errors.preferredDate && <p className="mt-1 text-[12px] text-red-500">{errors.preferredDate}</p>}
+              </div>
+
+              {/* Preferred time */}
+              <div>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Preferred Time * <span className="font-normal text-bj-gray-400 normal-case tracking-normal">(PT)</span>
+                </label>
+                <div className="flex gap-3">
+                  {TIME_SLOTS.map(slot => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => handleChange('preferredTime', slot)}
+                      className={`flex-1 py-3 text-[13px] font-medium border transition-colors ${
+                        form.preferredTime === slot
+                          ? 'bg-bj-black text-white border-bj-black'
+                          : 'bg-white text-bj-gray-500 border-gray-200 hover:border-bj-black hover:text-bj-black'
+                      }`}
+                    >
+                      {slot}
+                    </button>
+                  ))}
+                </div>
+                {errors.preferredTime && <p className="mt-1 text-[12px] text-red-500">{errors.preferredTime}</p>}
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="block text-[12px] font-semibold text-bj-black uppercase tracking-wider mb-2">
+                  Notes <span className="font-normal text-bj-gray-400 normal-case tracking-normal">(optional)</span>
+                </label>
                 <textarea
-                  name="message"
+                  value={form.notes}
+                  onChange={e => handleChange('notes', e.target.value)}
+                  placeholder="Any details about what you're looking for, questions you have, or anything that would help us prepare..."
                   rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="input-bj pl-10 w-full resize-none"
-                  placeholder="Tell us about what you have in mind, budget range, any specific styles or preferences..."
+                  className="input-bj w-full resize-none"
                 />
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={loading || !selectedTime}
-              className="btn-primary w-full py-4 disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                  Booking...
-                </span>
-              ) : (
-                'Book My Consultation'
-              )}
-            </button>
+              {/* Submit */}
+              <button type="submit" className="w-full btn-primary py-5 text-[13px] flex items-center justify-center gap-3">
+                Book My Free Consultation
+              </button>
+            </form>
+          </div>
 
-            <p className="text-[12px] text-bj-gray-400 text-center">
-              Consultations are complimentary and available in-store or virtually via video call. Confirmation will be sent to your email.
-            </p>
-          </form>
+          <p className="text-center text-[12px] text-bj-gray-400 mt-6">
+            Have questions? <Link href="/contact" className="underline hover:text-bj-black transition-colors">Contact us</Link> or call{' '}
+            <a href="tel:+18005550100" className="underline hover:text-bj-black transition-colors">1-800-555-0100</a>.
+          </p>
         </div>
-      </div>
+      </section>
     </div>
   )
 }

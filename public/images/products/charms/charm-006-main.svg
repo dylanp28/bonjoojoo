@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <radialGradient id="bg6" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FAF7F4"/>
+      <stop offset="100%" stop-color="#F0EBE3"/>
+    </radialGradient>
+    <radialGradient id="gold6" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#F5D78E"/>
+      <stop offset="40%" stop-color="#D4A843"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </radialGradient>
+    <filter id="sh6" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#00000028"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg6)"/>
+  <g filter="url(#sh6)">
+    <ellipse cx="300" cy="128" rx="11" ry="18" fill="none" stroke="url(#gold6)" stroke-width="5"/>
+    <!-- Horseshoe U-shape -->
+    <path d="M210 430 L210 280 C210 210 390 210 390 280 L390 430" fill="none" stroke="url(#gold6)" stroke-width="38" stroke-linecap="round"/>
+    <!-- Inner cutout -->
+    <path d="M248 430 L248 285 C248 248 352 248 352 285 L352 430" fill="none" stroke="url(#bg6)" stroke-width="1" opacity="0"/>
+    <!-- Nail holes -->
+    <circle cx="231" cy="400" r="10" fill="#B8860B" opacity="0.5"/>
+    <circle cx="369" cy="400" r="10" fill="#B8860B" opacity="0.5"/>
+    <!-- Diamond studs along top arc -->
+    <circle cx="248" cy="230" r="7" fill="white" opacity="0.8"/>
+    <circle cx="274" cy="218" r="6" fill="white" opacity="0.75"/>
+    <circle cx="300" cy="215" r="7" fill="white" opacity="0.8"/>
+    <circle cx="326" cy="218" r="6" fill="white" opacity="0.75"/>
+    <circle cx="352" cy="230" r="7" fill="white" opacity="0.8"/>
+    <!-- Highlight -->
+    <path d="M220 360 C220 320 220 285 228 265" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <text x="300" y="540" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#9E8A6E" letter-spacing="3">LUCKY HORSESHOE</text>
+</svg>

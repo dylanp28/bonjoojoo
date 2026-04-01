@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { User, ShoppingBag, Heart, Settings, LogOut, Package, CreditCard } from 'lucide-react'
+import { User, ShoppingBag, Heart, Settings, LogOut, Package, CreditCard, Gift, RefreshCcw } from 'lucide-react'
 import { AuthModal } from '@/components/AuthModal'
 import { useAuthModal } from '@/hooks/useAuth'
 
@@ -12,7 +12,7 @@ export default function AccountLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user, isAuthenticated, isLoading, logout } = useAuth()
+  const { user, isAuthenticated, isLoading, logout, refreshUser } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
@@ -91,12 +91,13 @@ export default function AccountLayout({
           </div>
         </div>
 
-        <AuthModal 
+        <AuthModal
           isOpen={isOpen}
           onClose={close}
           initialMode={mode}
           mode={mode}
           onSwitchMode={switchMode}
+          onSuccess={() => refreshUser()}
         />
       </div>
     )
@@ -104,7 +105,7 @@ export default function AccountLayout({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <div className="container-fluid py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
           {/* Sidebar */}
@@ -169,7 +170,23 @@ export default function AccountLayout({
                   <CreditCard size={18} className="mr-3" />
                   Payment Methods
                 </a>
-                
+
+                <a
+                  href="/account/returns"
+                  className="flex items-center px-3 py-2 rounded-md text-stone-700 hover:bg-stone-50 transition-colors"
+                >
+                  <RefreshCcw size={18} className="mr-3" />
+                  Returns
+                </a>
+
+                <a
+                  href="/account/referral"
+                  className="flex items-center px-3 py-2 rounded-md text-stone-700 hover:bg-stone-50 transition-colors"
+                >
+                  <Gift size={18} className="mr-3" />
+                  Refer a Friend
+                </a>
+
                 <button
                   onClick={handleLogout}
                   className="flex items-center w-full px-3 py-2 rounded-md text-stone-700 hover:bg-stone-50 transition-colors"

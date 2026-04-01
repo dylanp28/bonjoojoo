@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Star, Heart, Share2, Shield, Leaf, Award, Info, Play, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { ProductTrustSignals } from './ProductTrustSignals'
 import { LabGrownCheckout } from './LabGrownCheckout'
+import { useWishlist } from '@/store/useWishlist'
 
 interface ProductPageProps {
   product: {
@@ -34,7 +35,8 @@ interface ProductPageProps {
 export function ProductPage({ product }: ProductPageProps) {
   const [currentImage, setCurrentImage] = useState(0)
   const [selectedSize, setSelectedSize] = useState('')
-  const [isWishlisted, setIsWishlisted] = useState(false)
+  const { isWishlisted: checkWishlisted, toggleItem } = useWishlist()
+  const isWishlisted = checkWishlisted(product.id)
   const [showCheckout, setShowCheckout] = useState(false)
   const [activeEducationTab, setActiveEducationTab] = useState<'overview' | 'certification' | 'sustainability'>('overview')
   const [timeOnPage, setTimeOnPage] = useState(0)
@@ -218,7 +220,7 @@ export function ProductPage({ product }: ProductPageProps) {
                 </div>
                 <div className="flex items-center space-x-3">
                   <button
-                    onClick={() => setIsWishlisted(!isWishlisted)}
+                    onClick={() => toggleItem({ id: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: product.images?.[0] || '' })}
                     className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
                       isWishlisted 
                         ? 'bg-[var(--luxury-rose-gold)]/20 text-[var(--luxury-rose-gold)]' 

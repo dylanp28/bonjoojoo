@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, ShoppingCart } from 'lucide-react'
 import { Product } from '@/data/products'
 import { useCart } from '@/store/useCart'
+import { useWishlist } from '@/store/useWishlist'
+
+const PLACEHOLDER_IMG = '/images/products/placeholder-product.svg'
 
 interface ProductGridProps {
   products: Product[]
@@ -15,17 +17,17 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, title, loading = false, skeletonCount = 8 }: ProductGridProps) {
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set())
   const addItem = useCart(state => state.addItem)
-  
-  const toggleWishlist = (productId: string) => {
-    const newWishlist = new Set(wishlist)
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId)
-    } else {
-      newWishlist.add(productId)
-    }
-    setWishlist(newWishlist)
+  const { isWishlisted, toggleItem } = useWishlist()
+
+  const toggleWishlist = (product: Product) => {
+    toggleItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.compare_at_price,
+      image: product.images?.[0] || PLACEHOLDER_IMG,
+    })
   }
 
   const handleAddToCart = (product: Product) => {
@@ -72,26 +74,22 @@ export function ProductGrid({ products, title, loading = false, skeletonCount = 
           <h2 className="text-3xl font-light text-gray-900">{title}</h2>
         </div>
       )}
-      
+
       {/* EXACT Pandora Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((product) => (
           <Link key={product.id} href={`/product/${product.id}`} className="group cursor-pointer">
             {/* Product Image */}
             <div className="relative aspect-square bg-gray-50 overflow-hidden mb-4">
-              {product.images && product.images.length > 0 ? (
-                <Image
-                  src={product.images[0]}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                  <span className="text-gray-400 text-sm">No Image</span>
-                </div>
-              )}
+              <Image
+                src={product.images?.[0] || PLACEHOLDER_IMG}
+                alt={product.name}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                unoptimized={(product.images?.[0] || '').endsWith('.svg')}
+                onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG }}
+              />
               
               {/* Sale Badge - Pandora Style */}
               {product.compare_at_price && product.compare_at_price > product.price && (
@@ -103,13 +101,13 @@ export function ProductGrid({ products, title, loading = false, skeletonCount = 
               {/* Wishlist Button - Pandora Position */}
               <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <button
-                  onClick={() => toggleWishlist(product.id)}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product) }}
                   className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Heart
                     size={16}
                     className={`${
-                      wishlist.has(product.id)
+                      isWishlisted(product.id)
                         ? 'text-red-500 fill-current'
                         : 'text-gray-600'
                     }`}

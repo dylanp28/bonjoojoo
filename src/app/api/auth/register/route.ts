@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/lib/auth/service';
+import { authService } from '@/lib/auth/service';
 import { RegisterData } from '@/lib/auth/types';
-
-const authService = new AuthService();
 
 export async function POST(request: NextRequest) {
   try {
     const body: RegisterData = await request.json();
-    
+
     // Validate required fields
     const { email, password, firstName, lastName } = body;
     if (!email || !password || !firstName || !lastName) {
@@ -35,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await authService.register(body);
-    
+
     // Check if result is an error
     if ('code' in result) {
       return NextResponse.json(
@@ -44,21 +42,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log security event
-    await authService.logSecurityEvent({
-      type: 'user_registered',
-      userId: result.user.id,
-      metadata: {
-        email: body.email,
-        userAgent: request.headers.get('user-agent'),
-        ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
-      },
-      timestamp: new Date()
-    });
-
     return NextResponse.json({
       user: result.user,
-      token: result.accessToken,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
       session: result.session
     }, { status: 201 });
 

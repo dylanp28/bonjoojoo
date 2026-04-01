@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Shipping Information - Bonjoojoo',
-  description: 'Learn about bonjoojoo shipping options, delivery times, and policies. Free shipping on orders over $500.',
+  description: 'Free shipping on every order. Learn about delivery times, international shipping, and our secure packaging.',
 }
 
 export default function ShippingPage() {
@@ -12,7 +12,7 @@ export default function ShippingPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-light text-gray-900 mb-4">Shipping Information</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Fast, secure, and insured delivery of your precious jewelry worldwide.
+            Free shipping on every order. Fast, secure, and fully insured delivery of your precious jewelry worldwide.
           </p>
         </div>
 
@@ -26,23 +26,23 @@ export default function ShippingPage() {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <div>
                     <div className="font-medium text-gray-900">Standard Delivery</div>
-                    <div className="text-sm text-gray-600">5-7 business days</div>
+                    <div className="text-sm text-gray-600">3–5 business days via FedEx</div>
                   </div>
-                  <div className="text-gray-900">Free over $500</div>
+                  <div className="text-gray-900 font-medium">Free</div>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <div>
-                    <div className="font-medium text-gray-900">Express Delivery</div>
-                    <div className="text-sm text-gray-600">2-3 business days</div>
+                    <div className="font-medium text-gray-900">Expedited Delivery</div>
+                    <div className="text-sm text-gray-600">1–2 business days via FedEx Express</div>
                   </div>
                   <div className="text-gray-900">$25</div>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <div>
                     <div className="font-medium text-gray-900">Overnight Delivery</div>
-                    <div className="text-sm text-gray-600">Next business day</div>
+                    <div className="text-sm text-gray-600">Next business day via FedEx Overnight</div>
                   </div>
-                  <div className="text-gray-900">$75</div>
+                  <div className="text-gray-900">$45</div>
                 </div>
               </div>
             </div>
@@ -53,20 +53,19 @@ export default function ShippingPage() {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <div>
                     <div className="font-medium text-gray-900">Standard International</div>
-                    <div className="text-sm text-gray-600">7-14 business days</div>
+                    <div className="text-sm text-gray-600">7–14 business days · $500 minimum order</div>
                   </div>
-                  <div className="text-gray-900">$50</div>
+                  <div className="text-gray-900">$75</div>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <div>
-                    <div className="font-medium text-gray-900">Express International</div>
-                    <div className="text-sm text-gray-600">3-5 business days</div>
+                <div className="py-2 border-b border-gray-100">
+                  <div className="text-sm font-medium text-gray-900 mb-1">Available countries:</div>
+                  <div className="text-sm text-gray-600">
+                    Canada, UK, Australia, Germany, France, Italy, Spain, Netherlands, Switzerland, Japan
                   </div>
-                  <div className="text-gray-900">$150</div>
                 </div>
                 <div className="py-2">
                   <div className="text-sm text-gray-600">
-                    * Additional duties and taxes may apply depending on destination country
+                    * Duties and taxes are the customer&apos;s responsibility
                   </div>
                 </div>
               </div>
@@ -163,8 +162,13 @@ export default function ShippingPage() {
                 <li>• Gift message card (upon request)</li>
               </ul>
             </div>
-            <div className="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
-              <span className="text-gray-400">Luxury Packaging Image</span>
+            <div className="bg-gradient-to-br from-bj-cream to-[#EDE6DE] h-64 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-16 h-20 border-2 border-bj-rose-gold/40 rounded mx-auto mb-3 flex items-center justify-center">
+                  <div className="w-8 h-px bg-bj-rose-gold/60" />
+                </div>
+                <p className="text-[11px] tracking-[0.2em] uppercase text-bj-gray-400">Signature Box</p>
+              </div>
             </div>
           </div>
         </div>

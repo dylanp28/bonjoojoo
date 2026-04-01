@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <radialGradient id="bg7" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FAF7F4"/>
+      <stop offset="100%" stop-color="#F0EBE3"/>
+    </radialGradient>
+    <radialGradient id="gold7" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#F5D78E"/>
+      <stop offset="40%" stop-color="#D4A843"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </radialGradient>
+    <radialGradient id="petal7" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#FFE8F5"/>
+      <stop offset="60%" stop-color="#F0C8DC"/>
+      <stop offset="100%" stop-color="#D4A0B8"/>
+    </radialGradient>
+    <radialGradient id="dia7" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="40%" stop-color="#FFF8E0"/>
+      <stop offset="100%" stop-color="#D4A843"/>
+    </radialGradient>
+    <filter id="sh7" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#00000025"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg7)"/>
+  <g filter="url(#sh7)">
+    <ellipse cx="300" cy="128" rx="11" ry="18" fill="none" stroke="url(#gold7)" stroke-width="5"/>
+    <!-- 6 petals -->
+    <ellipse cx="300" cy="245" rx="30" ry="55" fill="url(#petal7)" transform="rotate(0 300 300)"/>
+    <ellipse cx="300" cy="245" rx="30" ry="55" fill="url(#petal7)" transform="rotate(60 300 300)"/>
+    <ellipse cx="300" cy="245" rx="30" ry="55" fill="url(#petal7)" transform="rotate(120 300 300)"/>
+    <ellipse cx="300" cy="245" rx="30" ry="55" fill="url(#petal7)" transform="rotate(180 300 300)" opacity="0.9"/>
+    <ellipse cx="300" cy="245" rx="30" ry="55" fill="url(#petal7)" transform="rotate(240 300 300)" opacity="0.9"/>
+    <ellipse cx="300" cy="245" rx="30" ry="55" fill="url(#petal7)" transform="rotate(300 300 300)" opacity="0.9"/>
+    <!-- Center circle -->
+    <circle cx="300" cy="300" r="40" fill="url(#gold7)"/>
+    <!-- Center diamonds -->
+    <circle cx="300" cy="300" r="12" fill="url(#dia7)" opacity="0.95"/>
+    <circle cx="283" cy="292" r="5" fill="url(#dia7)" opacity="0.85"/>
+    <circle cx="317" cy="292" r="5" fill="url(#dia7)" opacity="0.85"/>
+    <circle cx="283" cy="308" r="5" fill="url(#dia7)" opacity="0.85"/>
+    <circle cx="317" cy="308" r="5" fill="url(#dia7)" opacity="0.85"/>
+    <!-- Petal vein details -->
+    <line x1="300" y1="260" x2="300" y2="270" stroke="url(#gold7)" stroke-width="1.5" opacity="0.5"/>
+    <!-- Highlight -->
+    <path d="M280 268 C280 258 288 252 298 253" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <text x="300" y="540" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#9E8A6E" letter-spacing="3">BLOOMING FLOWER</text>
+</svg>

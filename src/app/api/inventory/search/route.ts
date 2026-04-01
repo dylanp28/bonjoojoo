@@ -4,24 +4,39 @@ import { searchProducts } from '@/lib/products';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
-    // Parse search parameters
+
+    const sortByRaw = searchParams.get('sortBy') || 'name';
+    let sortBy: 'price' | 'name' | 'newest' | 'rating' | 'popular' = 'name';
+    let sortOrder: 'asc' | 'desc' = (searchParams.get('sortOrder') as 'asc' | 'desc') || 'asc';
+
+    if (sortByRaw === 'price') {
+      sortBy = 'price';
+    } else if (sortByRaw === 'newest') {
+      sortBy = 'newest';
+    } else if (sortByRaw === 'popular') {
+      sortBy = 'popular';
+      sortOrder = 'desc';
+    } else if (sortByRaw === 'rating') {
+      sortBy = 'rating';
+      sortOrder = 'desc';
+    } else {
+      sortBy = 'name';
+    }
+
     const params = {
       query: searchParams.get('q') || undefined,
       category: searchParams.get('category') || undefined,
-      sortBy: searchParams.get('sortBy') || 'name',
-      sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'asc',
+      sortBy,
+      sortOrder,
       limit: parseInt(searchParams.get('limit') || '20'),
       minPrice: searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')!) : undefined,
       maxPrice: searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')!) : undefined,
-      inStock: searchParams.get('inStock') === 'true',
+      inStockOnly: searchParams.get('inStock') === 'true',
       featured: searchParams.get('featured') === 'true',
-      bestseller: searchParams.get('bestseller') === 'true'
+      bestseller: searchParams.get('bestseller') === 'true',
     };
 
-    // Perform search
     const results = searchProducts(params);
-
     return NextResponse.json(results);
 
   } catch (error) {

@@ -1,13 +1,71 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw } from 'lucide-react'
+import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2, RefreshCw, Gift, Phone, Bell, Users, Clock, Pencil, ChevronDown, ChevronUp } from 'lucide-react'
+import Link from 'next/link'
 import { useCart } from '@/store/useCart'
+import { useWishlist } from '@/store/useWishlist'
 import { ProductWithVariants, ProductVariant } from '@/types/product'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+import { getProductReviews, type ProductReviews } from '@/data/reviews'
+import RingSizeGuideModal from '@/components/RingSizeGuideModal'
+import NecklaceLengthGuideModal from '@/components/NecklaceLengthGuideModal'
+import BraceletSizeGuideModal from '@/components/BraceletSizeGuideModal'
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed'
+import RecentlyViewedRow from '@/components/RecentlyViewedRow'
+import { SpottedInTheWild } from '@/components/UGCGallery'
+import { ProductTrustStrip } from '@/components/TrustBadgeStrip'
+import { getBundlesForProduct, Bundle } from '@/data/bundles'
+
+// ─── BNPL Learn More Modal ────────────────────────────────────────────────────
+
+function BNPLLearnMoreModal({ onClose, installmentAmount }: { onClose: () => void; installmentAmount: string }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative bg-white max-w-md w-full p-8 shadow-2xl">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-bj-gray-400 hover:text-bj-black transition-colors"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-[#B2FCE4] rounded-full flex items-center justify-center flex-shrink-0">
+            <span className="text-[#00B14F] font-bold text-sm">AP</span>
+          </div>
+          <div>
+            <h3 className="font-semibold text-bj-black text-lg">Afterpay</h3>
+            <p className="text-caption text-bj-gray-500">Buy now, pay later</p>
+          </div>
+        </div>
+        <p className="text-body text-bj-gray-600 mb-6 leading-relaxed">
+          Shop now and pay over time with 4 equal interest-free installments of <strong>{installmentAmount}</strong>.
+        </p>
+        <div className="space-y-3 mb-6">
+          {[
+            { label: '1st payment', note: 'Due today at checkout' },
+            { label: '2nd payment', note: '2 weeks after purchase' },
+            { label: '3rd payment', note: '4 weeks after purchase' },
+            { label: '4th payment', note: '6 weeks after purchase' },
+          ].map((row) => (
+            <div key={row.label} className="flex items-center justify-between py-2 border-b border-bj-gray-100 last:border-0">
+              <span className="text-caption text-bj-gray-700 font-medium">{row.label}</span>
+              <span className="text-caption text-bj-gray-500">{row.note} · {installmentAmount}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-bj-gray-400 leading-relaxed">
+          No interest, no fees when you pay on time. Available on orders $35–$2,000. Subject to eligibility check. See <span className="underline">Afterpay Terms</span> for full details. This is a simulated integration — no real Afterpay account required.
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -22,9 +80,33 @@ export default function ProductDetailPage() {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null)
   const [selectedSize, setSelectedSize] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [isWishlisted, setIsWishlisted] = useState(false)
-  
+  const [wishlistToast, setWishlistToast] = useState<'added' | 'removed' | null>(null)
+  const [shareToast, setShareToast] = useState(false)
+  const [reviews, setReviews] = useState<ProductReviews | null>(null)
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
+  const [necklaceGuideOpen, setNecklaceGuideOpen] = useState(false)
+  const [braceletGuideOpen, setBraceletGuideOpen] = useState(false)
+  const [crossSellProducts, setCrossSellProducts] = useState<ProductWithVariants[]>([])
+  const [alsoViewedProducts, setAlsoViewedProducts] = useState<ProductWithVariants[]>([])
+  const [viewerCount, setViewerCount] = useState(0)
+  const [bnplModalOpen, setBnplModalOpen] = useState(false)
+  const [shippingCountdown, setShippingCountdown] = useState('')
+  const [notifyEmail, setNotifyEmail] = useState('')
+  const [notifySubmitted, setNotifySubmitted] = useState(false)
+  const [notifyError, setNotifyError] = useState('')
+  const [productBundles, setProductBundles] = useState<Bundle[]>([])
+
+  // Engraving
+  const ENGRAVING_PRICE = 25
+  const ENGRAVING_FONTS = ['Script', 'Block', 'Roman'] as const
+  type EngravingFont = typeof ENGRAVING_FONTS[number]
+  const [engravingEnabled, setEngravingEnabled] = useState(false)
+  const [engravingText, setEngravingText] = useState('')
+  const [engravingFont, setEngravingFont] = useState<EngravingFont>('Script')
+
   const addItem = useCart(state => state.addItem)
+  const { isWishlisted: checkWishlisted, toggleItem: toggleWishlistItem } = useWishlist()
+  const addRecentlyViewed = useRecentlyViewed((s) => s.addProduct)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -41,7 +123,8 @@ export default function ProductDetailPage() {
         const data = await response.json()
         setProduct(data.product)
         setRelatedProducts(data.relatedProducts || [])
-        
+        setProductBundles(getBundlesForProduct(productId))
+
         // Set default variant if product has variants
         if (data.product.variants && data.product.variants.length > 0) {
           const defaultVariant = data.product.variants.find(v => 
@@ -58,6 +141,116 @@ export default function ProductDetailPage() {
 
     fetchProduct()
   }, [productId])
+
+  // Load reviews when productId is available
+  useEffect(() => {
+    if (productId) {
+      setReviews(getProductReviews(productId))
+    }
+  }, [productId])
+
+  // Track recently viewed + fetch cross-sell/also-bought products
+  useEffect(() => {
+    if (!product) return
+
+    // Track this view
+    addRecentlyViewed({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0] || '',
+      category: product.category,
+    })
+
+    // Determine pairing categories for "Complete the Look"
+    const pairingCategoryMap: Record<string, string[]> = {
+      rings: ['necklaces', 'earrings'],
+      necklaces: ['earrings', 'bracelets'],
+      bracelets: ['necklaces', 'earrings'],
+      earrings: ['necklaces', 'bracelets'],
+    }
+    const pairingCategories = pairingCategoryMap[product.category] || []
+
+    const fetchCrossSell = async () => {
+      if (pairingCategories.length === 0) return
+      try {
+        const responses = await Promise.all(
+          pairingCategories.map((cat) =>
+            fetch(`/api/inventory/search?category=${cat}&limit=2`).then((r) => r.json())
+          )
+        )
+        const combined: ProductWithVariants[] = responses
+          .flatMap((r) => r.products || [])
+          .slice(0, 3)
+        setCrossSellProducts(combined)
+      } catch {
+        // silently ignore
+      }
+    }
+
+    // Fetch "Customers Also Bought" — same category, skip first 4 (already in related)
+    const fetchAlsoBought = async () => {
+      try {
+        const r = await fetch(`/api/inventory/search?category=${product.category}&limit=8`)
+        const data = await r.json()
+        const all: ProductWithVariants[] = data.products || []
+        // Skip products already shown in related products section
+        const relatedIds = new Set(relatedProducts.map((p) => p.id))
+        relatedIds.add(product.id)
+        const candidates = all.filter((p) => !relatedIds.has(p.id)).slice(0, 4)
+        setAlsoViewedProducts(candidates)
+      } catch {
+        // silently ignore
+      }
+    }
+
+    fetchCrossSell()
+    fetchAlsoBought()
+  }, [product, addRecentlyViewed]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Viewer count — random 3-12, refreshes every 30s
+  useEffect(() => {
+    const randomCount = () => Math.floor(Math.random() * 10) + 3
+    setViewerCount(randomCount())
+    const interval = setInterval(() => setViewerCount(randomCount()), 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Shipping countdown to 5pm ET (22:00 UTC)
+  const getCountdown = useCallback(() => {
+    const now = new Date()
+    const cutoff = new Date()
+    cutoff.setUTCHours(22, 0, 0, 0) // 5pm ET = 22:00 UTC (EST; 21:00 during EDT)
+    if (now >= cutoff) cutoff.setUTCDate(cutoff.getUTCDate() + 1)
+    const diff = cutoff.getTime() - now.getTime()
+    const h = Math.floor(diff / 3600000)
+    const m = Math.floor((diff % 3600000) / 60000)
+    const s = Math.floor((diff % 60000) / 1000)
+    return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  }, [])
+
+  useEffect(() => {
+    setShippingCountdown(getCountdown())
+    const interval = setInterval(() => setShippingCountdown(getCountdown()), 1000)
+    return () => clearInterval(interval)
+  }, [getCountdown])
+
+  // Notify Me handler
+  const handleNotifySubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const email = notifyEmail.trim()
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setNotifyError('Please enter a valid email address.')
+      return
+    }
+    try {
+      const key = `bonjoojoo_notify_${productId}`
+      const list = JSON.parse(localStorage.getItem(key) || '[]') as string[]
+      if (!list.includes(email)) localStorage.setItem(key, JSON.stringify([...list, email]))
+    } catch { /* localStorage unavailable */ }
+    setNotifySubmitted(true)
+    setNotifyError('')
+  }
 
   // Handle variant selection
   const handleVariantChange = (variant: ProductVariant) => {
@@ -111,19 +304,59 @@ export default function ProductDetailPage() {
     )
   }
 
+  const isWishlisted = product ? checkWishlisted(product.id) : false
+
   const handleAddToCart = () => {
+    const engravingActive = engravingEnabled && engravingText.trim().length > 0
+    const itemPrice = getCurrentPrice() + (engravingActive ? ENGRAVING_PRICE : 0)
     const productForCart = {
       ...product,
       // Use variant ID so different metals are separate cart items
       id: selectedVariant?.id || product.id,
       name: selectedVariant ? `${product.name} — ${selectedVariant.name}` : product.name,
-      price: getCurrentPrice(),
+      price: itemPrice,
       images: selectedVariant?.images?.length ? selectedVariant.images : product.images,
     }
-    const options: { size?: string } = {}
+    const options: { size?: string; engraving?: string; engravingFont?: string } = {}
     if (selectedSize) options.size = selectedSize
+    if (engravingActive) {
+      options.engraving = engravingText.trim()
+      options.engravingFont = engravingFont
+    }
     for (let i = 0; i < quantity; i++) {
       addItem(productForCart, options)
+    }
+  }
+
+  const handleWishlistToggle = () => {
+    if (!product) return
+    const wasWishlisted = checkWishlisted(product.id)
+    toggleWishlistItem({
+      id: product.id,
+      name: product.name,
+      price: getCurrentPrice(),
+      originalPrice: product.compare_at_price,
+      image: product.images?.[0] || '/images/products/placeholder-product.svg',
+      category: product.category,
+    })
+    setWishlistToast(wasWishlisted ? 'removed' : 'added')
+    setTimeout(() => setWishlistToast(null), 2500)
+  }
+
+  const handleShare = async () => {
+    const url = window.location.href
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: product?.name, url })
+      } else {
+        await navigator.clipboard.writeText(url)
+        setShareToast(true)
+        setTimeout(() => setShareToast(false), 2500)
+      }
+    } catch {
+      await navigator.clipboard.writeText(url)
+      setShareToast(true)
+      setTimeout(() => setShareToast(false), 2500)
     }
   }
 
@@ -144,17 +377,64 @@ export default function ProductDetailPage() {
       {/* Film grain overlay */}
       <div className="grain-overlay" aria-hidden="true" />
 
+      {/* Ring Size Guide Modal */}
+      <RingSizeGuideModal
+        open={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
+        highlightSize={selectedSize}
+        onSizeSelect={(size) => {
+          setSelectedSize(size)
+          setSizeGuideOpen(false)
+        }}
+      />
+
+      {/* Necklace Length Guide Modal */}
+      <NecklaceLengthGuideModal
+        open={necklaceGuideOpen}
+        onClose={() => setNecklaceGuideOpen(false)}
+      />
+
+      {/* Bracelet Size Guide Modal */}
+      <BraceletSizeGuideModal
+        open={braceletGuideOpen}
+        onClose={() => setBraceletGuideOpen(false)}
+      />
+
+      {/* BNPL Learn More Modal */}
+      {bnplModalOpen && (
+        <BNPLLearnMoreModal
+          onClose={() => setBnplModalOpen(false)}
+          installmentAmount={`$${(currentPrice / 4).toFixed(2)}`}
+        />
+      )}
+
+      {/* Wishlist toast */}
+      {wishlistToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-bj-black text-white px-5 py-3 rounded-full shadow-lg text-sm font-medium animate-fade-in-up">
+          <Heart size={15} className={wishlistToast === 'added' ? 'fill-bj-pink text-bj-pink' : 'text-white'} />
+          {wishlistToast === 'added' ? 'Added to wishlist' : 'Removed from wishlist'}
+        </div>
+      )}
+
+      {/* Share toast */}
+      {shareToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-bj-black text-white px-5 py-3 rounded-full shadow-lg text-sm font-medium animate-fade-in-up">
+          <Check size={15} className="text-green-400" />
+          Link copied to clipboard
+        </div>
+      )}
+
       {/* Breadcrumb Navigation */}
       <div className="bg-white border-b border-bj-gray-100 py-4">
         <div className="container-bj-wide">
-          <nav className="flex items-center space-x-3 text-[13px]">
-            <button onClick={() => router.push('/')} className="text-bj-gray-400 hover:text-bj-black transition-colors">Home</button>
-            <span className="text-bj-gray-300">/</span>
-            <button onClick={() => router.push(`/category/${product.category}`)} className="text-bj-gray-400 hover:text-bj-black transition-colors capitalize">
+          <nav className="flex items-center space-x-3 text-[13px] overflow-hidden">
+            <button onClick={() => router.push('/')} className="text-bj-gray-400 hover:text-bj-black transition-colors flex-shrink-0">Home</button>
+            <span className="text-bj-gray-300 flex-shrink-0">/</span>
+            <button onClick={() => router.push(`/category/${product.category}`)} className="text-bj-gray-400 hover:text-bj-black transition-colors capitalize flex-shrink-0">
               {product.category}
             </button>
-            <span className="text-bj-gray-300">/</span>
-            <span className="text-bj-black font-medium">{product.name}</span>
+            <span className="text-bj-gray-300 flex-shrink-0">/</span>
+            <span className="text-bj-black font-medium truncate min-w-0">{product.name}</span>
           </nav>
         </div>
       </div>
@@ -243,16 +523,40 @@ export default function ProductDetailPage() {
                 <h1 className="text-display-lg text-bj-black font-light">
                   {product.name}
                 </h1>
-
+                {reviews && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={15}
+                          className={star <= Math.round(reviews.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-caption font-medium text-bj-black">{reviews.averageRating}</span>
+                    <span className="text-caption text-bj-gray-400">({reviews.totalReviews} reviews)</span>
+                  </div>
+                )}
               </div>
             </LuxuryReveal>
+
+            {/* Perfect for gifting badge — shown on necklaces and bracelets */}
+            {(product.category === 'necklaces' || product.category === 'bracelets') && (
+              <LuxuryReveal direction="right" delay={0.08}>
+                <div className="inline-flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-full px-4 py-1.5">
+                  <Gift size={13} className="text-stone-500" strokeWidth={1.5} />
+                  <span className="text-[12px] font-medium text-stone-700 tracking-wide">Perfect for gifting</span>
+                </div>
+              </LuxuryReveal>
+            )}
 
             {/* Price */}
             <LuxuryReveal direction="right" delay={0.1}>
               <div className="space-y-3">
                 <div className="flex items-baseline space-x-4">
                   <span className="text-display-sm text-bj-black font-light">
-                    {formatPrice(currentPrice)}
+                    {formatPrice(currentPrice + (engravingEnabled && engravingText.trim() ? ENGRAVING_PRICE : 0))}
                   </span>
                   {product.compare_at_price && product.compare_at_price > currentPrice && (
                     <span className="text-body text-bj-gray-400 line-through">
@@ -260,7 +564,21 @@ export default function ProductDetailPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-caption text-bj-gray-500">Or 4 interest-free payments of <span className="font-medium">${(currentPrice / 4).toFixed(0)}</span> with Klarna</p>
+                {currentPrice >= 100 && (
+                  <p className="text-caption text-bj-gray-500">
+                    or 4 interest-free payments of{' '}
+                    <span className="font-medium">${(currentPrice / 4).toFixed(2)}</span>{' '}
+                    with{' '}
+                    <span className="font-semibold text-[#00B14F]">Afterpay</span>
+                    {' '}·{' '}
+                    <button
+                      onClick={() => setBnplModalOpen(true)}
+                      className="underline underline-offset-2 hover:text-bj-black transition-colors"
+                    >
+                      Learn more
+                    </button>
+                  </p>
+                )}
               </div>
             </LuxuryReveal>
 
@@ -303,7 +621,12 @@ export default function ProductDetailPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-overline text-bj-black">Ring Size</h3>
-                    <button className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2">Size Guide</button>
+                    <button
+                      onClick={() => setSizeGuideOpen(true)}
+                      className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
+                    >
+                      Size Guide
+                    </button>
                   </div>
                   <div className="grid grid-cols-4 gap-2 max-w-xs">
                     {sizes.map((size) => (
@@ -320,46 +643,237 @@ export default function ProductDetailPage() {
                       </button>
                     ))}
                   </div>
+                  {/* Free resize badge */}
+                  <div className="flex items-center gap-2 text-[11px] text-bj-gray-500 mt-1">
+                    <RefreshCw size={12} className="text-bj-pink flex-shrink-0" />
+                    <span><span className="font-semibold text-bj-black">Free resize</span> within 30 days — order with confidence</span>
+                  </div>
+                  {/* Find my size CTA */}
+                  {!selectedSize && (
+                    <button
+                      onClick={() => setSizeGuideOpen(true)}
+                      className="text-[11px] font-medium text-bj-pink hover:text-bj-pink-hover transition-colors flex items-center gap-1.5"
+                    >
+                      Not sure of your size? Find it in 2 minutes →
+                    </button>
+                  )}
                 </div>
               </LuxuryReveal>
             )}
 
+            {/* Necklace Length Guide link */}
+            {product.category === 'necklaces' && (
+              <LuxuryReveal direction="right" delay={0.25}>
+                <div className="flex items-center justify-between py-1">
+                  <span className="text-overline text-bj-black">Necklace Length</span>
+                  <button
+                    onClick={() => setNecklaceGuideOpen(true)}
+                    className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
+                  >
+                    View length guide
+                  </button>
+                </div>
+              </LuxuryReveal>
+            )}
+
+            {/* Bracelet Size Guide link */}
+            {product.category === 'bracelets' && (
+              <LuxuryReveal direction="right" delay={0.25}>
+                <div className="flex items-center justify-between py-1">
+                  <span className="text-overline text-bj-black">Bracelet Size</span>
+                  <button
+                    onClick={() => setBraceletGuideOpen(true)}
+                    className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
+                  >
+                    View sizing guide
+                  </button>
+                </div>
+              </LuxuryReveal>
+            )}
+
+            {/* Engraving — rings & bracelets */}
+            {product.supportsEngraving && (
+              <LuxuryReveal direction="right" delay={0.27}>
+                <div className="border border-bj-gray-200 rounded-sm overflow-hidden">
+                  {/* Toggle header */}
+                  <button
+                    onClick={() => setEngravingEnabled(e => !e)}
+                    className="w-full flex items-center justify-between px-4 py-3.5 bg-white hover:bg-bj-offwhite transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Pencil size={15} className="text-bj-pink flex-shrink-0" strokeWidth={1.5} />
+                      <div className="text-left">
+                        <span className="text-[13px] font-medium text-bj-black">Personalize with Engraving</span>
+                        <span className="text-[12px] text-bj-gray-400 ml-2">+${ENGRAVING_PRICE}</span>
+                      </div>
+                    </div>
+                    {engravingEnabled ? <ChevronUp size={16} className="text-bj-gray-400 flex-shrink-0" /> : <ChevronDown size={16} className="text-bj-gray-400 flex-shrink-0" />}
+                  </button>
+
+                  {/* Expanded engraving options */}
+                  {engravingEnabled && (
+                    <div className="px-4 pb-4 pt-3 bg-bj-offwhite border-t border-bj-gray-200 space-y-4">
+                      {/* Text input */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <label className="text-overline text-bj-black">Your Message</label>
+                          <span className="text-[11px] text-bj-gray-400">{engravingText.length}/20</span>
+                        </div>
+                        <input
+                          type="text"
+                          maxLength={20}
+                          value={engravingText}
+                          onChange={e => setEngravingText(e.target.value)}
+                          placeholder="e.g. Forever Yours"
+                          className="w-full border border-bj-gray-300 px-3 py-2.5 text-[13px] text-bj-black placeholder-bj-gray-400 focus:outline-none focus:border-bj-black transition-colors bg-white"
+                        />
+                      </div>
+
+                      {/* Font selector */}
+                      <div className="space-y-1.5">
+                        <label className="text-overline text-bj-black">Font Style</label>
+                        <div className="flex gap-2">
+                          {ENGRAVING_FONTS.map(font => (
+                            <button
+                              key={font}
+                              onClick={() => setEngravingFont(font)}
+                              className={`flex-1 py-2.5 border-2 text-[13px] transition-all duration-200 ${
+                                engravingFont === font
+                                  ? 'border-bj-black bg-bj-black text-white'
+                                  : 'border-bj-gray-200 hover:border-bj-gray-400 text-bj-gray-700'
+                              } ${font === 'Script' ? 'font-serif italic' : font === 'Block' ? 'font-bold tracking-widest uppercase text-[11px]' : 'tracking-wide'}`}
+                            >
+                              {font}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Preview */}
+                      {engravingText.trim() && (
+                        <div className="bg-white border border-bj-gray-200 px-3 py-2.5 text-[12px] text-bj-gray-500">
+                          Your engraving: <span className={`text-bj-black ${engravingFont === 'Script' ? 'font-serif italic' : engravingFont === 'Block' ? 'font-bold tracking-wider uppercase' : 'tracking-wide'}`}>&ldquo;{engravingText}&rdquo;</span> in {engravingFont}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </LuxuryReveal>
+            )}
+
+            {/* Urgency signals */}
+            <LuxuryReveal direction="right" delay={0.28}>
+              <div className="space-y-2">
+                {/* Low stock badge */}
+                {product.availability_status === 'low_stock' && (
+                  <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-2 rounded">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse flex-shrink-0" />
+                    <span className="text-[12px] font-semibold text-amber-700">
+                      Only {product.stockCount || 'a few'} left in stock
+                    </span>
+                  </div>
+                )}
+                {/* Viewers */}
+                {viewerCount > 0 && product.availability_status !== 'sold_out' && (
+                  <div className="flex items-center gap-2 text-[12px] text-bj-gray-500">
+                    <Users size={13} className="text-bj-pink flex-shrink-0" />
+                    <span><span className="font-semibold text-bj-black">{viewerCount} people</span> are viewing this right now</span>
+                  </div>
+                )}
+                {/* Shipping countdown */}
+                {shippingCountdown && product.availability_status !== 'sold_out' && (
+                  <div className="flex items-center gap-2 text-[12px] text-bj-gray-500">
+                    <Clock size={13} className="text-bj-pink flex-shrink-0" />
+                    <span>Ships today if ordered within <span className="font-semibold text-bj-black tabular-nums">{shippingCountdown}</span></span>
+                  </div>
+                )}
+              </div>
+            </LuxuryReveal>
+
             {/* Quantity & Add to Cart */}
             <LuxuryReveal direction="right" delay={0.3}>
               <div className="space-y-6">
-                <div className="space-y-3">
-                  <h3 className="text-overline text-bj-black">Quantity</h3>
-                  <div className="flex items-center border border-bj-gray-300 w-32">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <span className="flex-1 text-center font-medium text-bj-black">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
-                    >
-                      <Plus size={16} />
-                    </button>
+                {product.availability_status !== 'sold_out' && (
+                  <div className="space-y-3">
+                    <h3 className="text-overline text-bj-black">Quantity</h3>
+                    <div className="flex items-center border border-bj-gray-300 w-32">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="flex-1 text-center font-medium text-bj-black">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-12 h-12 flex items-center justify-center hover:bg-bj-gray-50 transition-colors"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="space-y-4">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={product.category === 'rings' && !selectedSize}
-                    className="w-full btn-primary py-5 disabled:bg-bj-gray-300 disabled:border-bj-gray-300 disabled:cursor-not-allowed flex items-center justify-center space-x-3"
-                  >
-                    <ShoppingBag size={20} />
-                    <span>Add to Bag</span>
-                  </button>
-                  
+                  {product.availability_status === 'sold_out' ? (
+                    /* Notify Me form for sold-out products */
+                    <div className="space-y-4 border border-bj-gray-200 p-5 bg-bj-gray-50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-bj-gray-200 flex items-center justify-center flex-shrink-0">
+                          <Bell size={15} className="text-bj-gray-500" />
+                        </div>
+                        <div>
+                          <p className="text-caption font-semibold text-bj-black">Out of Stock</p>
+                          <p className="text-[11px] text-bj-gray-500">This piece is currently unavailable</p>
+                        </div>
+                      </div>
+                      {notifySubmitted ? (
+                        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-4 py-3">
+                          <Check size={15} className="text-emerald-600 flex-shrink-0" />
+                          <p className="text-[12px] text-emerald-700 font-medium">
+                            You are on the list! We will email you when this is back.
+                          </p>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleNotifySubmit} className="space-y-3">
+                          <label className="text-overline text-bj-black block">Notify Me When Available</label>
+                          <div className="flex gap-2">
+                            <input
+                              type="email"
+                              value={notifyEmail}
+                              onChange={(e) => { setNotifyEmail(e.target.value); setNotifyError('') }}
+                              placeholder="your@email.com"
+                              className="flex-1 border border-bj-gray-300 px-4 py-3 text-caption text-bj-black placeholder-bj-gray-400 focus:outline-none focus:border-bj-black transition-colors bg-white"
+                            />
+                            <button
+                              type="submit"
+                              className="btn-primary px-5 py-3 flex items-center gap-2 whitespace-nowrap"
+                            >
+                              <Bell size={14} />
+                              <span className="text-[11px] uppercase tracking-wider">Notify Me</span>
+                            </button>
+                          </div>
+                          {notifyError && <p className="text-[11px] text-red-500">{notifyError}</p>}
+                        </form>
+                      )}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={product.category === 'rings' && !selectedSize}
+                      className="w-full btn-primary py-5 disabled:bg-bj-gray-300 disabled:border-bj-gray-300 disabled:cursor-not-allowed flex items-center justify-center space-x-3"
+                    >
+                      <ShoppingBag size={20} />
+                      <span>Add to Bag</span>
+                    </button>
+                  )}
+
+                  <ProductTrustStrip />
+
                   <div className="grid grid-cols-2 gap-4">
                     <button
-                      onClick={() => setIsWishlisted(!isWishlisted)}
-                      className={`btn-secondary py-3 flex items-center justify-center space-x-2 ${
+                      onClick={handleWishlistToggle}
+                      className={`btn-secondary py-3 flex items-center justify-center space-x-2 transition-colors ${
                         isWishlisted
                           ? 'border-bj-pink text-bj-pink bg-bj-pink-soft'
                           : ''
@@ -368,12 +882,30 @@ export default function ProductDetailPage() {
                       <Heart size={18} className={isWishlisted ? 'fill-current' : ''} />
                       <span className="text-[11px]">{isWishlisted ? 'Saved' : 'Wishlist'}</span>
                     </button>
-                    
-                    <button className="btn-secondary py-3 flex items-center justify-center space-x-2">
+
+                    <button onClick={handleShare} className="btn-secondary py-3 flex items-center justify-center space-x-2">
                       <Share2 size={18} />
                       <span className="text-[11px]">Share</span>
                     </button>
                   </div>
+
+                  {/* Consultation CTA for engagement rings and high-value items */}
+                  {(product.category === 'rings' || currentPrice >= 2000) && (
+                    <div className="mt-2 p-5 bg-bj-blush border border-bj-rose-gold/20">
+                      <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                          <Phone size={16} className="text-bj-pink" strokeWidth={1.5} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[13px] font-semibold text-bj-black mb-0.5">Speak with a Diamond Specialist</p>
+                          <p className="text-[12px] text-bj-gray-500 mb-3">Get expert guidance on this piece — free, no pressure.</p>
+                          <Link href="/consultation" className="inline-block btn-secondary py-2 px-5 text-[11px] bg-white hover:bg-white">
+                            Book a Free Consultation
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </LuxuryReveal>
@@ -453,6 +985,62 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
+      {/* Complete the Look */}
+      {crossSellProducts.length > 0 && (
+        <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-12">
+                <p className="text-overline text-bj-pink mb-3">Style It Together</p>
+                <h2 className="text-display-lg text-bj-black">Complete the Look</h2>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+              {crossSellProducts.map((item, index) => (
+                <LuxuryReveal key={item.id} direction="up" delay={index * 0.1}>
+                  <div
+                    className="group cursor-pointer"
+                    onClick={() => router.push(`/product/${item.id}`)}
+                  >
+                    <div className="relative aspect-square bg-white overflow-hidden mb-4">
+                      <Image
+                        src={item.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-6 group-hover:scale-105 transition-transform duration-300 img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
+                      <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider bg-white text-bj-gray-500 px-2 py-1">
+                        {item.category}
+                      </span>
+                    </div>
+                    <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2 mb-1">
+                      {item.name}
+                    </h3>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-body font-medium text-bj-black">{formatPrice(item.price)}</span>
+                      {item.compare_at_price && item.compare_at_price > item.price && (
+                        <span className="text-caption text-bj-gray-400 line-through">{formatPrice(item.compare_at_price)}</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        addItem(item)
+                      }}
+                      className="w-full btn-secondary py-2.5 text-[11px] uppercase tracking-wider"
+                    >
+                      Add to Bag
+                    </button>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <div className="bg-white py-20">
@@ -481,8 +1069,25 @@ export default function ProductDetailPage() {
                       />
 
                       {/* Wishlist */}
-                      <button className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all">
-                        <Heart size={14} className="text-bj-gray-500 hover:text-bj-pink" strokeWidth={1.5} />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleWishlistItem({
+                            id: relatedProduct.id,
+                            name: relatedProduct.name,
+                            price: relatedProduct.price,
+                            originalPrice: relatedProduct.compare_at_price,
+                            image: relatedProduct.images?.[0] || '/images/products/placeholder-product.svg',
+                            category: relatedProduct.category,
+                          })
+                        }}
+                        className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all"
+                      >
+                        <Heart
+                          size={14}
+                          strokeWidth={1.5}
+                          className={checkWishlisted(relatedProduct.id) ? 'fill-bj-pink text-bj-pink' : 'text-bj-gray-500 hover:text-bj-pink'}
+                        />
                       </button>
 
                       {/* Quick Add */}
@@ -519,6 +1124,178 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Customers Also Bought */}
+      {alsoViewedProducts.length > 0 && (
+        <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-12">
+                <p className="text-overline text-bj-pink mb-3">Social Proof</p>
+                <h2 className="text-display-lg text-bj-black">Customers Also Bought</h2>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {alsoViewedProducts.map((item, index) => (
+                <LuxuryReveal key={item.id} direction="up" delay={index * 0.08}>
+                  <div
+                    className="group cursor-pointer product-card"
+                    onClick={() => router.push(`/product/${item.id}`)}
+                  >
+                    <div className="product-image-container relative aspect-square bg-white mb-3 overflow-hidden">
+                      <Image
+                        src={item.images?.[0] || '/images/products/placeholder-product.svg'}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-4 product-card-img img-editorial"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg' }}
+                      />
+                    </div>
+                    <h3 className="text-caption font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors line-clamp-2 mb-1">
+                      {item.name}
+                    </h3>
+                    <span className="text-body font-medium text-bj-black">{formatPrice(item.price)}</span>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complete the Set — bundle callout */}
+      {productBundles.length > 0 && (
+        <div className="bg-white py-16 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-10">
+                <p className="text-overline text-bj-pink mb-3">Complete the Set</p>
+                <h2 className="text-display-lg text-bj-black">This Piece Belongs in a Set</h2>
+                <p className="text-body text-bj-gray-500 mt-2">
+                  Save up to 15% when you pair it with its perfect companions.
+                </p>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {productBundles.map((bundle, idx) => (
+                <LuxuryReveal key={bundle.id} direction="up" delay={idx * 0.1}>
+                  <Link
+                    href="/bundles"
+                    className="group flex items-center gap-5 border border-bj-gray-100 p-5 hover:border-bj-pink transition-colors duration-300"
+                  >
+                    <div className="flex-shrink-0 w-16 h-16 bg-bj-offwhite flex items-center justify-center">
+                      <span className="text-bj-pink text-2xl font-light">◇</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-bj-pink bg-bj-blush px-2 py-0.5">
+                          Save {bundle.discountPercent}%
+                        </span>
+                      </div>
+                      <h3 className="font-display text-[0.9rem] tracking-[0.04em] uppercase text-bj-black group-hover:text-bj-pink transition-colors line-clamp-1">
+                        {bundle.name}
+                      </h3>
+                      <p className="text-[12px] text-bj-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                        {bundle.description}
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0 text-bj-gray-300 group-hover:text-bj-pink transition-colors">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </Link>
+                </LuxuryReveal>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link
+                href="/bundles"
+                className="text-[12px] uppercase tracking-[0.12em] text-bj-black underline underline-offset-4 decoration-1 hover:text-bj-pink transition-colors"
+              >
+                View All Sets &amp; Bundles
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reviews Section */}
+      {reviews && (
+        <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-12">
+                <p className="text-overline text-bj-pink mb-3">Customer Reviews</p>
+                <div className="flex flex-col sm:flex-row sm:items-end gap-6">
+                  <div>
+                    <h2 className="text-display-lg text-bj-black mb-3">What Our Customers Say</h2>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            size={22}
+                            className={star <= Math.round(reviews.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-display-sm text-bj-black font-light">{reviews.averageRating}</span>
+                      <span className="text-body text-bj-gray-500">({reviews.totalReviews} reviews)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {reviews.reviews.map((review, index) => (
+                <LuxuryReveal key={review.id} direction="up" delay={index * 0.05}>
+                  <div className="bg-white p-8">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={14}
+                          className={star <= review.rating ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'}
+                        />
+                      ))}
+                    </div>
+                    <h4 className="text-caption font-semibold text-bj-black mb-3">{review.title}</h4>
+                    <p className="text-caption text-bj-gray-500 leading-relaxed mb-6">{review.body}</p>
+                    <div className="flex items-center justify-between pt-4 border-t border-bj-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-bj-gray-100 rounded-full flex items-center justify-center">
+                          <span className="text-[11px] font-semibold text-bj-gray-500">{review.author[0]}</span>
+                        </div>
+                        <div>
+                          <p className="text-caption font-medium text-bj-black">{review.author}</p>
+                          <p className="text-[11px] text-bj-gray-400">{new Date(review.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                        </div>
+                      </div>
+                      {review.verified && (
+                        <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 font-medium">
+                          <CheckCircle2 size={13} className="text-emerald-500" />
+                          <span>Verified Buyer</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Spotted in the Wild — customer UGC photos */}
+      <SpottedInTheWild />
+
+      {/* Recently Viewed */}
+      <RecentlyViewedRow currentProductId={productId} />
     </div>
   )
 }
