@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Filter, Grid, List, SortAsc, SortDesc, Heart } from 'lucide-react'
+import Image from 'next/image'
+import { Filter, Grid, List, Heart } from 'lucide-react'
 
 
 interface Product {
@@ -47,48 +48,36 @@ function SearchPageContent() {
     availability: 'all'
   })
 
-  useEffect(() => {
-    const performSearch = async () => {
-      console.log('performSearch called with:', { query, sortBy, filters })
-      setLoading(true)
-      setError(null)
+  const performSearch = useCallback(async () => {
+    setLoading(true)
+    setError(null)
 
-      try {
-        const params = new URLSearchParams({
-          q: query,
-          sortBy: sortBy === 'relevance' ? 'name' : sortBy,
-          limit: '24'
-        })
+    try {
+      const params = new URLSearchParams({
+        q: query,
+        sortBy: sortBy === 'relevance' ? 'name' : sortBy,
+        limit: '24'
+      })
 
-        // Add filters
-        if (filters.category) params.append('category', filters.category)
-        if (filters.minPrice) params.append('minPrice', filters.minPrice)
-        if (filters.maxPrice) params.append('maxPrice', filters.maxPrice)
-        if (filters.availability === 'inStock') params.append('inStock', 'true')
+      if (filters.category) params.append('category', filters.category)
+      if (filters.minPrice) params.append('minPrice', filters.minPrice)
+      if (filters.maxPrice) params.append('maxPrice', filters.maxPrice)
+      if (filters.availability === 'inStock') params.append('inStock', 'true')
 
-        const url = `/api/inventory/search?${params}`
-        console.log('Fetching from:', url)
-        
-        const response = await fetch(url)
-        console.log('Response status:', response.status)
-        
-        if (!response.ok) {
-          throw new Error('Search failed')
-        }
-
-        const data = await response.json()
-        console.log('Search results:', data)
-        setResults(data)
-      } catch (err) {
-        console.error('Search error:', err)
-        setError('Failed to load search results. Please try again.')
-      } finally {
-        setLoading(false)
-      }
+      const response = await fetch(`/api/inventory/search?${params}`)
+      if (!response.ok) throw new Error('Search failed')
+      const data = await response.json()
+      setResults(data)
+    } catch {
+      setError('Failed to load search results. Please try again.')
+    } finally {
+      setLoading(false)
     }
-
-    performSearch()
   }, [query, sortBy, filters])
+
+  useEffect(() => {
+    performSearch()
+  }, [performSearch])
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -220,12 +209,12 @@ function SearchPageContent() {
           <div className="flex-1">
             {/* Results Header */}
             <div className="flex items-center justify-between mb-6">
-              <div className="text-sm text-gray-600">
-                {results ? (
+              <div className="text-sm text-gray-600 min-h-[1.25rem]">
+                {loading ? (
+                  <span className="inline-block w-32 h-4 bg-gray-200 rounded animate-pulse" />
+                ) : results ? (
                   `${results.total} product${results.total !== 1 ? 's' : ''} found`
-                ) : (
-                  'Loading...'
-                )}
+                ) : null}
               </div>
 
               <div className="flex items-center space-x-4">
@@ -260,10 +249,22 @@ function SearchPageContent() {
               </div>
             </div>
 
-            {/* Loading State */}
+            {/* Loading State — skeleton grid preserves layout */}
             {loading && (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+              <div className={viewMode === 'grid'
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+                : 'space-y-6'
+              }>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className={`bg-white rounded-lg shadow-sm ${viewMode === 'list' ? 'flex space-x-4 p-4' : 'p-4'}`}>
+                    <div className={`bg-gray-200 rounded animate-pulse ${viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}`} />
+                    <div className="flex-1 space-y-2 py-1">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
+                      <div className="h-3 bg-gray-200 rounded animate-pulse w-1/2" />
+                      <div className="h-5 bg-gray-200 rounded animate-pulse w-1/3 mt-2" />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
 
@@ -294,15 +295,18 @@ function SearchPageContent() {
                       viewMode === 'list' ? 'flex space-x-4 p-4' : 'p-4'
                     }`}
                   >
-                    <div className={viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}>
+                    <div className={`relative overflow-hidden rounded-lg ${viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}`}>
                       {product.images && product.images[0] ? (
-                        <img
+                        <Image
                           src={product.images[0]}
                           alt={product.name}
-                          className="w-full h-full object-cover rounded-lg"
+                          fill
+                          loading="lazy"
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          className="object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                           <span className="text-gray-400 text-sm">{product.name.charAt(0)}</span>
                         </div>
                       )}

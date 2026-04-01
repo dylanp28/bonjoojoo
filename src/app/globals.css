@@ -666,3 +666,37 @@
   }
   html { scroll-behavior: auto; }
 }
+
+/* ─── iOS SAFE AREA & DYNAMIC VIEWPORT ─── */
+/* Use dvh (dynamic viewport height) on iOS to account for browser chrome */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh;
+}
+.min-h-screen-safe {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Mobile touch improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger tap targets on touch devices */
+  .nav-link {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  /* Prevent hover states sticking on mobile */
+  .product-card:hover .product-image-container > img {
+    transform: none;
+  }
+}
+
+/* ─── MOBILE SCROLL CONTAINER ─── */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}

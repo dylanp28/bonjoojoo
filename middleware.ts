@@ -152,7 +152,6 @@ function requiresAuthentication(pathname: string): boolean {
     '/account',
     '/orders',
     '/wishlist',
-    '/checkout',
     '/api/customer',
     '/api/orders',
     '/api/wishlist'

@@ -22,7 +22,8 @@ const navItems = [
   { label: 'Earrings', href: '/category/earrings', mega: true },
   { label: 'Bracelets', href: '/category/bracelets', mega: true },
   { label: 'Lab-Grown Diamonds', href: '/education/lab-grown-diamonds' },
-  { label: 'Gifts', href: '/search?tag=gift' },
+  { label: 'Size Guide', href: '/size-guide' },
+  { label: 'Consultation', href: '/consultation' },
 ]
 
 const megaMenus: Record<string, { categories: { title: string; items: { label: string; href: string }[] }[]; featured?: { title: string; subtitle: string } }> = {
@@ -235,11 +236,10 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               <button
                 onClick={() => isAuthenticated ? setShowUserMenu(!showUserMenu) : openLogin()}
                 className={`p-2.5 transition-colors hidden sm:flex ${
-                  shouldHaveSolidHeader || stickyHeader 
-                    ? 'text-bj-black hover:text-bj-gray-500' 
+                  shouldHaveSolidHeader || stickyHeader
+                    ? 'text-bj-black hover:text-bj-gray-500'
                     : 'text-white hover:text-white/70'
                 }`}
-                disabled={isLoading}
                 aria-label="Account"
               >
                 <User size={20} strokeWidth={1.5} />
@@ -444,8 +444,8 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               <p className="text-overline text-bj-pink mb-3">Exclusive Access</p>
               <h3 className="text-display-sm text-bj-black mb-3">Join the Bonjoojoo Club</h3>
               <p className="text-body mb-8">Be the first to discover new collections, receive exclusive offers, and get 10% off your first order.</p>
-              <div className="flex gap-0 max-w-md mx-auto">
-                <input type="email" placeholder="Enter your email" className="input-bj flex-1 border-r-0 text-[13px]" />
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 max-w-md mx-auto">
+                <input type="email" placeholder="Enter your email" className="input-bj flex-1 sm:border-r-0 text-[13px]" />
                 <button className="btn-primary whitespace-nowrap text-[11px] px-6">Sign Up</button>
               </div>
             </div>
@@ -479,13 +479,14 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                     { label: 'Contact Us', href: '/contact' },
                     { label: 'Product Care', href: '/help/care' },
                     { label: 'Warranty', href: '/help/warranty' },
-                    { label: 'Size Guide', href: '/help/sizing' }
-                  ] 
+                    { label: 'Size Guide', href: '/size-guide' }
+                  ]
                 },
-                { 
-                  title: 'Services', 
+                {
+                  title: 'Services',
                   items: [
                     { label: 'My Bonjoojoo', href: '/account' },
+                    { label: 'Book a Consultation', href: '/consultation' },
                     { label: 'Buy Now Pay Later', href: '/help/financing' },
                     { label: 'Pick Up In Store', href: '/stores' },
                     { label: 'Engraving', href: '/services/engraving' },

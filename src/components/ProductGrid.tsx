@@ -10,9 +10,11 @@ import { useCart } from '@/store/useCart'
 interface ProductGridProps {
   products: Product[]
   title?: string
+  loading?: boolean
+  skeletonCount?: number
 }
 
-export function ProductGrid({ products, title }: ProductGridProps) {
+export function ProductGrid({ products, title, loading = false, skeletonCount = 8 }: ProductGridProps) {
   const [wishlist, setWishlist] = useState<Set<string>>(new Set())
   const addItem = useCart(state => state.addItem)
   
@@ -39,6 +41,29 @@ export function ProductGrid({ products, title }: ProductGridProps) {
   }
 
 
+
+  if (loading) {
+    return (
+      <section>
+        {title && (
+          <div className="mb-12 text-center">
+            <div className="h-9 w-48 bg-gray-200 rounded animate-pulse mx-auto" />
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: skeletonCount }).map((_, i) => (
+            <div key={i} className="cursor-pointer">
+              <div className="relative aspect-square bg-gray-200 rounded animate-pulse mb-4" />
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
+                <div className="h-5 bg-gray-200 rounded animate-pulse w-1/3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section>

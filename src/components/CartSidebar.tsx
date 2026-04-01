@@ -2,7 +2,7 @@
 
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react'
+import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight, Truck, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
@@ -68,7 +68,7 @@ export default function CartSidebar() {
                             Discover our collection of lab-grown diamond jewelry.
                           </p>
                           <Link
-                            href="/collections"
+                            href="/search"
                             onClick={toggleCart}
                             className="btn-primary"
                           >
@@ -146,6 +146,28 @@ export default function CartSidebar() {
                     {/* Footer */}
                     {items.length > 0 && (
                       <div className="border-t border-gray-100 px-6 py-6 bg-bj-offwhite">
+                        {/* Free shipping progress bar */}
+                        {totalPrice < 500 && (
+                          <div className="mb-4 px-1">
+                            <div className="flex justify-between text-[12px] text-gray-500 mb-1.5">
+                              <span>Add {formatPrice(500 - totalPrice)} more for free shipping</span>
+                              <span className="text-bj-pink font-medium">Free Shipping</span>
+                            </div>
+                            <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-bj-pink rounded-full transition-all duration-500"
+                                style={{ width: `${Math.min((totalPrice / 500) * 100, 100)}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                        {totalPrice >= 500 && (
+                          <div className="mb-4 flex items-center gap-2 text-[12px] text-green-700 font-medium">
+                            <Truck size={14} />
+                            <span>You qualify for free shipping!</span>
+                          </div>
+                        )}
+
                         <div className="flex justify-between mb-1">
                           <span className="text-[14px] text-gray-500">Subtotal</span>
                           <span className="text-[16px] font-medium text-bj-black">{formatPrice(totalPrice)}</span>
@@ -169,6 +191,22 @@ export default function CartSidebar() {
                         >
                           Continue Shopping
                         </button>
+
+                        {/* Trust signals */}
+                        <div className="mt-4 pt-4 border-t border-gray-200 flex items-center justify-center gap-5 text-[11px] text-gray-400">
+                          <span className="flex items-center gap-1.5">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Secure checkout
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <RotateCcw size={12} />
+                            Free returns
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            Ships in 2–3 days
+                          </span>
+                        </div>
                       </div>
                     )}
                   </div>

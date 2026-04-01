@@ -14,6 +14,15 @@ export default function CheckoutPage() {
   const { isAuthenticated, user } = useAuth()
   const { isOpen: authModalOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const [showAuthRequired, setShowAuthRequired] = useState(false)
+  const [isGuest, setIsGuest] = useState(false)
+
+  // Check for guest checkout param on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('guest') === 'true') {
+      setIsGuest(true)
+    }
+  }, [])
 
   // Transform cart items to checkout items format
   const checkoutItems = items.map(item => ({
@@ -36,6 +45,9 @@ export default function CheckoutPage() {
       return
     }
 
+    // Skip auth check for guest checkout
+    if (isGuest) return
+
     // Check authentication after a short delay to allow auth context to initialize
     const timer = setTimeout(() => {
       if (!isAuthenticated) {
@@ -44,7 +56,7 @@ export default function CheckoutPage() {
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [items.length, isAuthenticated, router])
+  }, [items.length, isAuthenticated, isGuest, router])
 
   const handleCloseCheckout = () => {
     router.push('/')
@@ -93,6 +105,13 @@ export default function CheckoutPage() {
                 Create Account
               </button>
               
+              <button
+                onClick={() => setIsGuest(true)}
+                className="w-full border border-stone-200 text-stone-500 py-3 px-4 rounded-md hover:bg-stone-50 transition-colors text-sm"
+              >
+                Continue as Guest
+              </button>
+
               <button
                 onClick={() => router.push('/')}
                 className="w-full text-stone-600 hover:text-stone-900 transition-colors text-sm"

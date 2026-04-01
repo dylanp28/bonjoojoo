@@ -1,0 +1,18 @@
+{
+  "name": "Bonjoojoo | Lab-Grown Diamond Jewelry",
+  "short_name": "Bonjoojoo",
+  "description": "Sustainable luxury with lab-grown diamonds. IGI & GIA certified. Handcrafted in LA.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1A1A1A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"]
+}

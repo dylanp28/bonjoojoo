@@ -337,6 +337,7 @@ export default function CategoryPage() {
                           src={product.images[0]}
                           alt={product.name}
                           fill
+                          loading={index < 4 ? 'eager' : 'lazy'}
                           className="object-cover product-card-img img-editorial"
                         />
                       ) : (
