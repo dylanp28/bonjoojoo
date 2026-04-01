@@ -1,14 +1,25 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { searchProducts } from '@/lib/products'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 import { LazyVideo } from '@/components/LazyVideo'
+
+const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
+
+function storeNewsletterEmail(email: string) {
+  try {
+    const list = JSON.parse(localStorage.getItem(EMAIL_LIST_KEY) || '[]') as string[]
+    if (!list.includes(email)) {
+      localStorage.setItem(EMAIL_LIST_KEY, JSON.stringify([...list, email]))
+    }
+  } catch {}
+}
 
 // ─── Scroll-focus section: darkens when not in viewport center ───
 function FocusSection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
@@ -41,10 +52,24 @@ const formatPrice = (price: number) =>
 export default function HomePage() {
   const allProducts = searchProducts({ limit: 8, bestseller: true }).products
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [nlEmail, setNlEmail] = useState('')
+  const [nlSubmitted, setNlSubmitted] = useState(false)
+  const [nlError, setNlError] = useState('')
 
   const scroll = (dir: 'left' | 'right') => {
     if (!scrollRef.current) return
     scrollRef.current.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' })
+  }
+
+  const handleNlSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = nlEmail.trim()
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setNlError('Please enter a valid email address.')
+      return
+    }
+    storeNewsletterEmail(trimmed)
+    setNlSubmitted(true)
   }
 
   return (
@@ -418,6 +443,71 @@ export default function HomePage() {
                 </p>
                 <Link href="/about" className="btn-ghost">Our Story</Link>
               </div>
+            </LuxuryReveal>
+          </div>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            NEWSLETTER — Homepage email capture
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection className="py-24 lg:py-32 bg-[#1A1A1A] relative overflow-hidden">
+          {/* Subtle diamond pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
+          <div className="relative z-10 container-bj text-center">
+            <LuxuryReveal direction="up" delay={0.1}>
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <div className="w-12 h-px bg-bj-rose-gold/40" />
+                <p className="text-overline text-bj-pink">Members Only</p>
+                <div className="w-12 h-px bg-bj-rose-gold/40" />
+              </div>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.2}>
+              <h2 className="font-display text-[clamp(32px,5vw,60px)] font-light text-white leading-tight mb-4">
+                Be the First to Know.
+                <br />
+                <span className="italic text-bj-pink-light">Get 10% Off.</span>
+              </h2>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.35}>
+              <p className="text-[15px] text-white/60 max-w-md mx-auto mb-10 leading-relaxed">
+                New collections, exclusive drops, and members-only offers — delivered straight to your inbox.
+              </p>
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.5}>
+              {nlSubmitted ? (
+                <div className="flex flex-col items-center gap-3">
+                  <CheckCircle size={32} className="text-green-400" />
+                  <p className="text-[16px] font-medium text-white">
+                    You&apos;re in! Your 10% off is on its way.
+                  </p>
+                  <p className="text-[13px] text-white/50">Check your inbox — welcome to the club.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleNlSubmit} className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto">
+                  <input
+                    type="email"
+                    value={nlEmail}
+                    onChange={(e) => { setNlEmail(e.target.value); setNlError('') }}
+                    placeholder="Enter your email address"
+                    className="flex-1 px-5 py-3.5 bg-white/10 border border-white/20 text-white placeholder:text-white/40 text-[13px] outline-none focus:border-white/50 transition-colors sm:border-r-0"
+                  />
+                  <button
+                    type="submit"
+                    className="px-8 py-3.5 bg-bj-pink hover:bg-[#b8104d] text-white text-[11px] font-semibold tracking-[0.15em] uppercase transition-colors whitespace-nowrap"
+                  >
+                    Join Now
+                  </button>
+                </form>
+              )}
+              {nlError && <p className="mt-3 text-[12px] text-red-400">{nlError}</p>}
+            </LuxuryReveal>
+            <LuxuryReveal direction="up" delay={0.65}>
+              <p className="mt-5 text-[11px] text-white/30 tracking-[0.08em]">
+                No spam, ever. Unsubscribe anytime.
+              </p>
             </LuxuryReveal>
           </div>
         </FocusSection>

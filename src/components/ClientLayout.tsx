@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Search, User, Heart, LogOut, Settings, ShoppingBag, Menu, X, MapPin, ChevronDown } from 'lucide-react'
+import { Search, User, Heart, LogOut, Settings, ShoppingBag, Menu, X, MapPin, ChevronDown, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -10,6 +10,18 @@ import { useAuth, useAuthModal } from '@/hooks/useAuth'
 import { useCart } from '@/store/useCart'
 import CartSidebar from '@/components/CartSidebar'
 import ChatWidget from '@/components/ChatWidget'
+import { ExitIntentPopup } from '@/components/ExitIntentPopup'
+
+const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
+
+function storeNewsletterEmail(email: string) {
+  try {
+    const list = JSON.parse(localStorage.getItem(EMAIL_LIST_KEY) || '[]') as string[]
+    if (!list.includes(email)) {
+      localStorage.setItem(EMAIL_LIST_KEY, JSON.stringify([...list, email]))
+    }
+  } catch {}
+}
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -73,6 +85,22 @@ export function ClientLayout({ children }: ClientLayoutProps) {
   const menuTimeoutRef = useRef<NodeJS.Timeout>()
   const lastScrollY = useRef(0)
   const headerRef = useRef<HTMLElement>(null)
+
+  // Footer newsletter state
+  const [footerEmail, setFooterEmail] = useState('')
+  const [footerSubmitted, setFooterSubmitted] = useState(false)
+  const [footerError, setFooterError] = useState('')
+
+  const handleFooterSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = footerEmail.trim()
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setFooterError('Please enter a valid email address.')
+      return
+    }
+    storeNewsletterEmail(trimmed)
+    setFooterSubmitted(true)
+  }
 
   // Determine if current page should have solid header (all pages except homepage)
   const isHomepage = pathname === '/'
@@ -444,10 +472,26 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               <p className="text-overline text-bj-pink mb-3">Exclusive Access</p>
               <h3 className="text-display-sm text-bj-black mb-3">Join the Bonjoojoo Club</h3>
               <p className="text-body mb-8">Be the first to discover new collections, receive exclusive offers, and get 10% off your first order.</p>
-              <div className="flex gap-0 max-w-md mx-auto">
-                <input type="email" placeholder="Enter your email" className="input-bj flex-1 border-r-0 text-[13px]" />
-                <button className="btn-primary whitespace-nowrap text-[11px] px-6">Sign Up</button>
-              </div>
+              {footerSubmitted ? (
+                <div className="flex items-center justify-center gap-2 text-green-700 py-2">
+                  <CheckCircle size={18} />
+                  <span className="text-[14px] font-medium">You&apos;re on the list! Welcome to the club.</span>
+                </div>
+              ) : (
+                <form onSubmit={handleFooterSubmit}>
+                  <div className="flex gap-0 max-w-md mx-auto">
+                    <input
+                      type="email"
+                      value={footerEmail}
+                      onChange={(e) => { setFooterEmail(e.target.value); setFooterError('') }}
+                      placeholder="Enter your email"
+                      className="input-bj flex-1 border-r-0 text-[13px]"
+                    />
+                    <button type="submit" className="btn-primary whitespace-nowrap text-[11px] px-6">Sign Up</button>
+                  </div>
+                  {footerError && <p className="mt-2 text-[12px] text-red-500">{footerError}</p>}
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -570,6 +614,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
       <CartSidebar />
       <ChatWidget />
+      <ExitIntentPopup />
 
       <AuthModal
         isOpen={isOpen}
