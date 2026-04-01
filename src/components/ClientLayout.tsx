@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { AuthModal } from '@/components/AuthModal'
 import { useAuth, useAuthModal } from '@/hooks/useAuth'
 import { useCart } from '@/store/useCart'
+import { useWishlist } from '@/store/useWishlist'
 import CartSidebar from '@/components/CartSidebar'
 import ChatWidget from '@/components/ChatWidget'
 import { ExitIntentPopup } from '@/components/ExitIntentPopup'
@@ -81,6 +82,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
   const { user, isAuthenticated, logout, isLoading, refreshUser } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
   const { totalItems, toggleCart } = useCart()
+  const wishlistCount = useWishlist(state => state.items.length)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -248,12 +250,17 @@ export function ClientLayout({ children }: ClientLayoutProps) {
                 <Search size={20} strokeWidth={1.5} />
               </button>
 
-              <Link href="/wishlist" className={`p-2.5 transition-colors hidden sm:flex ${
-                shouldHaveSolidHeader || stickyHeader 
-                  ? 'text-bj-black hover:text-bj-gray-500' 
+              <Link href="/wishlist" className={`p-2.5 transition-colors hidden sm:flex relative ${
+                shouldHaveSolidHeader || stickyHeader
+                  ? 'text-bj-black hover:text-bj-gray-500'
                   : 'text-white hover:text-white/70'
               }`} aria-label="Wishlist">
                 <Heart size={20} strokeWidth={1.5} />
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0.5 right-0 min-w-[18px] h-[18px] bg-bj-pink text-white text-[10px] font-semibold rounded-full flex items-center justify-center leading-none px-1">
+                    {wishlistCount}
+                  </span>
+                )}
               </Link>
 
               <Link href="/stores" className={`p-2.5 transition-colors hidden md:flex ${

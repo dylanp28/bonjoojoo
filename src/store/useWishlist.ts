@@ -14,15 +14,31 @@ export interface WishlistItem {
 
 interface WishlistState {
   items: WishlistItem[]
+  addToWishlist: (item: WishlistItem) => void
+  removeFromWishlist: (id: string) => void
   toggleItem: (item: WishlistItem) => void
   removeItem: (id: string) => void
   isWishlisted: (id: string) => boolean
+  isInWishlist: (id: string) => boolean
+  getWishlist: () => WishlistItem[]
+  count: () => number
 }
 
 export const useWishlist = create<WishlistState>()(
   persist(
     (set, get) => ({
       items: [],
+
+      addToWishlist: (item: WishlistItem) => {
+        const { items } = get()
+        if (!items.find(i => i.id === item.id)) {
+          set({ items: [...items, item] })
+        }
+      },
+
+      removeFromWishlist: (id: string) => {
+        set({ items: get().items.filter(i => i.id !== id) })
+      },
 
       toggleItem: (item: WishlistItem) => {
         const { items } = get()
@@ -40,6 +56,18 @@ export const useWishlist = create<WishlistState>()(
 
       isWishlisted: (id: string) => {
         return get().items.some(i => i.id === id)
+      },
+
+      isInWishlist: (id: string) => {
+        return get().items.some(i => i.id === id)
+      },
+
+      getWishlist: () => {
+        return get().items
+      },
+
+      count: () => {
+        return get().items.length
       },
     }),
     {
