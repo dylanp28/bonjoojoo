@@ -20,6 +20,7 @@ import { SpottedInTheWild } from '@/components/UGCGallery'
 import { ProductTrustStrip } from '@/components/TrustBadgeStrip'
 import { getBundlesForProduct, Bundle } from '@/data/bundles'
 import { trackViewContent } from '@/lib/analytics/events'
+import { getMockStockCount, getMockSoldYesterday } from '@/lib/mockInventory'
 
 // ─── BNPL Learn More Modal ────────────────────────────────────────────────────
 
@@ -84,6 +85,11 @@ export default function ProductDetailPage() {
   const [wishlistToast, setWishlistToast] = useState<'added' | 'removed' | null>(null)
   const [shareToast, setShareToast] = useState(false)
   const [reviews, setReviews] = useState<ProductReviews | null>(null)
+  const [reviewPage, setReviewPage] = useState(0)
+  const [reviewForm, setReviewForm] = useState({ name: '', email: '', rating: 5, title: '', body: '' })
+  const [reviewSubmitting, setReviewSubmitting] = useState(false)
+  const [reviewSubmitted, setReviewSubmitted] = useState(false)
+  const [reviewError, setReviewError] = useState('')
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
   const [necklaceGuideOpen, setNecklaceGuideOpen] = useState(false)
   const [braceletGuideOpen, setBraceletGuideOpen] = useState(false)
@@ -96,6 +102,8 @@ export default function ProductDetailPage() {
   const [notifySubmitted, setNotifySubmitted] = useState(false)
   const [notifyError, setNotifyError] = useState('')
   const [productBundles, setProductBundles] = useState<Bundle[]>([])
+  const [mockStockCount, setMockStockCount] = useState<number | null>(null)
+  const [soldYesterday, setSoldYesterday] = useState<number | null>(null)
 
   // Engraving
   const ENGRAVING_PRICE = 25
@@ -151,14 +159,31 @@ export default function ProductDetailPage() {
     fetchProduct()
   }, [productId])
 
-  // Load reviews when productId is available
+  // Load reviews when productId is available, merge seed + user-submitted
   useEffect(() => {
-    if (productId) {
-      setReviews(getProductReviews(productId))
-    }
+    if (!productId) return
+    const seed = getProductReviews(productId)
+    setReviews(seed)
+    // Fetch user-submitted reviews from API and prepend them
+    fetch(`/api/reviews?productId=${encodeURIComponent(productId)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.reviews && data.reviews.length > 0) {
+          setReviews(prev => {
+            if (!prev) return prev
+            const merged = [...data.reviews, ...prev.reviews]
+            return {
+              ...prev,
+              reviews: merged,
+              totalReviews: prev.totalReviews + data.reviews.length,
+            }
+          })
+        }
+      })
+      .catch(() => {/* silently ignore */})
   }, [productId])
 
-  // Track recently viewed + fetch cross-sell/also-bought products
+  // Track recently viewed + mock inventory + fetch cross-sell/also-bought products
   useEffect(() => {
     if (!product) return
 
@@ -170,6 +195,10 @@ export default function ProductDetailPage() {
       image: product.images?.[0] || '',
       category: product.category,
     })
+
+    // Set mock inventory signals
+    setMockStockCount(getMockStockCount(product.id))
+    setSoldYesterday(getMockSoldYesterday(product.id))
 
     // Determine pairing categories for "Complete the Look"
     const pairingCategoryMap: Record<string, string[]> = {
@@ -217,12 +246,19 @@ export default function ProductDetailPage() {
     fetchAlsoBought()
   }, [product, addRecentlyViewed]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Viewer count — random 3-12, refreshes every 30s
+  // Viewer count — random 4-15, refreshes every 30-60s
   useEffect(() => {
-    const randomCount = () => Math.floor(Math.random() * 10) + 3
+    const randomCount = () => Math.floor(Math.random() * 12) + 4
+    const scheduleNext = () => {
+      const delay = 30000 + Math.floor(Math.random() * 30000) // 30-60s
+      return setTimeout(() => {
+        setViewerCount(randomCount())
+        timer = scheduleNext()
+      }, delay)
+    }
     setViewerCount(randomCount())
-    const interval = setInterval(() => setViewerCount(randomCount()), 30000)
-    return () => clearInterval(interval)
+    let timer = scheduleNext()
+    return () => clearTimeout(timer)
   }, [])
 
   // Shipping countdown to 5pm ET (22:00 UTC)
@@ -259,6 +295,49 @@ export default function ProductDetailPage() {
     } catch { /* localStorage unavailable */ }
     setNotifySubmitted(true)
     setNotifyError('')
+  }
+
+  // Submit a new review
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setReviewError('')
+    if (!reviewForm.name.trim() || !reviewForm.email.trim() || !reviewForm.title.trim() || !reviewForm.body.trim()) {
+      setReviewError('Please fill in all fields.')
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reviewForm.email)) {
+      setReviewError('Please enter a valid email address.')
+      return
+    }
+    setReviewSubmitting(true)
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, ...reviewForm, name: reviewForm.name, body: reviewForm.body }),
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Failed to submit')
+      }
+      const data = await res.json()
+      // Optimistically prepend new review
+      setReviews(prev => {
+        if (!prev) return prev
+        return {
+          ...prev,
+          reviews: [data.review, ...prev.reviews],
+          totalReviews: prev.totalReviews + 1,
+        }
+      })
+      setReviewPage(0)
+      setReviewSubmitted(true)
+      setReviewForm({ name: '', email: '', rating: 5, title: '', body: '' })
+    } catch (err) {
+      setReviewError(err instanceof Error ? err.message : 'Failed to submit review')
+    } finally {
+      setReviewSubmitting(false)
+    }
   }
 
   // Handle variant selection
@@ -773,13 +852,29 @@ export default function ProductDetailPage() {
             {/* Urgency signals */}
             <LuxuryReveal direction="right" delay={0.28}>
               <div className="space-y-2">
-                {/* Low stock badge */}
-                {product.availability_status === 'low_stock' && (
-                  <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-2 rounded">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse flex-shrink-0" />
-                    <span className="text-[12px] font-semibold text-amber-700">
-                      Only {product.stockCount || 'a few'} left in stock
-                    </span>
+                {/* Stock scarcity — driven by mock inventory */}
+                {product.availability_status !== 'sold_out' && mockStockCount !== null && (
+                  mockStockCount <= 5 ? (
+                    <div className="flex items-center gap-2 bg-red-50 border border-red-200 px-3 py-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                      <span className="text-[12px] font-semibold text-red-700">
+                        Only {mockStockCount} left in stock — order soon!
+                      </span>
+                    </div>
+                  ) : mockStockCount <= 10 ? (
+                    <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-2">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse flex-shrink-0" />
+                      <span className="text-[12px] font-semibold text-amber-700">
+                        Low stock — only {mockStockCount} remaining
+                      </span>
+                    </div>
+                  ) : null
+                )}
+                {/* Sold yesterday badge */}
+                {soldYesterday !== null && product.availability_status !== 'sold_out' && (
+                  <div className="flex items-center gap-2 text-[12px] text-bj-gray-500">
+                    <span className="flex-shrink-0">🔥</span>
+                    <span><span className="font-semibold text-bj-black">{soldYesterday} sold</span> in the last 24 hours</span>
                   </div>
                 )}
                 {/* Viewers */}

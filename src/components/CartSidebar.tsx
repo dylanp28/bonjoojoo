@@ -236,6 +236,30 @@ export default function CartSidebar() {
                           </div>
                         )}
 
+                        {/* Free shipping progress bar */}
+                        {(() => {
+                          const FREE_SHIPPING_THRESHOLD = 200
+                          const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - totalPrice)
+                          const pct = Math.min(100, (totalPrice / FREE_SHIPPING_THRESHOLD) * 100)
+                          const met = totalPrice >= FREE_SHIPPING_THRESHOLD
+                          return (
+                            <div className="mb-4">
+                              <p className={`text-[12px] mb-1.5 ${met ? 'text-green-700 font-semibold' : 'text-gray-500'}`}>
+                                {met
+                                  ? '🎉 You\'ve unlocked FREE shipping!'
+                                  : <>Add <span className="font-semibold text-bj-black">{formatPrice(remaining)}</span> more for <span className="font-semibold text-bj-black">FREE shipping</span></>
+                                }
+                              </p>
+                              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full transition-all duration-700 ease-out ${met ? 'bg-green-500' : 'bg-bj-black'}`}
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                            </div>
+                          )
+                        })()}
+
                         <div className="flex justify-between mb-1">
                           <span className="text-[14px] text-gray-500">Subtotal</span>
                           <span className="text-[16px] font-medium text-bj-black">{formatPrice(totalPrice)}</span>
