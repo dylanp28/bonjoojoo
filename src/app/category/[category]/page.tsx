@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, SlidersHorizontal, ChevronDown, Grid3X3, List } from 'lucide-react'
+import { Heart, SlidersHorizontal, ChevronDown, Grid3X3, List, Star } from 'lucide-react'
 import { Product } from '@/data/products'
 import { LuxuryReveal } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+import { getProductReviews } from '@/data/reviews'
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest'
 type ViewMode = 'grid' | 'list'
@@ -387,6 +388,21 @@ export default function CategoryPage() {
                         {product.name}
                       </h3>
 
+                      {/* Star rating */}
+                      {(() => {
+                        const r = getProductReviews(product.id)
+                        return (
+                          <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-0.5">
+                              {[1,2,3,4,5].map((s) => (
+                                <Star key={s} size={11} className={s <= Math.round(r.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'} />
+                              ))}
+                            </div>
+                            <span className="text-[11px] text-bj-gray-400">({r.totalReviews})</span>
+                          </div>
+                        )
+                      })()}
+
                       <div className="flex items-center gap-2">
                         <span className="text-body font-medium text-bj-black">{formatPrice(product.price)}</span>
                         {product.originalPrice && product.originalPrice > product.price && (
@@ -419,9 +435,21 @@ export default function CategoryPage() {
                         <h3 className="text-body font-medium text-bj-black group-hover:text-bj-gray-500 transition-colors">
                           {product.name}
                         </h3>
-
+                        {(() => {
+                          const r = getProductReviews(product.id)
+                          return (
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <div className="flex items-center gap-0.5">
+                                {[1,2,3,4,5].map((s) => (
+                                  <Star key={s} size={12} className={s <= Math.round(r.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'} />
+                                ))}
+                              </div>
+                              <span className="text-[11px] text-bj-gray-400">{r.averageRating} ({r.totalReviews})</span>
+                            </div>
+                          )
+                        })()}
                       </div>
-                      
+
                       <p className="text-caption text-bj-gray-500 line-clamp-2">{product.description}</p>
                       
                       <div className="flex items-center justify-between">

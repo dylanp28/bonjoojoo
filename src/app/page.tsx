@@ -2,13 +2,14 @@
 
 import { useRef, useState } from 'react'
 import { MotionConfig, motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift, CheckCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Truck, RotateCcw, Gift, CheckCircle, Star } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { searchProducts } from '@/lib/products'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 import { LazyVideo } from '@/components/LazyVideo'
+import { homepageTestimonials } from '@/data/reviews'
 
 const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
 
@@ -444,6 +445,56 @@ export default function HomePage() {
                 <Link href="/about" className="btn-ghost">Our Story</Link>
               </div>
             </LuxuryReveal>
+          </div>
+        </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            TESTIMONIALS — Social proof from real customers
+            ═══════════════════════════════════════════════════════════ */}
+        <FocusSection className="py-20 lg:py-28 bg-white border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="text-center mb-14">
+                <p className="text-overline text-bj-pink mb-3">Real Stories</p>
+                <h2 className="text-display-lg text-bj-black">Loved by Thousands</h2>
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  {[1,2,3,4,5].map((s) => (
+                    <Star key={s} size={18} className="text-[#C9A84C] fill-current" />
+                  ))}
+                  <span className="text-caption text-bj-gray-500 ml-2">4.9 average across 2,400+ reviews</span>
+                </div>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {homepageTestimonials.map((t, index) => (
+                <LuxuryReveal key={t.id} direction="up" delay={index * 0.1}>
+                  <div className="bg-bj-offwhite p-8 lg:p-10 relative">
+                    {/* Quote mark */}
+                    <div className="text-[72px] leading-none text-bj-rose-gold/20 font-serif absolute top-4 left-8 select-none">&ldquo;</div>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-1 mb-6">
+                        {[1,2,3,4,5].map((s) => (
+                          <Star key={s} size={13} className="text-[#C9A84C] fill-current" />
+                        ))}
+                      </div>
+                      <p className="text-body-lg text-bj-black leading-relaxed mb-8 font-light italic">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-bj-gray-200 flex items-center justify-center flex-shrink-0">
+                          <span className="text-caption font-semibold text-bj-gray-500">{t.author[0]}</span>
+                        </div>
+                        <div>
+                          <p className="text-caption font-semibold text-bj-black">{t.author}</p>
+                          <p className="text-[11px] text-bj-gray-400">{t.location} &middot; {t.product}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
           </div>
         </FocusSection>
 
