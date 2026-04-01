@@ -11,6 +11,7 @@ import { useLoyalty, POINTS_PER_REDEMPTION, REDEMPTION_VALUE, pointsToDiscount, 
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 import { CheckoutTrustStrip } from '@/components/TrustBadgeStrip'
 import { trackPurchase } from '@/lib/analytics/events'
+import { getAffiliateRef } from '@/hooks/useAffiliateRef'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1528,6 +1529,7 @@ export default function CheckoutPage() {
       shippingInfo: contact,
       estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       environmentalImpact: { carbonSaved: `${(items.length * 2.5).toFixed(1)}kg`, waterSaved: `${items.length * 890}L` },
+      affiliateRef: getAffiliateRef() ?? null,
     }
 
     // Redeem loyalty points if any

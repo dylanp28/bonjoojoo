@@ -14,6 +14,7 @@ import ChatWidget from '@/components/ChatWidget'
 import { ExitIntentPopup } from '@/components/ExitIntentPopup'
 import { WaitlistBanner } from '@/components/WaitlistBanner'
 import { FooterTrustStrip } from '@/components/TrustBadgeStrip'
+import { useAffiliateRefCapture } from '@/hooks/useAffiliateRef'
 
 const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
 
@@ -79,6 +80,7 @@ const megaMenus: Record<string, { categories: { title: string; items: { label: s
 }
 
 export function ClientLayout({ children }: ClientLayoutProps) {
+  useAffiliateRefCapture()
   const pathname = usePathname()
   const { user, isAuthenticated, logout, isLoading, refreshUser } = useAuth()
   const { isOpen, mode, openLogin, close, switchMode } = useAuthModal()
