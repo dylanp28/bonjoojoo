@@ -88,6 +88,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <CriticalResourceHints />
+        {/* Pinterest domain verification — replace content value with code from Pinterest Business Hub → Settings → Claimed accounts */}
+        <meta name="p:domain_verify" content="REPLACE_WITH_YOUR_CODE" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
