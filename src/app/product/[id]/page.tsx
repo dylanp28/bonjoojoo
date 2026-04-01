@@ -586,6 +586,36 @@ export default function ProductDetailPage() {
               </LuxuryReveal>
             )}
 
+            {/* Necklace Length Guide link */}
+            {product.category === 'necklaces' && (
+              <LuxuryReveal direction="right" delay={0.25}>
+                <div className="flex items-center justify-between py-1">
+                  <span className="text-overline text-bj-black">Necklace Length</span>
+                  <button
+                    onClick={() => setNecklaceGuideOpen(true)}
+                    className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
+                  >
+                    View length guide
+                  </button>
+                </div>
+              </LuxuryReveal>
+            )}
+
+            {/* Bracelet Size Guide link */}
+            {product.category === 'bracelets' && (
+              <LuxuryReveal direction="right" delay={0.25}>
+                <div className="flex items-center justify-between py-1">
+                  <span className="text-overline text-bj-black">Bracelet Size</span>
+                  <button
+                    onClick={() => setBraceletGuideOpen(true)}
+                    className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
+                  >
+                    View sizing guide
+                  </button>
+                </div>
+              </LuxuryReveal>
+            )}
+
             {/* Engraving — rings & bracelets */}
             {product.supportsEngraving && (
               <LuxuryReveal direction="right" delay={0.27}>
