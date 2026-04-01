@@ -22,6 +22,69 @@ import { getBundlesForProduct, Bundle } from '@/data/bundles'
 import { trackViewContent } from '@/lib/analytics/events'
 import { getMockStockCount, getMockSoldYesterday } from '@/lib/mockInventory'
 
+// ─── Product FAQ Accordion ────────────────────────────────────────────────────
+
+const PRODUCT_FAQ_ITEMS = [
+  {
+    question: 'How do I find the right size?',
+    answer: 'Use the size guide on this page for a precise fit. We recommend measuring at the end of the day when fingers/wrists are at their largest. If you\'re between sizes, size up. We offer one free resize within 60 days of purchase.',
+  },
+  {
+    question: 'What is your return and exchange policy?',
+    answer: 'We offer 30-day hassle-free returns on all unworn items in original condition. Custom or engraved pieces are final sale. Visit our FAQ or contact hello@bonjoojoo.com to start a return.',
+  },
+  {
+    question: 'Is this piece hypoallergenic?',
+    answer: 'Our 14k and 18k gold pieces are nickel-free and safe for sensitive skin. Sterling silver pieces are rhodium-plated to minimize reactions. Check the materials section above for this product\'s specific metal composition.',
+  },
+  {
+    question: 'How do I care for this jewelry?',
+    answer: 'Clean with warm water, mild dish soap, and a soft brush. Store in the included pouch or box separately from other pieces. Avoid chlorine, perfume, and harsh chemicals. See our full care guide at bonjoojoo.com/help/care.',
+  },
+]
+
+function ProductFAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  return (
+    <section className="bg-white py-14 border-t border-bj-gray-100">
+      <div className="container-bj-wide">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl font-light text-bj-black mb-2 text-center">Common Questions</h2>
+          <p className="text-bj-gray-500 text-center text-sm mb-8">
+            For more, visit our{' '}
+            <Link href="/faq" className="underline underline-offset-4 hover:text-bj-black transition-colors">
+              full FAQ
+            </Link>
+            .
+          </p>
+          <div className="space-y-2">
+            {PRODUCT_FAQ_ITEMS.map((item, index) => (
+              <div key={index} className="border border-bj-gray-200 rounded-lg overflow-hidden">
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-bj-offwhite transition-colors"
+                  aria-expanded={openIndex === index}
+                >
+                  <span className="font-medium text-bj-black pr-4 text-[14px]">{item.question}</span>
+                  <ChevronDown
+                    size={16}
+                    className={`flex-shrink-0 text-bj-gray-400 transition-transform duration-200 ${openIndex === index ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {openIndex === index && (
+                  <div className="px-5 pb-4">
+                    <p className="text-bj-gray-600 text-[14px] leading-relaxed">{item.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ─── BNPL Learn More Modal ────────────────────────────────────────────────────
 
 function BNPLLearnMoreModal({ onClose, installmentAmount }: { onClose: () => void; installmentAmount: string }) {
@@ -1550,6 +1613,9 @@ export default function ProductDetailPage() {
           </div>
         )
       })()}
+
+      {/* Product FAQ */}
+      <ProductFAQ />
 
       {/* Spotted in the Wild — customer UGC photos */}
       <SpottedInTheWild />

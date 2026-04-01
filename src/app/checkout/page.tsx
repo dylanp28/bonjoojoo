@@ -262,6 +262,17 @@ function OrderSummary({
       </div>
 
       <CheckoutTrustStrip />
+
+      <p className="mt-4 text-center text-[12px] text-stone-400">
+        Questions?{' '}
+        <Link href="/faq" className="underline hover:text-stone-600 transition-colors" target="_blank" rel="noopener noreferrer">
+          See our FAQ
+        </Link>
+        {' '}or{' '}
+        <Link href="/contact" className="underline hover:text-stone-600 transition-colors" target="_blank" rel="noopener noreferrer">
+          contact us
+        </Link>
+      </p>
     </aside>
   )
 }
