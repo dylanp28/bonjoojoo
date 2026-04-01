@@ -88,7 +88,7 @@ export default function HomePage() {
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
             <LazyVideo
-              src="/videos/model-hero.mp4"
+              src="/videos/model-hero-optimized.mp4"
               eager
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -157,7 +157,7 @@ export default function HomePage() {
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
             <LazyVideo
-              src="/videos/crowns-hero.mp4"
+              src="/videos/crowns-hero-optimized.mp4"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
@@ -195,7 +195,7 @@ export default function HomePage() {
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
             <LazyVideo
-              src="/videos/bestsellers-hero.mp4"
+              src="/videos/bestsellers-hero-optimized.mp4"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
@@ -273,7 +273,7 @@ export default function HomePage() {
         <FocusSection style={{ height: '100vh', clipPath: 'inset(0)' }}>
           <div className="fixed inset-0" style={{ height: '100vh' }}>
             <LazyVideo
-              src="/videos/diamonds-hero.mp4"
+              src="/videos/diamonds-hero-optimized.mp4"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
