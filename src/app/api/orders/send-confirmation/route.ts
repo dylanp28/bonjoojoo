@@ -1,43 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sendOrderConfirmation, type OrderConfirmationData } from '@/lib/email/resend'
 
 export async function POST(req: NextRequest) {
   try {
-    const { orderId, email } = await req.json()
+    const body = await req.json()
+    const { orderId, email, customerName, items, subtotal, shipping, tax, total, shippingAddress, estimatedDelivery, trackingUrl } = body
 
-    // In production, integrate with an email service like SendGrid, Resend, etc.
-    // For now, we'll simulate email sending
-    console.log('Sending order confirmation email:', {
-      to: email,
+    if (!orderId || !email) {
+      return NextResponse.json({ error: 'orderId and email are required' }, { status: 400 })
+    }
+
+    const orderData: OrderConfirmationData = {
       orderId,
-      subject: `Order Confirmation - ${orderId}`,
-      timestamp: new Date().toISOString()
-    })
+      customerEmail: email,
+      customerName: customerName ?? 'Valued Customer',
+      items: items ?? [],
+      subtotal: subtotal ?? 0,
+      shipping: shipping ?? 0,
+      tax: tax ?? 0,
+      total: total ?? 0,
+      shippingAddress: shippingAddress ?? {
+        line1: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: 'US',
+      },
+      estimatedDelivery,
+      trackingUrl,
+    }
 
-    // Simulate email template
-    const emailTemplate = `
-      Welcome to bonjoojoo!
-      
-      Your order ${orderId} has been confirmed.
-      
-      Thank you for choosing lab-grown diamonds and supporting sustainable luxury.
-      
-      You'll receive tracking information once your order ships.
-      
-      Best regards,
-      The bonjoojoo Team
-    `
+    const result = await sendOrderConfirmation(orderData)
 
-    // In production, you would send this via your email service:
-    // await emailService.send({
-    //   to: email,
-    //   subject: `Order Confirmation - ${orderId}`,
-    //   html: emailTemplate
-    // })
+    if (!result.success) {
+      // Log but don't hard-fail — email is non-critical path for order flow
+      console.error('[send-confirmation] Email send failed:', result.error)
+      return NextResponse.json({
+        success: false,
+        message: 'Order recorded but confirmation email could not be sent',
+        orderId,
+        error: result.error,
+      }, { status: 207 })
+    }
 
     return NextResponse.json({
       success: true,
       message: 'Confirmation email sent',
-      orderId
+      orderId,
+      messageId: result.messageId,
     })
 
   } catch (error) {
