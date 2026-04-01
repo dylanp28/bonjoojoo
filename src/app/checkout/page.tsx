@@ -9,6 +9,7 @@ import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, Shopping
 import { useReferral } from '@/hooks/useReferral'
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 import { CheckoutTrustStrip } from '@/components/TrustBadgeStrip'
+import { trackPurchase } from '@/lib/analytics/events'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1230,6 +1231,22 @@ export default function CheckoutPage() {
     setConfirmedItems([...items])
     setConfirmedGiftOptions({ ...giftOptions })
     setConfirmedPromo(appliedPromo)
+
+    // Fire purchase conversion events
+    trackPurchase({
+      transactionId: num,
+      total,
+      subtotal,
+      shipping: selectedShipping.price,
+      tax,
+      coupon: appliedPromo?.code ?? undefined,
+      items: items.map((i) => ({
+        id: i.id,
+        name: i.name,
+        price: i.price,
+        quantity: i.quantity,
+      })),
+    })
 
     setTimeout(() => {
       setPlacing(false)

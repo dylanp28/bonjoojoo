@@ -19,6 +19,7 @@ import RecentlyViewedRow from '@/components/RecentlyViewedRow'
 import { SpottedInTheWild } from '@/components/UGCGallery'
 import { ProductTrustStrip } from '@/components/TrustBadgeStrip'
 import { getBundlesForProduct, Bundle } from '@/data/bundles'
+import { trackViewContent } from '@/lib/analytics/events'
 
 // ─── BNPL Learn More Modal ────────────────────────────────────────────────────
 
@@ -124,6 +125,14 @@ export default function ProductDetailPage() {
         setProduct(data.product)
         setRelatedProducts(data.relatedProducts || [])
         setProductBundles(getBundlesForProduct(productId))
+
+        // Fire ViewContent conversion event
+        trackViewContent({
+          id: data.product.id,
+          name: data.product.name,
+          category: data.product.category,
+          price: data.product.price,
+        })
 
         // Set default variant if product has variants
         if (data.product.variants && data.product.variants.length > 0) {

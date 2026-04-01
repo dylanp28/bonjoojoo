@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-// Removed import for non-existent file
+import { trackAddToCart } from '@/lib/analytics/events'
 
 export interface CartItem {
   id: string
@@ -62,11 +62,20 @@ export const useCart = create<CartState>()(
             engraving: options.engraving,
             engravingFont: options.engravingFont,
           }
-          
+
           set({
             items: [...items, newItem]
           })
         }
+
+        // Fire AddToCart conversion event
+        trackAddToCart({
+          id: cartId,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          quantity: 1,
+        })
       },
       
       removeItem: (id) => {
