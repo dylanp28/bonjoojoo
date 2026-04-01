@@ -782,12 +782,12 @@ export default function ProductDetailPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-overline text-bj-black">Ring Size</h3>
-                    <button
-                      onClick={() => setSizeGuideOpen(true)}
+                    <Link
+                      href="/ring-sizer"
                       className="text-caption text-bj-pink hover:text-bj-pink-hover transition-colors underline underline-offset-2"
                     >
                       Size Guide
-                    </button>
+                    </Link>
                   </div>
                   <div className="grid grid-cols-4 gap-2 max-w-xs">
                     {sizes.map((size) => (
@@ -811,12 +811,12 @@ export default function ProductDetailPage() {
                   </div>
                   {/* Find my size CTA */}
                   {!selectedSize && (
-                    <button
-                      onClick={() => setSizeGuideOpen(true)}
+                    <Link
+                      href="/ring-sizer"
                       className="text-[11px] font-medium text-bj-pink hover:text-bj-pink-hover transition-colors flex items-center gap-1.5"
                     >
-                      Not sure of your size? Find it in 2 minutes →
-                    </button>
+                      Not sure of your size? Find out here →
+                    </Link>
                   )}
                 </div>
               </LuxuryReveal>

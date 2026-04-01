@@ -7,22 +7,22 @@ import { Printer } from 'lucide-react'
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 
 const RING_SIZES = [
-  { us: '4',    uk: 'H',  eu: '46.5', diameter: '14.8', circumference: '46.5' },
-  { us: '4.5',  uk: 'I',  eu: '48',   diameter: '15.3', circumference: '48.0' },
-  { us: '5',    uk: 'J',  eu: '49',   diameter: '15.7', circumference: '49.3' },
-  { us: '5.5',  uk: 'K',  eu: '50.5', diameter: '16.1', circumference: '50.6' },
-  { us: '6',    uk: 'L',  eu: '51.5', diameter: '16.5', circumference: '51.9' },
-  { us: '6.5',  uk: 'M',  eu: '53',   diameter: '16.9', circumference: '53.1' },
-  { us: '7',    uk: 'N',  eu: '54',   diameter: '17.3', circumference: '54.4' },
-  { us: '7.5',  uk: 'O',  eu: '55.5', diameter: '17.7', circumference: '55.7' },
-  { us: '8',    uk: 'P',  eu: '57',   diameter: '18.1', circumference: '57.0' },
-  { us: '8.5',  uk: 'Q',  eu: '58',   diameter: '18.5', circumference: '58.3' },
-  { us: '9',    uk: 'R',  eu: '59',   diameter: '18.9', circumference: '59.5' },
-  { us: '9.5',  uk: 'S',  eu: '60.5', diameter: '19.4', circumference: '61.0' },
-  { us: '10',   uk: 'T',  eu: '62',   diameter: '19.8', circumference: '62.1' },
-  { us: '10.5', uk: 'U',  eu: '63',   diameter: '20.2', circumference: '63.4' },
-  { us: '11',   uk: 'V',  eu: '64.5', diameter: '20.6', circumference: '64.7' },
-  { us: '12',   uk: 'X',  eu: '67',   diameter: '21.4', circumference: '67.2' },
+  { us: '4',    uk: 'H',  eu: '46.5', jp: '7',  diameter: '14.8', circumference: '46.5' },
+  { us: '4.5',  uk: 'I',  eu: '48',   jp: '9',  diameter: '15.3', circumference: '48.0' },
+  { us: '5',    uk: 'J',  eu: '49',   jp: '10', diameter: '15.7', circumference: '49.3' },
+  { us: '5.5',  uk: 'K',  eu: '50.5', jp: '11', diameter: '16.1', circumference: '50.6' },
+  { us: '6',    uk: 'L',  eu: '51.5', jp: '12', diameter: '16.5', circumference: '51.9' },
+  { us: '6.5',  uk: 'M',  eu: '53',   jp: '13', diameter: '16.9', circumference: '53.1' },
+  { us: '7',    uk: 'N',  eu: '54',   jp: '14', diameter: '17.3', circumference: '54.4' },
+  { us: '7.5',  uk: 'O',  eu: '55.5', jp: '15', diameter: '17.7', circumference: '55.7' },
+  { us: '8',    uk: 'P',  eu: '57',   jp: '17', diameter: '18.1', circumference: '57.0' },
+  { us: '8.5',  uk: 'Q',  eu: '58',   jp: '18', diameter: '18.5', circumference: '58.3' },
+  { us: '9',    uk: 'R',  eu: '59',   jp: '19', diameter: '18.9', circumference: '59.5' },
+  { us: '9.5',  uk: 'S',  eu: '60.5', jp: '21', diameter: '19.4', circumference: '61.0' },
+  { us: '10',   uk: 'T',  eu: '62',   jp: '22', diameter: '19.8', circumference: '62.1' },
+  { us: '10.5', uk: 'U',  eu: '63',   jp: '23', diameter: '20.2', circumference: '63.4' },
+  { us: '11',   uk: 'V',  eu: '64.5', jp: '25', diameter: '20.6', circumference: '64.7' },
+  { us: '12',   uk: 'X',  eu: '67',   jp: '27', diameter: '21.4', circumference: '67.2' },
 ]
 
 const NECKLACE_LENGTHS = [
@@ -134,6 +134,17 @@ export default function SizeGuidePage() {
                 </button>
               </div>
 
+              {/* Interactive ring sizer CTA */}
+              <div className="bg-bj-black p-5 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[12px] font-semibold text-white">Try our interactive ring sizer</p>
+                  <p className="text-[11px] text-white/60 mt-0.5">Calibrate your screen and place your ring over it to find your exact size.</p>
+                </div>
+                <Link href="/ring-sizer" className="flex-shrink-0 bg-white text-bj-black text-[11px] font-medium px-4 py-2 hover:bg-bj-offwhite transition-colors whitespace-nowrap">
+                  Open Ring Sizer →
+                </Link>
+              </div>
+
               {/* Measure at home */}
               <div className="bg-bj-offwhite p-5 space-y-3">
                 <p className="text-[11px] uppercase tracking-wider font-medium text-bj-gray-400">Find Your Ring Size from Measurement</p>
@@ -151,7 +162,7 @@ export default function SizeGuidePage() {
                     <div className="flex items-center gap-2 bg-white border border-bj-gray-100 px-4 py-2">
                       <p className="text-[10px] uppercase tracking-wider text-bj-gray-400">Match:</p>
                       <p className="text-[14px] font-bold text-bj-black">US {suggestedRing.us}</p>
-                      <p className="text-[11px] text-bj-gray-500">/ EU {suggestedRing.eu} / UK {suggestedRing.uk}</p>
+                      <p className="text-[11px] text-bj-gray-500">/ EU {suggestedRing.eu} / UK {suggestedRing.uk} / JP {suggestedRing.jp}</p>
                     </div>
                   )}
                 </div>
@@ -165,6 +176,7 @@ export default function SizeGuidePage() {
                       <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">US</th>
                       <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">UK</th>
                       <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">EU</th>
+                      <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Japan</th>
                       <th className="text-left py-3 pr-4 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Diameter (mm)</th>
                       <th className="text-left py-3 text-[10px] uppercase tracking-wider text-bj-gray-400 font-medium">Circ. (mm)</th>
                     </tr>
@@ -177,6 +189,7 @@ export default function SizeGuidePage() {
                           <td className="py-3 pr-4 font-semibold text-bj-black">{size.us}</td>
                           <td className="py-3 pr-4 text-bj-gray-600">{size.uk}</td>
                           <td className="py-3 pr-4 text-bj-gray-600">{size.eu}</td>
+                          <td className="py-3 pr-4 text-bj-gray-600">{size.jp}</td>
                           <td className="py-3 pr-4 text-bj-gray-600">{size.diameter}</td>
                           <td className="py-3 text-bj-gray-600">{size.circumference}</td>
                         </tr>
