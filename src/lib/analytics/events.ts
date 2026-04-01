@@ -164,3 +164,29 @@ export function trackPurchase(params: PurchaseParams) {
     num_items: items.reduce((s, i) => s + i.quantity, 0),
   })
 }
+
+// ─── Thank You Page Events ────────────────────────────────────────────────────
+
+export function trackThankYouView(params: { orderNumber: string; total: number; currency?: string }) {
+  const { orderNumber, total, currency = 'USD' } = params
+  gtag('event', 'purchase_complete', {
+    transaction_id: orderNumber,
+    currency,
+    value: total,
+  })
+}
+
+export function trackReferralShareClick(channel: 'instagram' | 'whatsapp' | 'copy_link') {
+  gtag('event', 'referral_share_click', {
+    channel,
+  })
+}
+
+export function trackUpsellClick(params: { productId: string; productName: string; position?: number }) {
+  const { productId, productName, position } = params
+  gtag('event', 'upsell_click', {
+    item_id: productId,
+    item_name: productName,
+    position,
+  })
+}

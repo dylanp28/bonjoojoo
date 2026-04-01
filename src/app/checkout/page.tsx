@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
-import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon, Share2, Copy, Award } from 'lucide-react'
+import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon, Share2, Copy, Award, Calendar, Star, Instagram, MessageCircle, UserPlus, Sparkles } from 'lucide-react'
 import { useReferral } from '@/hooks/useReferral'
 import { useLoyalty, POINTS_PER_REDEMPTION, REDEMPTION_VALUE, pointsToDiscount, TIER_LABELS, TIER_COLORS, getTier } from '@/hooks/useLoyalty'
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 import { CheckoutTrustStrip } from '@/components/TrustBadgeStrip'
-import { trackPurchase } from '@/lib/analytics/events'
+import { trackPurchase, trackThankYouView, trackReferralShareClick, trackUpsellClick } from '@/lib/analytics/events'
 import { getAffiliateRef } from '@/hooks/useAffiliateRef'
+import { getFeaturedProducts, getBestsellerProducts } from '@/lib/products'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1156,60 +1157,6 @@ function ReviewStep({
 
 // ─── Step: Confirmation ───────────────────────────────────────────────────────
 
-function ReferralCTA() {
-  const { referral, getReferralUrl } = useReferral()
-  const [copied, setCopied] = useState(false)
-
-  const referralUrl = referral ? getReferralUrl(referral.code) : ''
-
-  const handleCopy = async () => {
-    if (!referralUrl) return
-    try {
-      await navigator.clipboard.writeText(referralUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2500)
-    } catch {
-      const el = document.createElement('textarea')
-      el.value = referralUrl
-      document.body.appendChild(el)
-      el.select()
-      document.execCommand('copy')
-      document.body.removeChild(el)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2500)
-    }
-  }
-
-  return (
-    <div className="border border-bj-pink/30 rounded-lg bg-gradient-to-r from-pink-50 to-rose-50 p-5 mb-8 text-left">
-      <div className="flex items-start gap-3 mb-4">
-        <div className="flex-shrink-0 w-9 h-9 bg-bj-pink rounded-full flex items-center justify-center">
-          <Share2 size={16} className="text-white" />
-        </div>
-        <div>
-          <h4 className="text-[14px] font-semibold text-stone-900 mb-0.5">Love your new jewelry? Share it, earn $50</h4>
-          <p className="text-[13px] text-stone-600">Give a friend $50 off their first order — and get $50 credit when they buy.</p>
-        </div>
-      </div>
-      {referral && (
-        <div className="flex items-center gap-2 bg-white/80 border border-pink-200 rounded px-3 py-2">
-          <span className="flex-1 text-[12px] text-stone-600 font-mono truncate">{referralUrl}</span>
-          <button
-            onClick={handleCopy}
-            className="flex-shrink-0 flex items-center gap-1 text-[12px] font-medium text-bj-pink hover:text-bj-black transition-colors"
-          >
-            {copied ? (
-              <><Check size={13} strokeWidth={2.5} className="text-green-600" /><span className="text-green-600">Copied!</span></>
-            ) : (
-              <><Copy size={13} />Copy</>
-            )}
-          </button>
-        </div>
-      )}
-    </div>
-  )
-}
-
 function ConfirmationStep({
   orderNumber,
   items,
@@ -1231,6 +1178,10 @@ function ConfirmationStep({
   earnedPoints: number
   loyaltyDiscount: number
 }) {
+  const { referral, getReferralUrl } = useReferral(contact.firstName)
+  const [copiedReferral, setCopiedReferral] = useState(false)
+  const referralUrl = referral ? getReferralUrl(referral.code) : ''
+
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
   const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
@@ -1238,55 +1189,123 @@ function ConfirmationStep({
   const tax = subtotal * 0.08
   const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount - loyaltyDiscount
 
+  // Complementary products: pick 3 from the opposite/complementary category, or bestsellers
+  const purchasedCategories = Array.from(new Set(items.map(i => {
+    if (i.name.toLowerCase().includes('bracelet')) return 'bracelets'
+    if (i.name.toLowerCase().includes('necklace') || i.name.toLowerCase().includes('pendant')) return 'necklaces'
+    return 'bracelets'
+  })))
+  const complementaryCategory = purchasedCategories.includes('bracelets') ? 'necklaces' : 'bracelets'
+  const upsellProducts = getBestsellerProducts()
+    .filter(p => p.category === complementaryCategory)
+    .slice(0, 3)
+
+  // Fire thank-you page view event once on mount
+  useEffect(() => {
+    if (orderNumber) {
+      trackThankYouView({ orderNumber, total })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderNumber])
+
+  const shareMessage = `Just got the most beautiful piece from bonjoojoo ✨ Use my code for $10 off your first order: ${referralUrl}`
+
+  const handleShareInstagram = () => {
+    trackReferralShareClick('instagram')
+    // Instagram doesn't support URL pre-fill — copy text and open Instagram
+    navigator.clipboard.writeText(shareMessage).catch(() => {})
+    window.open('https://www.instagram.com/', '_blank', 'noopener')
+  }
+
+  const handleShareWhatsApp = () => {
+    trackReferralShareClick('whatsapp')
+    const encoded = encodeURIComponent(shareMessage)
+    window.open(`https://wa.me/?text=${encoded}`, '_blank', 'noopener')
+  }
+
+  const handleCopyReferral = async () => {
+    trackReferralShareClick('copy_link')
+    try {
+      await navigator.clipboard.writeText(referralUrl)
+    } catch {
+      const el = document.createElement('textarea')
+      el.value = referralUrl
+      document.body.appendChild(el)
+      el.select()
+      document.execCommand('copy')
+      document.body.removeChild(el)
+    }
+    setCopiedReferral(true)
+    setTimeout(() => setCopiedReferral(false), 2500)
+  }
+
   return (
-    <div className="text-center">
-      {/* Success icon */}
-      <div className="flex items-center justify-center mb-6">
-        <div className="w-16 h-16 bg-stone-900 rounded-full flex items-center justify-center">
-          <Check size={30} strokeWidth={2} className="text-white" />
+    <div className="text-center max-w-2xl mx-auto">
+      {/* Hero success section */}
+      <div className="mb-8">
+        <div className="flex items-center justify-center mb-5">
+          <div className="relative">
+            <div className="w-20 h-20 bg-stone-900 rounded-full flex items-center justify-center">
+              <Check size={34} strokeWidth={2} className="text-white" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-7 h-7 bg-amber-400 rounded-full flex items-center justify-center">
+              <Sparkles size={13} className="text-white" />
+            </div>
+          </div>
+        </div>
+        <h2 className="font-serif text-4xl text-stone-900 mb-2">
+          Thank you{contact.firstName ? `, ${contact.firstName}` : ''}!
+        </h2>
+        <p className="text-stone-600 mb-1">Your order is confirmed and on its way.</p>
+        <p className="text-stone-500 text-sm mb-5">
+          A confirmation email is heading to <span className="font-medium text-stone-700">{contact.email}</span>
+        </p>
+
+        {/* Order number */}
+        <div className="inline-block bg-stone-50 border border-stone-200 rounded-lg px-7 py-4 mb-4">
+          <p className="text-[11px] font-medium text-stone-400 uppercase tracking-widest mb-1">Order Number</p>
+          <p className="font-mono text-xl font-bold text-stone-900 tracking-widest">{orderNumber}</p>
         </div>
       </div>
 
-      <h2 className="font-serif text-3xl text-stone-900 mb-2">Thank You</h2>
-      <p className="text-stone-600 mb-1">
-        Your order has been placed successfully.
-      </p>
-      <p className="text-stone-500 text-sm mb-6">
-        A confirmation will be sent to <span className="font-medium text-stone-700">{contact.email}</span>
-      </p>
+      {/* Brand story snippet */}
+      <div className="bg-gradient-to-r from-stone-900 to-stone-800 rounded-xl p-6 mb-7 text-left">
+        <p className="text-[11px] font-medium text-stone-400 uppercase tracking-widest mb-2">Our Promise</p>
+        <p className="text-white/90 text-[14px] leading-relaxed">
+          Every bonjoojoo piece is crafted by skilled artisans using ethically sourced materials — designed to be
+          worn every day, passed down through generations, and treasured forever.
+        </p>
+      </div>
 
-      {/* Order number */}
-      <div className="inline-block bg-stone-50 border border-stone-200 rounded px-6 py-4 mb-4">
-        <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-1">Order Number</p>
-        <p className="font-mono text-lg font-bold text-stone-900 tracking-widest">{orderNumber}</p>
+      {/* Shipping info */}
+      <div className="text-left border border-stone-200 rounded-lg p-5 mb-6">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 bg-stone-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+            <Truck size={15} className="text-stone-600" />
+          </div>
+          <div className="flex-1">
+            <p className="text-[13px] font-semibold text-stone-900 mb-0.5">Estimated delivery: {shippingMethod.estimate}</p>
+            <p className="text-[13px] text-stone-600">{contact.firstName} {contact.lastName} · {contact.addressLine1}{contact.addressLine2 ? `, ${contact.addressLine2}` : ''}, {contact.city}, {contact.state} {contact.zip}</p>
+          </div>
+        </div>
       </div>
 
       {/* Loyalty points earned */}
       {earnedPoints > 0 && (
-        <div className="inline-flex items-center gap-2.5 bg-amber-50 border border-amber-200 rounded-lg px-5 py-3 mb-4 text-left">
-          <Award size={18} className="text-amber-600 flex-shrink-0" />
+        <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-lg px-5 py-4 mb-6 text-left">
+          <Award size={20} className="text-amber-600 flex-shrink-0" />
           <div>
-            <p className="text-[13px] font-semibold text-amber-900">
-              +{earnedPoints} loyalty points earned!
-            </p>
-            <p className="text-[11px] text-amber-700">
-              View your balance and redeem at{' '}
-              <a href="/account/loyalty" className="underline hover:text-amber-900">
-                My Loyalty Rewards
-              </a>
+            <p className="text-[13px] font-semibold text-amber-900">+{earnedPoints} loyalty points earned!</p>
+            <p className="text-[12px] text-amber-700">
+              Redeem at{' '}
+              <a href="/account/loyalty" className="underline hover:text-amber-900">My Loyalty Rewards</a>
             </p>
           </div>
         </div>
       )}
 
-      {/* 30-day free returns reassurance */}
-      <div className="flex items-center justify-center gap-2 text-sm text-stone-500 mb-8">
-        <Check size={14} strokeWidth={2.5} className="text-green-600 flex-shrink-0" />
-        <span>30-day free returns — changed your mind? <a href="/returns/start" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">Start a return anytime.</a></span>
-      </div>
-
-      {/* Summary */}
-      <div className="text-left border border-stone-200 rounded mb-8 overflow-hidden">
+      {/* Order summary */}
+      <div className="text-left border border-stone-200 rounded-lg mb-7 overflow-hidden">
         <div className="bg-stone-50 px-5 py-3 border-b border-stone-200">
           <p className="text-[12px] font-medium text-stone-600 uppercase tracking-widest">Order Summary</p>
         </div>
@@ -1354,7 +1373,7 @@ function ConfirmationStep({
 
       {/* Gift options summary */}
       {giftOptions.isGift && (
-        <div className="text-left border border-stone-200 rounded p-4 mb-6">
+        <div className="text-left border border-stone-200 rounded-lg p-4 mb-6">
           <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
             <Gift size={12} />Gift Details
           </p>
@@ -1378,7 +1397,7 @@ function ConfirmationStep({
 
       {/* Gift box summary */}
       {giftBoxUpsell.selected && (
-        <div className="text-left border border-amber-200 rounded p-4 mb-6 bg-amber-50/30">
+        <div className="text-left border border-amber-200 rounded-lg p-4 mb-6 bg-amber-50/30">
           <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
             <Gift size={12} className="text-amber-500" />Premium Gift Box
           </p>
@@ -1391,28 +1410,152 @@ function ConfirmationStep({
         </div>
       )}
 
-      {/* Shipping address */}
-      <div className="text-left border border-stone-200 rounded p-4 mb-8">
-        <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-2">Shipping To</p>
-        <p className="text-[13px] text-stone-900 font-medium">{contact.firstName} {contact.lastName}</p>
-        <p className="text-[13px] text-stone-600">{contact.addressLine1}{contact.addressLine2 ? `, ${contact.addressLine2}` : ''}</p>
-        <p className="text-[13px] text-stone-600">{contact.city}, {contact.state} {contact.zip}</p>
-        <p className="text-[13px] text-stone-500 mt-1">Estimated delivery: {shippingMethod.estimate}</p>
+      {/* Complete your look */}
+      {upsellProducts.length > 0 && (
+        <div className="text-left mb-7">
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles size={15} className="text-stone-400" />
+            <p className="text-[13px] font-semibold text-stone-900 uppercase tracking-wider">Complete Your Look</p>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {upsellProducts.map((product, idx) => (
+              <Link
+                key={product.id}
+                href={`/product/${product.id}`}
+                onClick={() => trackUpsellClick({ productId: product.id, productName: product.name, position: idx + 1 })}
+                className="group border border-stone-200 rounded-lg overflow-hidden hover:border-stone-400 hover:shadow-md transition-all"
+              >
+                <div className="relative aspect-square bg-stone-100">
+                  {product.images?.[0] ? (
+                    <Image
+                      src={product.images[0]}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <ShoppingBag size={20} className="text-stone-300" />
+                    </div>
+                  )}
+                </div>
+                <div className="p-2.5">
+                  <p className="text-[12px] font-medium text-stone-900 leading-tight truncate">{product.name}</p>
+                  <p className="text-[12px] text-stone-500 mt-0.5">{fmt(product.price)}</p>
+                  <div className="flex items-center gap-1 mt-1">
+                    <Star size={9} className="text-amber-400 fill-amber-400" />
+                    <span className="text-[11px] text-stone-400">{(product as any).rating ?? '4.8'}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Account creation prompt for guest */}
+      <div className="border border-stone-200 rounded-xl p-5 mb-7 text-left bg-stone-50/50">
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 bg-stone-900 rounded-full flex items-center justify-center flex-shrink-0">
+            <UserPlus size={16} className="text-white" />
+          </div>
+          <div className="flex-1">
+            <p className="text-[14px] font-semibold text-stone-900 mb-1">Save your order history + earn loyalty points</p>
+            <p className="text-[13px] text-stone-600 mb-3">Create an account to track orders, earn rewards, and get early access to new collections.</p>
+            <Link
+              href={`/login?signup=1&email=${encodeURIComponent(contact.email)}`}
+              className="inline-flex items-center gap-2 bg-stone-900 text-white text-[13px] font-medium px-4 py-2.5 rounded-lg hover:bg-stone-800 transition-colors"
+            >
+              <UserPlus size={13} />
+              Create My Account
+            </Link>
+          </div>
+        </div>
       </div>
 
-      {/* Referral CTA */}
-      <ReferralCTA />
+      {/* Referral share widget */}
+      <div className="border border-rose-200 rounded-xl bg-gradient-to-br from-pink-50 to-rose-50 p-5 mb-7 text-left">
+        <div className="flex items-start gap-3 mb-4">
+          <div className="flex-shrink-0 w-9 h-9 bg-rose-500 rounded-full flex items-center justify-center">
+            <Share2 size={15} className="text-white" />
+          </div>
+          <div>
+            <h4 className="text-[14px] font-semibold text-stone-900 mb-0.5">Give $10, get $10 back</h4>
+            <p className="text-[13px] text-stone-600">Share bonjoojoo with a friend — they get $10 off their first order, you get $10 credit when they buy.</p>
+          </div>
+        </div>
+
+        {/* Share buttons */}
+        <div className="flex gap-2 mb-3">
+          <button
+            onClick={handleShareInstagram}
+            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[13px] font-medium py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            <Instagram size={14} />
+            Instagram
+          </button>
+          <button
+            onClick={handleShareWhatsApp}
+            className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white text-[13px] font-medium py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            <MessageCircle size={14} />
+            WhatsApp
+          </button>
+        </div>
+
+        {/* Copy link */}
+        {referral && (
+          <div className="flex items-center gap-2 bg-white/80 border border-rose-200 rounded-lg px-3 py-2.5">
+            <span className="flex-1 text-[12px] text-stone-600 font-mono truncate">{referralUrl}</span>
+            <button
+              onClick={handleCopyReferral}
+              className="flex-shrink-0 flex items-center gap-1 text-[12px] font-medium text-rose-600 hover:text-rose-800 transition-colors"
+            >
+              {copiedReferral ? (
+                <><Check size={13} strokeWidth={2.5} className="text-green-600" /><span className="text-green-700">Copied!</span></>
+              ) : (
+                <><Copy size={13} />Copy link</>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* ICS calendar reminder */}
+      <div className="flex items-center gap-3 border border-stone-200 rounded-xl p-4 mb-8 text-left bg-white">
+        <div className="w-9 h-9 bg-stone-100 rounded-lg flex items-center justify-center flex-shrink-0">
+          <Calendar size={16} className="text-stone-600" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[13px] font-medium text-stone-900">Remind me to leave a review in 7 days</p>
+          <p className="text-[12px] text-stone-500">Add a calendar reminder to share your experience</p>
+        </div>
+        <a
+          href={`/api/ics-reminder?order=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(contact.email)}`}
+          download="bonjoojoo-review-reminder.ics"
+          className="flex-shrink-0 flex items-center gap-1.5 text-[12px] font-medium text-stone-700 border border-stone-300 rounded-lg px-3 py-2 hover:bg-stone-50 transition-colors whitespace-nowrap"
+        >
+          <Calendar size={12} />
+          Add reminder
+        </a>
+      </div>
+
+      {/* Returns reassurance */}
+      <div className="flex items-center justify-center gap-2 text-sm text-stone-500 mb-8">
+        <Check size={14} strokeWidth={2.5} className="text-green-600 flex-shrink-0" />
+        <span>30-day free returns — changed your mind? <a href="/returns/start" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">Start a return anytime.</a></span>
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <Link
           href="/"
-          className="inline-block bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors"
+          className="inline-block bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors rounded-lg"
         >
           Continue Shopping
         </Link>
         <Link
           href="/account/orders"
-          className="inline-block border border-stone-300 text-stone-700 px-8 py-3 text-sm font-medium hover:bg-stone-50 transition-colors"
+          className="inline-block border border-stone-300 text-stone-700 px-8 py-3 text-sm font-medium hover:bg-stone-50 transition-colors rounded-lg"
         >
           View Orders
         </Link>
