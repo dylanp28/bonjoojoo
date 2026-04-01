@@ -5,11 +5,21 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
-import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag } from 'lucide-react'
+import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon } from 'lucide-react'
+import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type Step = 'cart' | 'contact' | 'shipping' | 'review' | 'confirmation'
+
+interface GiftOptions {
+  isGift: boolean
+  giftMessage: string
+  giftWrapping: boolean
+  giftReceipt: boolean
+}
+
+const GIFT_WRAPPING_PRICE = 8.99
 
 interface ContactInfo {
   email: string
@@ -144,14 +154,20 @@ function StepIndicator({ current }: { current: Step }) {
 function OrderSummary({
   items,
   selectedShipping,
+  giftOptions,
+  appliedPromo,
 }: {
   items: ReturnType<typeof useCart>['items']
   selectedShipping: ShippingMethod | null
+  giftOptions?: GiftOptions
+  appliedPromo?: AppliedPromo | null
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const shippingCost = selectedShipping?.price ?? 0
+  const giftWrappingCost = giftOptions?.isGift && giftOptions?.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+  const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingCost + tax
+  const total = subtotal + shippingCost + giftWrappingCost + tax - discount
 
   return (
     <aside className="bg-stone-50 border border-stone-200 rounded-lg p-6">
@@ -184,10 +200,25 @@ function OrderSummary({
           <span>Subtotal</span>
           <span>{fmt(subtotal)}</span>
         </div>
+        {appliedPromo && (
+          <div className="flex justify-between text-[13px] text-green-700">
+            <span className="flex items-center gap-1.5">
+              <Tag size={11} />
+              {appliedPromo.code}
+            </span>
+            <span>−{fmt(discount)}</span>
+          </div>
+        )}
         <div className="flex justify-between text-[13px] text-stone-600">
           <span>Shipping</span>
           <span>{selectedShipping ? (shippingCost === 0 ? 'Free' : fmt(shippingCost)) : '—'}</span>
         </div>
+        {giftWrappingCost > 0 && (
+          <div className="flex justify-between text-[13px] text-stone-600">
+            <span className="flex items-center gap-1.5"><Gift size={12} className="text-stone-400" />Gift wrapping</span>
+            <span>+{fmt(giftWrappingCost)}</span>
+          </div>
+        )}
         <div className="flex justify-between text-[13px] text-stone-600">
           <span>Estimated tax</span>
           <span>{fmt(tax)}</span>
@@ -201,6 +232,98 @@ function OrderSummary({
   )
 }
 
+// ─── Gift Options Section ─────────────────────────────────────────────────────
+
+function GiftOptionsSection({
+  giftOptions,
+  onChange,
+}: {
+  giftOptions: GiftOptions
+  onChange: (opts: GiftOptions) => void
+}) {
+  const toggle = (key: keyof GiftOptions) => {
+    onChange({ ...giftOptions, [key]: !giftOptions[key as 'isGift' | 'giftWrapping' | 'giftReceipt'] })
+  }
+
+  return (
+    <div className="mt-6 border border-stone-200 rounded-lg overflow-hidden">
+      {/* Toggle header */}
+      <label className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-stone-50 transition-colors select-none">
+        <div
+          className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+            giftOptions.isGift ? 'bg-stone-900 border-stone-900' : 'border-stone-300'
+          }`}
+          onClick={() => toggle('isGift')}
+        >
+          {giftOptions.isGift && <Check size={12} strokeWidth={3} className="text-white" />}
+        </div>
+        <input type="checkbox" className="sr-only" checked={giftOptions.isGift} onChange={() => toggle('isGift')} />
+        <div className="flex items-center gap-2">
+          <Gift size={16} className="text-stone-600" strokeWidth={1.5} />
+          <span className="text-[14px] font-medium text-stone-900">This is a gift</span>
+        </div>
+      </label>
+
+      {/* Expanded options */}
+      {giftOptions.isGift && (
+        <div className="border-t border-stone-200 px-5 py-5 bg-stone-50 space-y-5">
+          {/* Gift message */}
+          <div>
+            <label className="block text-[12px] font-medium text-stone-600 uppercase tracking-wider mb-2">
+              Gift Message <span className="normal-case tracking-normal font-normal text-stone-400">(optional)</span>
+            </label>
+            <textarea
+              value={giftOptions.giftMessage}
+              onChange={e => onChange({ ...giftOptions, giftMessage: e.target.value.slice(0, 150) })}
+              placeholder="Write a personal message for the recipient…"
+              rows={3}
+              className="w-full border border-stone-200 bg-white px-4 py-2.5 text-[13px] text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors resize-none"
+            />
+            <p className="text-[11px] text-stone-400 mt-1 text-right">{giftOptions.giftMessage.length}/150</p>
+          </div>
+
+          {/* Gift wrapping */}
+          <label className="flex items-start gap-3 cursor-pointer select-none">
+            <div
+              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                giftOptions.giftWrapping ? 'bg-stone-900 border-stone-900' : 'border-stone-300 bg-white'
+              }`}
+              onClick={() => toggle('giftWrapping')}
+            >
+              {giftOptions.giftWrapping && <Check size={12} strokeWidth={3} className="text-white" />}
+            </div>
+            <input type="checkbox" className="sr-only" checked={giftOptions.giftWrapping} onChange={() => toggle('giftWrapping')} />
+            <div className="flex-1">
+              <div className="flex items-baseline justify-between">
+                <p className="text-[14px] font-medium text-stone-900">Gift wrapping</p>
+                <p className="text-[13px] font-medium text-stone-900">+{fmt(GIFT_WRAPPING_PRICE)}</p>
+              </div>
+              <p className="text-[12px] text-stone-500 mt-0.5">Signature bonjoojoo box with satin ribbon</p>
+            </div>
+          </label>
+
+          {/* Gift receipt */}
+          <label className="flex items-start gap-3 cursor-pointer select-none">
+            <div
+              className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                giftOptions.giftReceipt ? 'bg-stone-900 border-stone-900' : 'border-stone-300 bg-white'
+              }`}
+              onClick={() => toggle('giftReceipt')}
+            >
+              {giftOptions.giftReceipt && <Check size={12} strokeWidth={3} className="text-white" />}
+            </div>
+            <input type="checkbox" className="sr-only" checked={giftOptions.giftReceipt} onChange={() => toggle('giftReceipt')} />
+            <div>
+              <p className="text-[14px] font-medium text-stone-900">Include gift receipt</p>
+              <p className="text-[12px] text-stone-500 mt-0.5">No prices shown — recipient can exchange easily</p>
+            </div>
+          </label>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Step: Cart Review ────────────────────────────────────────────────────────
 
 function CartStep({
@@ -208,11 +331,29 @@ function CartStep({
   updateQuantity,
   removeItem,
   onNext,
+  giftOptions,
+  onGiftOptionsChange,
+  promoInput,
+  onPromoInputChange,
+  promoStatus,
+  promoError,
+  appliedPromo,
+  onApplyPromo,
+  onRemovePromo,
 }: {
   items: ReturnType<typeof useCart>['items']
   updateQuantity: (id: string, qty: number) => void
   removeItem: (id: string) => void
   onNext: () => void
+  giftOptions: GiftOptions
+  onGiftOptionsChange: (opts: GiftOptions) => void
+  promoInput: string
+  onPromoInputChange: (v: string) => void
+  promoStatus: 'idle' | 'valid' | 'invalid'
+  promoError: string
+  appliedPromo: AppliedPromo | null
+  onApplyPromo: () => void
+  onRemovePromo: () => void
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
 
@@ -281,10 +422,66 @@ function CartStep({
           </div>
         ))}
       </div>
+
+      {/* Gift options */}
+      <GiftOptionsSection giftOptions={giftOptions} onChange={onGiftOptionsChange} />
+
+      {/* Promo code */}
+      <div className="mt-6">
+        {appliedPromo ? (
+          <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded px-4 py-3">
+            <div className="flex items-center gap-2">
+              <Check size={14} strokeWidth={2.5} className="text-green-600 flex-shrink-0" />
+              <div>
+                <p className="text-[13px] font-medium text-green-800">{appliedPromo.code} applied</p>
+                <p className="text-[12px] text-green-600">{appliedPromo.description} — saving {fmt(appliedPromo.discount)}</p>
+              </div>
+            </div>
+            <button
+              onClick={onRemovePromo}
+              className="text-green-600 hover:text-green-900 transition-colors ml-3 flex-shrink-0"
+              aria-label="Remove promo code"
+            >
+              <XIcon size={14} />
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={promoInput}
+                onChange={e => onPromoInputChange(e.target.value.toUpperCase())}
+                onKeyDown={e => e.key === 'Enter' && onApplyPromo()}
+                placeholder="Promo code"
+                className={`flex-1 border text-[14px] px-3 py-2.5 outline-none transition-colors ${
+                  promoStatus === 'invalid'
+                    ? 'border-red-300 focus:border-red-400'
+                    : 'border-stone-200 focus:border-stone-400'
+                }`}
+              />
+              <button
+                onClick={onApplyPromo}
+                disabled={!promoInput.trim()}
+                className="bg-stone-900 text-white text-[13px] font-medium px-4 py-2.5 hover:bg-stone-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Apply
+              </button>
+            </div>
+            {promoStatus === 'invalid' && (
+              <p className="text-[12px] text-red-600 mt-1.5">{promoError}</p>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="mt-6 pt-6 border-t border-stone-200 flex items-center justify-between">
         <div>
           <p className="text-[13px] text-stone-500">Subtotal</p>
           <p className="font-serif text-xl text-stone-900">{fmt(subtotal)}</p>
+          {appliedPromo && (
+            <p className="text-[13px] text-green-700 font-medium">−{fmt(appliedPromo.discount)} promo</p>
+          )}
         </div>
         <button
           onClick={onNext}
@@ -506,6 +703,8 @@ function ReviewStep({
   items,
   contact,
   shippingMethod,
+  giftOptions,
+  appliedPromo,
   onPlaceOrder,
   onBack,
   placing,
@@ -513,13 +712,17 @@ function ReviewStep({
   items: ReturnType<typeof useCart>['items']
   contact: ContactInfo
   shippingMethod: ShippingMethod
+  giftOptions: GiftOptions
+  appliedPromo: AppliedPromo | null
   onPlaceOrder: () => void
   onBack: () => void
   placing: boolean
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
+  const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+  const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingMethod.price + tax
+  const total = subtotal + shippingMethod.price + giftWrappingCost + tax - discount
 
   return (
     <div>
@@ -567,14 +770,54 @@ function ReviewStep({
         </div>
       </section>
 
+      {/* Gift options summary */}
+      {giftOptions.isGift && (
+        <section className="mb-6 border border-stone-200 rounded p-4">
+          <h3 className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+            <Gift size={12} />Gift Options
+          </h3>
+          <div className="space-y-1.5">
+            {giftOptions.giftMessage && (
+              <div>
+                <p className="text-[12px] text-stone-500 mb-0.5">Message</p>
+                <p className="text-[13px] text-stone-700 italic">&ldquo;{giftOptions.giftMessage}&rdquo;</p>
+              </div>
+            )}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {giftOptions.giftWrapping && (
+                <span className="inline-flex items-center gap-1 text-[12px] text-stone-700 bg-stone-100 px-2.5 py-1 rounded-full">
+                  <Check size={10} strokeWidth={2.5} />Gift wrapping (+{fmt(GIFT_WRAPPING_PRICE)})
+                </span>
+              )}
+              {giftOptions.giftReceipt && (
+                <span className="inline-flex items-center gap-1 text-[12px] text-stone-700 bg-stone-100 px-2.5 py-1 rounded-full">
+                  <Check size={10} strokeWidth={2.5} />Gift receipt included
+                </span>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Totals */}
       <section className="mb-8 border border-stone-200 rounded p-4 space-y-2">
         <div className="flex justify-between text-[13px] text-stone-600">
           <span>Subtotal</span><span>{fmt(subtotal)}</span>
         </div>
+        {appliedPromo && (
+          <div className="flex justify-between text-[13px] text-green-700">
+            <span className="flex items-center gap-1.5"><Tag size={11} />{appliedPromo.code}</span>
+            <span>−{fmt(discount)}</span>
+          </div>
+        )}
         <div className="flex justify-between text-[13px] text-stone-600">
           <span>Shipping</span><span>{shippingMethod.price === 0 ? 'Free' : fmt(shippingMethod.price)}</span>
         </div>
+        {giftWrappingCost > 0 && (
+          <div className="flex justify-between text-[13px] text-stone-600">
+            <span>Gift wrapping</span><span>+{fmt(giftWrappingCost)}</span>
+          </div>
+        )}
         <div className="flex justify-between text-[13px] text-stone-600">
           <span>Tax (est.)</span><span>{fmt(tax)}</span>
         </div>
@@ -607,15 +850,21 @@ function ConfirmationStep({
   items,
   contact,
   shippingMethod,
+  giftOptions,
+  appliedPromo,
 }: {
   orderNumber: string
   items: ReturnType<typeof useCart>['items']
   contact: ContactInfo
   shippingMethod: ShippingMethod
+  giftOptions: GiftOptions
+  appliedPromo: AppliedPromo | null
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
+  const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+  const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingMethod.price + tax
+  const total = subtotal + shippingMethod.price + giftWrappingCost + tax - discount
 
   return (
     <div className="text-center">
@@ -669,10 +918,21 @@ function ConfirmationStep({
           <div className="flex justify-between text-[13px] text-stone-600">
             <span>Subtotal</span><span>{fmt(subtotal)}</span>
           </div>
+          {appliedPromo && (
+            <div className="flex justify-between text-[13px] text-green-700">
+              <span className="flex items-center gap-1.5"><Tag size={11} />{appliedPromo.code}</span>
+              <span>−{fmt(discount)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-[13px] text-stone-600">
             <span>Shipping ({shippingMethod.name})</span>
             <span>{shippingMethod.price === 0 ? 'Free' : fmt(shippingMethod.price)}</span>
           </div>
+          {giftWrappingCost > 0 && (
+            <div className="flex justify-between text-[13px] text-stone-600">
+              <span>Gift wrapping</span><span>+{fmt(giftWrappingCost)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-[13px] text-stone-600">
             <span>Tax</span><span>{fmt(tax)}</span>
           </div>
@@ -682,6 +942,30 @@ function ConfirmationStep({
           </div>
         </div>
       </div>
+
+      {/* Gift options summary */}
+      {giftOptions.isGift && (
+        <div className="text-left border border-stone-200 rounded p-4 mb-6">
+          <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+            <Gift size={12} />Gift Details
+          </p>
+          {giftOptions.giftMessage && (
+            <p className="text-[13px] text-stone-700 italic mb-2">&ldquo;{giftOptions.giftMessage}&rdquo;</p>
+          )}
+          <div className="flex flex-wrap gap-2">
+            {giftOptions.giftWrapping && (
+              <span className="inline-flex items-center gap-1 text-[12px] text-stone-700 bg-stone-100 px-2.5 py-1 rounded-full">
+                <Check size={10} strokeWidth={2.5} />Gift wrapping included
+              </span>
+            )}
+            {giftOptions.giftReceipt && (
+              <span className="inline-flex items-center gap-1 text-[12px] text-stone-700 bg-stone-100 px-2.5 py-1 rounded-full">
+                <Check size={10} strokeWidth={2.5} />Gift receipt included
+              </span>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Shipping address */}
       <div className="text-left border border-stone-200 rounded p-4 mb-8">
@@ -722,9 +1006,25 @@ export default function CheckoutPage() {
     addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'US',
   })
   const [selectedShippingId, setSelectedShippingId] = useState('standard')
+  const [giftOptions, setGiftOptions] = useState<GiftOptions>({
+    isGift: false,
+    giftMessage: '',
+    giftWrapping: false,
+    giftReceipt: false,
+  })
+  const [confirmedGiftOptions, setConfirmedGiftOptions] = useState<GiftOptions>({
+    isGift: false, giftMessage: '', giftWrapping: false, giftReceipt: false,
+  })
   const [orderNumber, setOrderNumber] = useState('')
   const [confirmedItems, setConfirmedItems] = useState<typeof items>([])
   const [placing, setPlacing] = useState(false)
+
+  // Promo code state
+  const [promoInput, setPromoInput] = useState('')
+  const [promoStatus, setPromoStatus] = useState<'idle' | 'valid' | 'invalid'>('idle')
+  const [promoError, setPromoError] = useState('')
+  const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null)
+  const [confirmedPromo, setConfirmedPromo] = useState<AppliedPromo | null>(null)
 
   const selectedShipping = SHIPPING_METHODS.find(m => m.id === selectedShippingId) ?? SHIPPING_METHODS[0]
 
@@ -744,12 +1044,36 @@ export default function CheckoutPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleApplyPromo = () => {
+    const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
+    const result = validatePromoCode(promoInput, subtotal)
+    if (result.valid) {
+      const discount = calculateDiscount(result.promo, subtotal)
+      setAppliedPromo({ code: result.promo.code, description: result.promo.description, discount })
+      setPromoStatus('valid')
+      setPromoInput('')
+      setPromoError('')
+    } else {
+      setPromoStatus('invalid')
+      setPromoError(result.error)
+    }
+  }
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null)
+    setPromoStatus('idle')
+    setPromoInput('')
+    setPromoError('')
+  }
+
   const handlePlaceOrder = () => {
     setPlacing(true)
     const num = generateOrderNumber()
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
+    const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+    const discount = appliedPromo?.discount ?? 0
     const tax = subtotal * 0.08
-    const total = subtotal + selectedShipping.price + tax
+    const total = subtotal + selectedShipping.price + giftWrappingCost + tax - discount
 
     const order = {
       orderId: num,
@@ -758,8 +1082,11 @@ export default function CheckoutPage() {
       total,
       subtotal,
       tax,
+      discount,
+      promoCode: appliedPromo?.code ?? null,
       shippingCost: selectedShipping.price,
       shippingMethod: selectedShipping.name,
+      giftOptions: giftOptions.isGift ? giftOptions : null,
       items: items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity, image: i.image })),
       shippingInfo: contact,
       estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -769,6 +1096,8 @@ export default function CheckoutPage() {
     saveOrderToLocalStorage(order)
     setOrderNumber(num)
     setConfirmedItems([...items])
+    setConfirmedGiftOptions({ ...giftOptions })
+    setConfirmedPromo(appliedPromo)
 
     setTimeout(() => {
       setPlacing(false)
@@ -807,6 +1136,15 @@ export default function CheckoutPage() {
                 updateQuantity={updateQuantity}
                 removeItem={removeItem}
                 onNext={() => goTo('contact')}
+                giftOptions={giftOptions}
+                onGiftOptionsChange={setGiftOptions}
+                promoInput={promoInput}
+                onPromoInputChange={setPromoInput}
+                promoStatus={promoStatus}
+                promoError={promoError}
+                appliedPromo={appliedPromo}
+                onApplyPromo={handleApplyPromo}
+                onRemovePromo={handleRemovePromo}
               />
             )}
             {step === 'contact' && (
@@ -830,6 +1168,8 @@ export default function CheckoutPage() {
                 items={items}
                 contact={contact}
                 shippingMethod={selectedShipping}
+                giftOptions={giftOptions}
+                appliedPromo={appliedPromo}
                 onPlaceOrder={handlePlaceOrder}
                 onBack={() => goTo('shipping')}
                 placing={placing}
@@ -841,6 +1181,8 @@ export default function CheckoutPage() {
                 items={confirmedItems}
                 contact={contact}
                 shippingMethod={selectedShipping}
+                giftOptions={confirmedGiftOptions}
+                appliedPromo={confirmedPromo}
               />
             )}
           </div>
@@ -851,6 +1193,8 @@ export default function CheckoutPage() {
               <OrderSummary
                 items={items}
                 selectedShipping={step === 'cart' ? null : selectedShipping}
+                giftOptions={giftOptions}
+                appliedPromo={appliedPromo}
               />
             </div>
           )}

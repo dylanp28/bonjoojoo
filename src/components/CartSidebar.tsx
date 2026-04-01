@@ -1,17 +1,47 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react'
+import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight, Tag, Check, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
+import RecentlyViewedRow from '@/components/RecentlyViewedRow'
+import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 
 export default function CartSidebar() {
   const { items, isOpen, toggleCart, removeItem, updateQuantity, totalItems, totalPrice } = useCart()
 
+  const [promoOpen, setPromoOpen] = useState(false)
+  const [promoInput, setPromoInput] = useState('')
+  const [promoStatus, setPromoStatus] = useState<'idle' | 'valid' | 'invalid'>('idle')
+  const [promoError, setPromoError] = useState('')
+  const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null)
+
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price)
+
+  const handleApplyPromo = () => {
+    const result = validatePromoCode(promoInput, totalPrice)
+    if (result.valid) {
+      const discount = calculateDiscount(result.promo, totalPrice)
+      setAppliedPromo({ code: result.promo.code, description: result.promo.description, discount })
+      setPromoStatus('valid')
+      setPromoInput('')
+      setPromoError('')
+    } else {
+      setPromoStatus('invalid')
+      setPromoError(result.error)
+    }
+  }
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null)
+    setPromoStatus('idle')
+    setPromoInput('')
+    setPromoError('')
+    setPromoOpen(false)
+  }
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -143,13 +173,78 @@ export default function CartSidebar() {
                       )}
                     </div>
 
+                    {/* Recently Viewed — shown before checkout */}
+                    <RecentlyViewedRow compact />
+
                     {/* Footer */}
                     {items.length > 0 && (
                       <div className="border-t border-gray-100 px-6 py-6 bg-bj-offwhite">
+                        {/* Promo code section */}
+                        {appliedPromo ? (
+                          <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded px-3 py-2.5 mb-4">
+                            <div className="flex items-center gap-2">
+                              <Check size={13} strokeWidth={2.5} className="text-green-600 flex-shrink-0" />
+                              <div>
+                                <p className="text-[12px] font-medium text-green-800">{appliedPromo.code} — saving {formatPrice(appliedPromo.discount)}</p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={handleRemovePromo}
+                              className="text-green-500 hover:text-green-800 transition-colors ml-2 flex-shrink-0"
+                              aria-label="Remove promo code"
+                            >
+                              <X size={13} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="mb-4">
+                            <button
+                              onClick={() => setPromoOpen(p => !p)}
+                              className="flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-bj-black transition-colors"
+                            >
+                              <Tag size={13} />
+                              Have a promo code?
+                              <ChevronDown size={13} className={`transition-transform ${promoOpen ? 'rotate-180' : ''}`} />
+                            </button>
+                            {promoOpen && (
+                              <div className="mt-2.5">
+                                <div className="flex gap-1.5">
+                                  <input
+                                    type="text"
+                                    value={promoInput}
+                                    onChange={e => { setPromoInput(e.target.value.toUpperCase()); setPromoStatus('idle') }}
+                                    onKeyDown={e => e.key === 'Enter' && handleApplyPromo()}
+                                    placeholder="Enter code"
+                                    className={`flex-1 border text-[13px] px-2.5 py-2 outline-none transition-colors ${
+                                      promoStatus === 'invalid' ? 'border-red-300' : 'border-gray-200 focus:border-gray-400'
+                                    }`}
+                                  />
+                                  <button
+                                    onClick={handleApplyPromo}
+                                    disabled={!promoInput.trim()}
+                                    className="bg-bj-black text-white text-[12px] font-medium px-3 py-2 hover:opacity-80 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
+                                  >
+                                    Apply
+                                  </button>
+                                </div>
+                                {promoStatus === 'invalid' && (
+                                  <p className="text-[11px] text-red-600 mt-1">{promoError}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
                         <div className="flex justify-between mb-1">
                           <span className="text-[14px] text-gray-500">Subtotal</span>
                           <span className="text-[16px] font-medium text-bj-black">{formatPrice(totalPrice)}</span>
                         </div>
+                        {appliedPromo && (
+                          <div className="flex justify-between mb-1">
+                            <span className="text-[13px] text-green-700">Discount</span>
+                            <span className="text-[13px] text-green-700 font-medium">−{formatPrice(appliedPromo.discount)}</span>
+                          </div>
+                        )}
                         <p className="text-[12px] text-gray-400 mb-5">
                           Shipping & taxes calculated at checkout
                         </p>
