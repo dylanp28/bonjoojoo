@@ -16,6 +16,55 @@ import NecklaceLengthGuideModal from '@/components/NecklaceLengthGuideModal'
 import BraceletSizeGuideModal from '@/components/BraceletSizeGuideModal'
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed'
 import RecentlyViewedRow from '@/components/RecentlyViewedRow'
+import { SpottedInTheWild } from '@/components/UGCGallery'
+import { ProductTrustStrip } from '@/components/TrustBadgeStrip'
+
+// ─── BNPL Learn More Modal ────────────────────────────────────────────────────
+
+function BNPLLearnMoreModal({ onClose, installmentAmount }: { onClose: () => void; installmentAmount: string }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative bg-white max-w-md w-full p-8 shadow-2xl">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-bj-gray-400 hover:text-bj-black transition-colors"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-[#B2FCE4] rounded-full flex items-center justify-center flex-shrink-0">
+            <span className="text-[#00B14F] font-bold text-sm">AP</span>
+          </div>
+          <div>
+            <h3 className="font-semibold text-bj-black text-lg">Afterpay</h3>
+            <p className="text-caption text-bj-gray-500">Buy now, pay later</p>
+          </div>
+        </div>
+        <p className="text-body text-bj-gray-600 mb-6 leading-relaxed">
+          Shop now and pay over time with 4 equal interest-free installments of <strong>{installmentAmount}</strong>.
+        </p>
+        <div className="space-y-3 mb-6">
+          {[
+            { label: '1st payment', note: 'Due today at checkout' },
+            { label: '2nd payment', note: '2 weeks after purchase' },
+            { label: '3rd payment', note: '4 weeks after purchase' },
+            { label: '4th payment', note: '6 weeks after purchase' },
+          ].map((row) => (
+            <div key={row.label} className="flex items-center justify-between py-2 border-b border-bj-gray-100 last:border-0">
+              <span className="text-caption text-bj-gray-700 font-medium">{row.label}</span>
+              <span className="text-caption text-bj-gray-500">{row.note} · {installmentAmount}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-bj-gray-400 leading-relaxed">
+          No interest, no fees when you pay on time. Available on orders $35–$2,000. Subject to eligibility check. See <span className="underline">Afterpay Terms</span> for full details. This is a simulated integration — no real Afterpay account required.
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -39,6 +88,7 @@ export default function ProductDetailPage() {
   const [crossSellProducts, setCrossSellProducts] = useState<ProductWithVariants[]>([])
   const [alsoViewedProducts, setAlsoViewedProducts] = useState<ProductWithVariants[]>([])
   const [viewerCount, setViewerCount] = useState(0)
+  const [bnplModalOpen, setBnplModalOpen] = useState(false)
   const [shippingCountdown, setShippingCountdown] = useState('')
   const [notifyEmail, setNotifyEmail] = useState('')
   const [notifySubmitted, setNotifySubmitted] = useState(false)
@@ -347,6 +397,14 @@ export default function ProductDetailPage() {
         onClose={() => setBraceletGuideOpen(false)}
       />
 
+      {/* BNPL Learn More Modal */}
+      {bnplModalOpen && (
+        <BNPLLearnMoreModal
+          onClose={() => setBnplModalOpen(false)}
+          installmentAmount={`$${(currentPrice / 4).toFixed(2)}`}
+        />
+      )}
+
       {/* Wishlist toast */}
       {wishlistToast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-bj-black text-white px-5 py-3 rounded-full shadow-lg text-sm font-medium animate-fade-in-up">
@@ -503,7 +561,21 @@ export default function ProductDetailPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-caption text-bj-gray-500">Or 4 interest-free payments of <span className="font-medium">${(currentPrice / 4).toFixed(0)}</span> with Klarna</p>
+                {currentPrice >= 100 && (
+                  <p className="text-caption text-bj-gray-500">
+                    or 4 interest-free payments of{' '}
+                    <span className="font-medium">${(currentPrice / 4).toFixed(2)}</span>{' '}
+                    with{' '}
+                    <span className="font-semibold text-[#00B14F]">Afterpay</span>
+                    {' '}·{' '}
+                    <button
+                      onClick={() => setBnplModalOpen(true)}
+                      className="underline underline-offset-2 hover:text-bj-black transition-colors"
+                    >
+                      Learn more
+                    </button>
+                  </p>
+                )}
               </div>
             </LuxuryReveal>
 
@@ -792,6 +864,8 @@ export default function ProductDetailPage() {
                       <span>Add to Bag</span>
                     </button>
                   )}
+
+                  <ProductTrustStrip />
 
                   <div className="grid grid-cols-2 gap-4">
                     <button
@@ -1154,6 +1228,9 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Spotted in the Wild — customer UGC photos */}
+      <SpottedInTheWild />
 
       {/* Recently Viewed */}
       <RecentlyViewedRow currentProductId={productId} />

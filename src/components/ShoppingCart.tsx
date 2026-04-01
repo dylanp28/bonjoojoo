@@ -156,11 +156,15 @@ export function ShoppingCart() {
               {items.length > 0 && (
                 <div className="border-t border-gray-200 p-6 bg-white">
                   {/* Subtotal */}
-                  <div className="flex items-center justify-between text-lg font-medium mb-4">
+                  <div className="flex items-center justify-between text-lg font-medium mb-2">
                     <span className="text-gray-900">Subtotal</span>
                     <span className="text-gray-900">{formatPrice(totalPrice)}</span>
                   </div>
-                  
+
+                  <p className="text-sm text-stone-400 mb-1">
+                    or 4 × <span className="font-medium text-stone-600">{formatPrice(totalPrice / 4)}</span> with <span className="font-semibold text-[#00B14F]">Afterpay</span>
+                  </p>
+
                   <p className="text-sm text-gray-600 mb-6">
                     Shipping and taxes will be calculated at checkout
                   </p>

@@ -725,6 +725,7 @@ function ReviewStep({
   const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
   const total = subtotal + shippingMethod.price + giftWrappingCost + tax - discount
+  const [paymentMethod, setPaymentMethod] = useState<'full' | 'afterpay'>('full')
 
   return (
     <div>
@@ -831,6 +832,64 @@ function ReviewStep({
         </div>
       </section>
 
+      {/* Payment Method */}
+      <section className="mb-8">
+        <h3 className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-3">Payment Method</h3>
+        <div className="space-y-2">
+          <label className={`flex items-start gap-3 p-4 border rounded cursor-pointer transition-colors ${paymentMethod === 'full' ? 'border-stone-900 bg-stone-50' : 'border-stone-200 hover:border-stone-300'}`}>
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="full"
+              checked={paymentMethod === 'full'}
+              onChange={() => setPaymentMethod('full')}
+              className="mt-0.5"
+            />
+            <div>
+              <p className="text-[14px] font-medium text-stone-900">Pay in full</p>
+              <p className="text-[12px] text-stone-500 mt-0.5">Credit / debit card · {fmt(total)}</p>
+            </div>
+          </label>
+          <label className={`flex items-start gap-3 p-4 border rounded cursor-pointer transition-colors ${paymentMethod === 'afterpay' ? 'border-[#00B14F] bg-[#F0FFF6]' : 'border-stone-200 hover:border-stone-300'}`}>
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="afterpay"
+              checked={paymentMethod === 'afterpay'}
+              onChange={() => setPaymentMethod('afterpay')}
+              className="mt-0.5"
+            />
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#B2FCE4] text-[#00B14F] font-bold text-[10px]">AP</span>
+                <p className="text-[14px] font-medium text-stone-900">Pay in 4 installments (Afterpay)</p>
+              </div>
+              <p className="text-[12px] text-stone-500 mt-0.5">4 × {fmt(total / 4)} · interest-free</p>
+            </div>
+          </label>
+        </div>
+
+        {paymentMethod === 'afterpay' && (
+          <div className="mt-3 border border-[#B2FCE4] bg-[#F0FFF6] rounded p-4 space-y-2">
+            <p className="text-[12px] font-medium text-stone-700 mb-3">Your payment schedule:</p>
+            {[
+              { label: 'Today', note: 'at checkout' },
+              { label: '2 weeks', note: 'after purchase' },
+              { label: '4 weeks', note: 'after purchase' },
+              { label: '6 weeks', note: 'after purchase' },
+            ].map((row) => (
+              <div key={row.label} className="flex justify-between text-[12px]">
+                <span className="text-stone-600">{row.label} <span className="text-stone-400">({row.note})</span></span>
+                <span className="font-medium text-stone-900">{fmt(total / 4)}</span>
+              </div>
+            ))}
+            <p className="text-[11px] text-stone-500 mt-3 pt-3 border-t border-[#B2FCE4]">
+              You will be redirected to Afterpay to complete your purchase.
+            </p>
+          </div>
+        )}
+      </section>
+
       <div className="flex items-center justify-between">
         <button onClick={onBack} className="text-[13px] text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1">
           ← Back
@@ -840,7 +899,7 @@ function ReviewStep({
           disabled={placing}
           className="flex items-center gap-2 bg-stone-900 text-white px-10 py-3.5 text-sm font-medium hover:bg-stone-800 transition-colors disabled:opacity-60 disabled:cursor-wait"
         >
-          {placing ? 'Placing Order…' : 'Place Order'}
+          {placing ? 'Placing Order…' : paymentMethod === 'afterpay' ? 'Continue to Afterpay' : 'Place Order'}
         </button>
       </div>
     </div>
