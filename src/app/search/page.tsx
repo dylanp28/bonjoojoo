@@ -263,7 +263,7 @@ function SearchPageContent() {
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price)
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Page header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-6 text-center">
@@ -507,7 +507,7 @@ function SearchPageContent() {
                         alt={product.name}
                         fill
                         sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-                        className="object-contain p-2 rounded-lg"
+                        className="object-contain p-4"
                       />
                     </div>
 
@@ -595,7 +595,7 @@ function SearchPageContent() {
 export default function SearchPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4" />
           <p className="text-gray-600">Loading search...</p>

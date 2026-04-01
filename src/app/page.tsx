@@ -114,7 +114,7 @@ export default function HomePage() {
         {/* ═══════════════════════════════════════════════════════════
             HERO 2 — LIMITED TIME PROMO (GRAD)
             ═══════════════════════════════════════════════════════════ */}
-        <FocusSection className="overflow-hidden bg-gradient-to-b from-[#F5F0EB] to-[#EDE6DE] py-28 lg:py-40">
+        <FocusSection className="overflow-hidden bg-white py-36 lg:py-48">
           {/* Subtle decorative elements */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-bj-rose-gold/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-bj-rose-gold/20 to-transparent" />
@@ -230,10 +230,10 @@ export default function HomePage() {
           </div>
 
           {/* Background color for entire section */}
-          <div className="absolute inset-0 -z-10 bg-[#EDE5DA]" />
+          <div className="absolute inset-0 -z-10 bg-white" />
 
           {/* Text content */}
-          <div className="relative z-10 px-8 lg:px-20 py-24 max-w-xl">
+          <div className="relative z-10 px-8 lg:px-20 py-36 lg:py-48 max-w-xl">
             <LuxuryReveal direction="up" delay={0.1}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-bj-rose-gold/40" />

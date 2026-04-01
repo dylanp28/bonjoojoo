@@ -98,7 +98,7 @@ export const LuxuryProductCard = ({
     <div className={`group ${className}`}>
       {/* Image */}
       <Link href={`/product/${product.id}`} className="block">
-        <div className={`${aspectMap[variant]} bg-gradient-to-b from-bj-offwhite to-[#F0EBE5] relative overflow-hidden mb-4 product-hover`}>
+        <div className={`${aspectMap[variant]} bg-white relative overflow-hidden mb-4 product-hover`}>
           {/* Product image — contained with padding for clean e-commerce presentation */}
           <Image
             src={imgSrc}
@@ -126,11 +126,7 @@ export const LuxuryProductCard = ({
                 Sold Out
               </span>
             )}
-            {product.category === 'rings' && (
-              <span className="bg-white/90 text-bj-black text-[9px] font-medium tracking-wider uppercase px-2 py-1 border border-bj-gray-200">
-                Free Resize
-              </span>
-            )}
+
           </div>
 
           {/* Wishlist */}
@@ -172,21 +168,7 @@ export const LuxuryProductCard = ({
           </h3>
         </Link>
 
-        {/* Rating */}
-        {product.rating && (
-          <div className="flex items-center gap-1 mb-1.5">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <svg key={star} viewBox="0 0 12 12" className={`w-3 h-3 ${star <= Math.round(product.rating!) ? 'text-bj-black' : 'text-gray-200'}`} fill="currentColor">
-                  <path d="M6 0l1.5 4.5H12L8.25 7.5 9.75 12 6 9 2.25 12 3.75 7.5 0 4.5h4.5z" />
-                </svg>
-              ))}
-            </div>
-            {product.reviewCount && (
-              <span className="text-[11px] text-gray-400">({product.reviewCount})</span>
-            )}
-          </div>
-        )}
+
 
         {/* Price */}
         <div className="flex items-center gap-2">

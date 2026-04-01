@@ -4,7 +4,7 @@
     {
       "id": "PENDANT-3777",
       "sku": "BJ-PEND-3777",
-      "name": "Luxury Diamond Pendant",
+      "name": "Floral Key II",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "Suspended from a delicate chain, this diamond pendant captures brilliance in its purest form. A constellation of lab-grown diamonds \u2014 each cut to ideal proportions \u2014 creates a focal point that glitters from across the room. The open silhouette allows light to pass through, making this piece as luminous as it is modern.",
@@ -56,7 +56,7 @@
     {
       "id": "PENDANT-3778",
       "sku": "BJ-PEND-3778",
-      "name": "Elegant Diamond Pendant",
+      "name": "Floral Key I",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "A study in geometric elegance, this pendant pairs structural precision with the soft radiance of lab-grown diamonds. The layered design creates subtle depth, while prong-set stones catch light at every angle. Versatile enough for boardroom to dinner, it transitions effortlessly through your day.",
@@ -117,7 +117,7 @@
     {
       "id": "PENDANT-3779",
       "sku": "BJ-PEND-3779",
-      "name": "Classic Diamond Pendant",
+      "name": "Floral I",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "Clean lines and exceptional diamond quality define this refined pendant. A single, carefully selected lab-grown diamond sits in a slim bezel setting, creating a minimalist focal point with maximum presence. For the wearer who believes less is always more.",
@@ -143,7 +143,7 @@
     {
       "id": "PENDANT-3780",
       "sku": "BJ-PEND-3780",
-      "name": "Modern Diamond Pendant",
+      "name": "Floral II",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "Bold curves and brilliant diamonds converge in this contemporary pendant design. The sculptural silhouette commands attention while the lab-grown diamonds scattered across its surface ensure it dazzles from every angle. A statement piece for those who wear confidence effortlessly.",
@@ -191,8 +191,8 @@
     {
       "id": "BRACELET-3782",
       "sku": "BJ-BRAC-3782",
-      "name": "Premium Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Floral Band I",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "The quintessential tennis bracelet, elevated. A single row of perfectly matched lab-grown diamonds, secured in fine gold links, creates a continuous ribbon of light around the wrist. Each stone is precisely set to maximize brilliance, ensuring this bracelet catches the eye whether you're lifting a champagne glass or typing at your desk.",
       "short_description": "Premium lab-grown diamond bracelet",
@@ -248,8 +248,8 @@
     {
       "id": "BRACELET-3783",
       "sku": "BJ-BRAC-3783",
-      "name": "Luxury Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Floral Band III",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "Intricate prong work showcases each lab-grown diamond to its fullest potential in this sophisticated tennis bracelet. The flexible chain moves naturally with your wrist, while the secure clasp ensures these precious stones stay exactly where they belong \u2014 with you.",
       "short_description": "Luxury diamond tennis bracelet",
@@ -296,8 +296,8 @@
     {
       "id": "BRACELET-3784",
       "sku": "BJ-BRAC-3784",
-      "name": "Statement Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Floral Band II",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "For moments when subtlety is not on the agenda. This bold diamond bracelet features a dramatic cluster setting that transforms lab-grown diamonds into wearable art. The architectural structure is deceptively lightweight, making it as comfortable to wear all day as it is impressive to behold.",
       "short_description": "Statement diamond bracelet design",
@@ -345,8 +345,8 @@
     {
       "id": "BRACELET-3785",
       "sku": "BJ-BRAC-3785",
-      "name": "Elegant Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Petal Ring",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "Understated luxury at its finest. This elegant diamond bracelet pairs refined design with exceptional stone quality, resulting in a piece that works as hard as you do. The streamlined silhouette sits beautifully against the wrist, drawing the eye without demanding it.",
       "short_description": "Elegant diamond tennis bracelet",
@@ -394,8 +394,8 @@
     {
       "id": "BRACELET-3786",
       "sku": "BJ-BRAC-3786",
-      "name": "Eternity Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Floral Band IV",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "Inspired by the eternity band, this bracelet presents a continuous parade of lab-grown diamonds in a bold, modern setting. The open channel design allows each stone to breathe, creating maximum sparkle with minimal metal. A piece that symbolizes something without end.",
       "short_description": "Eternity diamond bracelet",
@@ -442,8 +442,8 @@
     {
       "id": "BRACELET-3787",
       "sku": "BJ-BRAC-3787",
-      "name": "Signature Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Floral 3 Piece Ring",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "This is the piece Bonjoojoo built its reputation on. Our signature diamond bracelet marries traditional craftsmanship with a contemporary aesthetic, resulting in something that feels both timeless and entirely of the moment. The ideal first-and-forever fine jewelry investment.",
       "short_description": "Signature diamond tennis bracelet",
@@ -492,8 +492,8 @@
     {
       "id": "BRACELET-3788",
       "sku": "BJ-BRAC-3788",
-      "name": "Classic Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Morning Dew",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "Some designs endure because they are simply right. This classic diamond bracelet features a beautifully proportioned setting, exceptional stone quality, and a versatile silhouette that works with everything from vintage to streetwear. Available in three golds to suit every skin tone.",
       "short_description": "Classic diamond tennis bracelet",
@@ -553,7 +553,7 @@
     {
       "id": "BRACELET-3798",
       "sku": "BJ-BRAC-3798",
-      "name": "Refined Diamond Bracelet",
+      "name": "3 Stone Bracelet",
       "category": "bracelets",
       "subcategory": "bangles",
       "description": "Precision meets poetry in this refined diamond bracelet. The architectural setting holds each lab-grown diamond at the perfect angle to catch every passing light source, while the polished gold links create a fluid, wearable structure that flatters any wrist.",
@@ -579,7 +579,7 @@
     {
       "id": "BRACELET-3799",
       "sku": "BJ-BRAC-3799",
-      "name": "Designer Diamond Bracelet",
+      "name": "Joined Diamond Bracelet",
       "category": "bracelets",
       "subcategory": "bangles",
       "description": "Thoughtful design details distinguish this bracelet from everything else in your collection. The unique setting allows each lab-grown diamond to float within its mounting, creating the illusion of stones suspended in light. A conversation piece that also happens to be impeccably crafted.",
@@ -606,7 +606,7 @@
     {
       "id": "NECKLACE-3800",
       "sku": "BJ-NECK-3800",
-      "name": "Elegant Diamond Necklace",
+      "name": "Drop Diamond Necklace",
       "category": "necklaces",
       "subcategory": "statement",
       "description": "Architecture meets adornment. This statement necklace arranges lab-grown diamonds along a dramatic silhouette that commands the collarbone. The negative space between each cluster creates rhythm and movement, while the secure clasp ensures this investment piece stays close.",
@@ -632,7 +632,7 @@
     {
       "id": "PENDANT-3838",
       "sku": "BJ-PEND-3838",
-      "name": "Premium Diamond Pendant",
+      "name": "Bar Diamond Necklace",
       "category": "necklaces",
       "subcategory": "pendants",
       "description": "Exceptional diamond quality in a setting designed to show it off. This premium pendant positions each lab-grown stone to maximize its natural brilliance, resulting in a piece that rewards close inspection and dazzles from a distance. Reserved for those who accept nothing but the finest.",
@@ -658,8 +658,8 @@
     {
       "id": "BRACELET-3839",
       "sku": "BJ-BRAC-3839",
-      "name": "Contemporary Diamond Bracelet",
-      "category": "bracelets",
+      "name": "Bowtie Diamond Ring",
+      "category": "rings",
       "subcategory": "tennis",
       "description": "Where modern design sensibility meets fine jewelry tradition. This contemporary bracelet's clean, architectural silhouette provides the ideal backdrop for a continuous display of lab-grown diamonds. A bracelet for those who think about what they wear.",
       "short_description": "Contemporary diamond tennis bracelet",
@@ -685,8 +685,8 @@
     {
       "id": "PENDANT-3840",
       "sku": "BJ-PEND-3840",
-      "name": "Sophisticated Diamond Pendant",
-      "category": "necklaces",
+      "name": "Butterfly Diamond Bracelet",
+      "category": "bracelets",
       "subcategory": "pendants",
       "description": "The balance between restraint and impact is a difficult one to strike. This sophisticated pendant achieves it through intelligent stone selection and a setting that seems to vanish, leaving only the brilliance of each lab-grown diamond visible. For the collector who understands that the best jewelry is felt, not just seen.",
       "short_description": "Sophisticated diamond pendant",
@@ -704,33 +704,6 @@
         "sophisticated",
         "diamond",
         "pendant"
-      ],
-      "vendor": "BonJooJoo",
-      "variants": []
-    },
-    {
-      "id": "NECKLACE-3881",
-      "sku": "BJ-NECK-3881",
-      "name": "Luxury Diamond Necklace",
-      "category": "necklaces",
-      "subcategory": "statement",
-      "description": "This necklace announces itself quietly. The exquisite diamonds \u2014 grown with minimal environmental impact \u2014 are arranged along a delicate frame that seems almost too fine to support such brilliance. Yet it does, evening after evening, year after year.",
-      "short_description": "Luxury diamond statement necklace",
-      "price": 1260,
-      "compare_at_price": 1800,
-      "cost": 900,
-      "images": [
-        "/images/products/LHN3881A.jpg"
-      ],
-      "inventory": {
-        "track_quantity": true,
-        "quantity": 3
-      },
-      "tags": [
-        "luxury",
-        "diamond",
-        "necklace",
-        "bestseller"
       ],
       "vendor": "BonJooJoo",
       "variants": []

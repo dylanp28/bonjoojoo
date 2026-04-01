@@ -609,27 +609,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
               {/* Center: Copyright */}
               <p className="text-[12px] text-bj-gray-400">&copy; {new Date().getFullYear()} Bonjoojoo. All Rights Reserved.</p>
 
-              {/* Right: Social icons */}
-              <div className="flex gap-3">
-                {[
-                  { icon: 'IG', href: 'https://instagram.com/bonjoojoo' },
-                  { icon: 'FB', href: 'https://facebook.com/bonjoojoo' },
-                  { icon: 'TK', href: 'https://tiktok.com/@bonjoojoo' },
-                  { icon: 'YT', href: 'https://youtube.com/@bonjoojoo' },
-                  { icon: 'PI', href: 'https://pinterest.com/bonjoojoo' },
-                  { icon: 'X', href: 'https://x.com/bonjoojoo' }
-                ].map(({ icon, href }) => (
-                  <Link
-                    key={icon}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 bg-bj-black hover:bg-bj-charcoal rounded-full flex items-center justify-center transition-colors"
-                  >
-                    <span className="text-white text-[10px] font-medium">{icon}</span>
-                  </Link>
-                ))}
-              </div>
+
             </div>
           </div>
         </div>

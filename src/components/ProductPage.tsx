@@ -260,14 +260,7 @@ export function ProductPage({ product }: ProductPageProps) {
                   {product.description}
                 </p>
 
-                {/* Social proof — wishlist count */}
-                <div className="flex items-center gap-2 text-[13px] text-[var(--luxury-soft-gray)]">
-                  <Heart size={14} className="text-[var(--luxury-rose-gold)] fill-current" />
-                  <span>
-                    {/* deterministic mock: seed from char codes of product id */}
-                    {(product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) % 47) + 12} people have saved this
-                  </span>
-                </div>
+
               </div>
             </div>
 

@@ -13,7 +13,6 @@ const PRODUCT_BADGES = [
   { icon: Truck,       label: 'Free Shipping' },
   { icon: RotateCcw,   label: 'Free Returns' },
   { icon: Award,       label: 'IGI Certified' },
-  { icon: Shield,      label: 'Lifetime Warranty' },
 ]
 
 const HOMEPAGE_BADGES = [
@@ -21,7 +20,6 @@ const HOMEPAGE_BADGES = [
   { icon: CheckCircle,  label: 'Ethically Sourced' },
   { icon: Truck,        label: 'Free Shipping' },
   { icon: RotateCcw,    label: '30-Day Returns' },
-  { icon: Shield,       label: 'Lifetime Warranty' },
 ]
 
 // ─── Payment method logos ──────────────────────────────────────────────────────
@@ -152,7 +150,6 @@ const FOOTER_BADGES = [
   { icon: Truck,       label: 'Free Shipping' },
   { icon: RotateCcw,   label: '30-Day Returns' },
   { icon: Award,       label: 'IGI Certified' },
-  { icon: Shield,      label: 'Lifetime Warranty' },
 ]
 
 export function FooterTrustStrip() {

@@ -5,6 +5,7 @@ import '../styles/pandora-animations.css'
 import { PerformanceOptimizer, CriticalResourceHints, MobilePerformanceOptimizer } from '@/components/PerformanceOptimizer'
 import { AuthProvider } from '@/hooks/useAuth'
 import { ClientLayout } from '@/components/ClientLayout'
+import SEOSchemaMarkup from '@/components/SEOSchemaMarkup'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://bonjoojoo.com'),
@@ -94,6 +95,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <SEOSchemaMarkup type="jewelry-store" />
+        <SEOSchemaMarkup type="local-business" />
         {/* Preconnect to gstatic BEFORE the stylesheet to warm the connection early */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" />

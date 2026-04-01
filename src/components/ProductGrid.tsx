@@ -80,7 +80,7 @@ export function ProductGrid({ products, title, loading = false, skeletonCount = 
         {products.map((product) => (
           <Link key={product.id} href={`/product/${product.id}`} className="group cursor-pointer">
             {/* Product Image */}
-            <div className="relative aspect-square bg-gray-50 overflow-hidden mb-4">
+            <div className="relative aspect-square bg-white overflow-hidden mb-4">
               <Image
                 src={product.images?.[0] || PLACEHOLDER_IMG}
                 alt={product.name}
