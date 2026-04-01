@@ -45,6 +45,7 @@ export const LuxuryProductCard = ({
   const { isWishlisted: checkWishlisted, toggleItem } = useWishlist()
   const isWishlisted = checkWishlisted(product.id)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [heartPop, setHeartPop] = useState(false)
   const [imgSrc, setImgSrc] = useState(product.images?.[0] || PLACEHOLDER_IMG)
 
   if (loading) {
@@ -80,6 +81,8 @@ export const LuxuryProductCard = ({
       image: product.images?.[0] || PLACEHOLDER_IMG,
       category: product.category,
     })
+    setHeartPop(true)
+    setTimeout(() => setHeartPop(false), 300)
     onWishlistToggle?.(product.id)
   }
 
@@ -128,8 +131,10 @@ export const LuxuryProductCard = ({
           {/* Wishlist */}
           <button
             onClick={handleWishlist}
-            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-            aria-label="Add to wishlist"
+            className={`absolute top-3 right-3 w-8 h-8 flex items-center justify-center transition-all duration-300 z-10 ${
+              isWishlisted ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            } ${heartPop ? 'scale-125' : 'scale-100'}`}
+            aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <Heart
               size={18}

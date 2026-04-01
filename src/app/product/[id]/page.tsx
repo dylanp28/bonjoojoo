@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw } from 'lucide-react'
+import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2 } from 'lucide-react'
 import { useCart } from '@/store/useCart'
+import { useWishlist } from '@/store/useWishlist'
 import { ProductWithVariants, ProductVariant } from '@/types/product'
 import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnimationSystem'
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
+import { getProductReviews, type ProductReviews } from '@/data/reviews'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -22,9 +24,12 @@ export default function ProductDetailPage() {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null)
   const [selectedSize, setSelectedSize] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [isWishlisted, setIsWishlisted] = useState(false)
-  
+  const [wishlistToast, setWishlistToast] = useState<'added' | 'removed' | null>(null)
+  const [shareToast, setShareToast] = useState(false)
+  const [reviews, setReviews] = useState<ProductReviews | null>(null)
+
   const addItem = useCart(state => state.addItem)
+  const { isWishlisted: checkWishlisted, toggleItem: toggleWishlistItem } = useWishlist()
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -57,6 +62,13 @@ export default function ProductDetailPage() {
     }
 
     fetchProduct()
+  }, [productId])
+
+  // Load reviews when productId is available
+  useEffect(() => {
+    if (productId) {
+      setReviews(getProductReviews(productId))
+    }
   }, [productId])
 
   // Handle variant selection
@@ -111,6 +123,8 @@ export default function ProductDetailPage() {
     )
   }
 
+  const isWishlisted = product ? checkWishlisted(product.id) : false
+
   const handleAddToCart = () => {
     const productForCart = {
       ...product,
@@ -124,6 +138,38 @@ export default function ProductDetailPage() {
     if (selectedSize) options.size = selectedSize
     for (let i = 0; i < quantity; i++) {
       addItem(productForCart, options)
+    }
+  }
+
+  const handleWishlistToggle = () => {
+    if (!product) return
+    const wasWishlisted = checkWishlisted(product.id)
+    toggleWishlistItem({
+      id: product.id,
+      name: product.name,
+      price: getCurrentPrice(),
+      originalPrice: product.compare_at_price,
+      image: product.images?.[0] || '/images/products/placeholder-product.svg',
+      category: product.category,
+    })
+    setWishlistToast(wasWishlisted ? 'removed' : 'added')
+    setTimeout(() => setWishlistToast(null), 2500)
+  }
+
+  const handleShare = async () => {
+    const url = window.location.href
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: product?.name, url })
+      } else {
+        await navigator.clipboard.writeText(url)
+        setShareToast(true)
+        setTimeout(() => setShareToast(false), 2500)
+      }
+    } catch {
+      await navigator.clipboard.writeText(url)
+      setShareToast(true)
+      setTimeout(() => setShareToast(false), 2500)
     }
   }
 
@@ -143,6 +189,22 @@ export default function ProductDetailPage() {
     <div className="product-page-content bg-bj-offwhite">
       {/* Film grain overlay */}
       <div className="grain-overlay" aria-hidden="true" />
+
+      {/* Wishlist toast */}
+      {wishlistToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-bj-black text-white px-5 py-3 rounded-full shadow-lg text-sm font-medium animate-fade-in-up">
+          <Heart size={15} className={wishlistToast === 'added' ? 'fill-bj-pink text-bj-pink' : 'text-white'} />
+          {wishlistToast === 'added' ? 'Added to wishlist' : 'Removed from wishlist'}
+        </div>
+      )}
+
+      {/* Share toast */}
+      {shareToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-bj-black text-white px-5 py-3 rounded-full shadow-lg text-sm font-medium animate-fade-in-up">
+          <Check size={15} className="text-green-400" />
+          Link copied to clipboard
+        </div>
+      )}
 
       {/* Breadcrumb Navigation */}
       <div className="bg-white border-b border-bj-gray-100 py-4">
@@ -243,7 +305,21 @@ export default function ProductDetailPage() {
                 <h1 className="text-display-lg text-bj-black font-light">
                   {product.name}
                 </h1>
-
+                {reviews && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={15}
+                          className={star <= Math.round(reviews.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-caption font-medium text-bj-black">{reviews.averageRating}</span>
+                    <span className="text-caption text-bj-gray-400">({reviews.totalReviews} reviews)</span>
+                  </div>
+                )}
               </div>
             </LuxuryReveal>
 
@@ -358,8 +434,8 @@ export default function ProductDetailPage() {
                   
                   <div className="grid grid-cols-2 gap-4">
                     <button
-                      onClick={() => setIsWishlisted(!isWishlisted)}
-                      className={`btn-secondary py-3 flex items-center justify-center space-x-2 ${
+                      onClick={handleWishlistToggle}
+                      className={`btn-secondary py-3 flex items-center justify-center space-x-2 transition-colors ${
                         isWishlisted
                           ? 'border-bj-pink text-bj-pink bg-bj-pink-soft'
                           : ''
@@ -368,8 +444,8 @@ export default function ProductDetailPage() {
                       <Heart size={18} className={isWishlisted ? 'fill-current' : ''} />
                       <span className="text-[11px]">{isWishlisted ? 'Saved' : 'Wishlist'}</span>
                     </button>
-                    
-                    <button className="btn-secondary py-3 flex items-center justify-center space-x-2">
+
+                    <button onClick={handleShare} className="btn-secondary py-3 flex items-center justify-center space-x-2">
                       <Share2 size={18} />
                       <span className="text-[11px]">Share</span>
                     </button>
@@ -481,8 +557,25 @@ export default function ProductDetailPage() {
                       />
 
                       {/* Wishlist */}
-                      <button className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all">
-                        <Heart size={14} className="text-bj-gray-500 hover:text-bj-pink" strokeWidth={1.5} />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleWishlistItem({
+                            id: relatedProduct.id,
+                            name: relatedProduct.name,
+                            price: relatedProduct.price,
+                            originalPrice: relatedProduct.compare_at_price,
+                            image: relatedProduct.images?.[0] || '/images/products/placeholder-product.svg',
+                            category: relatedProduct.category,
+                          })
+                        }}
+                        className="wishlist-btn absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-all"
+                      >
+                        <Heart
+                          size={14}
+                          strokeWidth={1.5}
+                          className={checkWishlisted(relatedProduct.id) ? 'fill-bj-pink text-bj-pink' : 'text-bj-gray-500 hover:text-bj-pink'}
+                        />
                       </button>
 
                       {/* Quick Add */}
@@ -511,6 +604,74 @@ export default function ProductDetailPage() {
                         <div className="w-3 h-3 rounded-full bg-rose-400 border border-bj-gray-200" title="Rose Gold" />
                         <div className="w-3 h-3 rounded-full bg-gray-200 border border-bj-gray-200" title="White Gold" />
                       </div>
+                    </div>
+                  </div>
+                </LuxuryReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reviews Section */}
+      {reviews && (
+        <div className="bg-bj-offwhite py-20 border-t border-bj-gray-100">
+          <div className="container-bj-wide">
+            <LuxuryReveal direction="up">
+              <div className="mb-12">
+                <p className="text-overline text-bj-pink mb-3">Customer Reviews</p>
+                <div className="flex flex-col sm:flex-row sm:items-end gap-6">
+                  <div>
+                    <h2 className="text-display-lg text-bj-black mb-3">What Our Customers Say</h2>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            size={22}
+                            className={star <= Math.round(reviews.averageRating) ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-display-sm text-bj-black font-light">{reviews.averageRating}</span>
+                      <span className="text-body text-bj-gray-500">({reviews.totalReviews} reviews)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </LuxuryReveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {reviews.reviews.map((review, index) => (
+                <LuxuryReveal key={review.id} direction="up" delay={index * 0.05}>
+                  <div className="bg-white p-8">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={14}
+                          className={star <= review.rating ? 'text-[#C9A84C] fill-current' : 'text-bj-gray-300'}
+                        />
+                      ))}
+                    </div>
+                    <h4 className="text-caption font-semibold text-bj-black mb-3">{review.title}</h4>
+                    <p className="text-caption text-bj-gray-500 leading-relaxed mb-6">{review.body}</p>
+                    <div className="flex items-center justify-between pt-4 border-t border-bj-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-bj-gray-100 rounded-full flex items-center justify-center">
+                          <span className="text-[11px] font-semibold text-bj-gray-500">{review.author[0]}</span>
+                        </div>
+                        <div>
+                          <p className="text-caption font-medium text-bj-black">{review.author}</p>
+                          <p className="text-[11px] text-bj-gray-400">{new Date(review.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                        </div>
+                      </div>
+                      {review.verified && (
+                        <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 font-medium">
+                          <CheckCircle2 size={13} className="text-emerald-500" />
+                          <span>Verified Buyer</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </LuxuryReveal>
