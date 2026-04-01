@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Grid, List, Heart } from 'lucide-react'
 import type { Product } from '@/types/product'
 
@@ -307,14 +308,13 @@ function SearchPageContent() {
                       viewMode === 'list' ? 'flex space-x-4 p-4' : 'p-4'
                     }`}
                   >
-                    <div className={viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}>
-                      <img
+                    <div className={`relative ${viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square mb-4'}`}>
+                      <Image
                         src={product.images?.[0] || '/images/products/placeholder-product.svg'}
                         alt={product.name}
-                        className="w-full h-full object-contain p-2 rounded-lg"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/images/products/placeholder-product.svg'
-                        }}
+                        fill
+                        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                        className="object-contain p-2 rounded-lg"
                       />
                     </div>
 

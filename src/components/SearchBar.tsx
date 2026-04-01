@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Search, X } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 interface SearchResult {
@@ -167,12 +168,14 @@ export default function SearchBar({ className = "", placeholder = "Search" }: Se
                   onClick={handleResultClick}
                   className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors"
                 >
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="relative w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                     {result.image ? (
-                      <img
+                      <Image
                         src={result.image}
                         alt={result.name}
-                        className="w-full h-full object-cover rounded-lg"
+                        fill
+                        sizes="48px"
+                        className="object-cover rounded-lg"
                       />
                     ) : (
                       <span className="text-xs text-gray-400 text-center">{result.name.charAt(0)}</span>

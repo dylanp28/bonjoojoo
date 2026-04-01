@@ -33,21 +33,8 @@ export function PerformanceOptimizer() {
         document.head.appendChild(link)
       })
 
-      // Preload critical fonts
-      const criticalFonts = [
-        'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2',
-        'https://fonts.gstatic.com/s/crimsontext/v17/wlp2gwHKFkZgtmSR3NB0oRJvaAJSA-Ii.woff2'
-      ]
-
-      criticalFonts.forEach(href => {
-        const link = document.createElement('link')
-        link.rel = 'preload'
-        link.as = 'font'
-        link.type = 'font/woff2'
-        link.crossOrigin = 'anonymous'
-        link.href = href
-        document.head.appendChild(link)
-      })
+      // Note: fonts are loaded via Google Fonts with display=swap in layout.tsx
+      // No additional font preloading needed — preconnect hints handle connection warm-up
 
       // Prefetch likely next pages
       const prefetchPages = [
@@ -301,7 +288,7 @@ export function CriticalResourceHints() {
 
       {/* Preconnect for critical external resources */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
       {/* Preload critical CSS */}
       <link 

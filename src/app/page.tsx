@@ -90,6 +90,7 @@ export default function HomePage() {
             <LazyVideo
               src="/videos/model-hero-optimized.mp4"
               eager
+              poster="/images/lab-grown-hero-1.webp"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
@@ -231,6 +232,7 @@ export default function HomePage() {
               src="/images/engraving-bracelet.png"
               alt="Rose gold bracelet with custom engraving"
               fill
+              sizes="(min-width: 768px) 60vw, 100vw"
               className="object-contain object-right scale-[0.85] translate-x-[10%]"
             />
             {/* Gradient wash from left for text readability */}
@@ -423,6 +425,7 @@ export default function HomePage() {
                   src="/images/bonjoojoo-2.png"
                   alt="Bonjoojoo ring on hand"
                   fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
                 />
                 {/* Caption */}

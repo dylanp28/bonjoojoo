@@ -59,7 +59,7 @@ export function WaitlistBanner() {
   if (!visible) return null
 
   return (
-    <div className="relative z-[110] bg-bj-black text-white px-4 py-2.5">
+    <div className="fixed top-0 left-0 right-0 z-[110] bg-bj-black text-white px-4 py-2.5">
       <div className="container-bj-wide flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center sm:text-left">
         {/* Message */}
         <span className="text-[12px] tracking-[0.08em] font-light flex-shrink-0">
