@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useCart } from '@/store/useCart'
 import RecentlyViewedRow from '@/components/RecentlyViewedRow'
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
+import { CartTrustStrip } from '@/components/TrustBadgeStrip'
 
 export default function CartSidebar() {
   const { items, isOpen, toggleCart, removeItem, updateQuantity, totalItems, totalPrice } = useCart()
@@ -248,6 +249,8 @@ export default function CartSidebar() {
                         <p className="text-[12px] text-gray-400 mb-5">
                           Shipping & taxes calculated at checkout
                         </p>
+
+                        <CartTrustStrip />
 
                         <Link
                           href="/checkout"

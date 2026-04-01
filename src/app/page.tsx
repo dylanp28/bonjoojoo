@@ -10,6 +10,8 @@ import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnim
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 import { LazyVideo } from '@/components/LazyVideo'
 import { homepageTestimonials } from '@/data/reviews'
+import { UGCGridSection } from '@/components/UGCGallery'
+import { HomepageTrustStrip } from '@/components/TrustBadgeStrip'
 
 const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
 
@@ -305,6 +307,11 @@ export default function HomePage() {
 
 
         {/* ═══════════════════════════════════════════════════════════
+            TRUST STRIP — 5 pillars
+            ═══════════════════════════════════════════════════════════ */}
+        <HomepageTrustStrip />
+
+        {/* ═══════════════════════════════════════════════════════════
             PRODUCT CAROUSEL — Horizontal Scrolling Best Sellers
             ═══════════════════════════════════════════════════════════ */}
         <FocusSection className="py-16 lg:py-24 bg-bj-gray-50">
@@ -497,6 +504,11 @@ export default function HomePage() {
             </div>
           </div>
         </FocusSection>
+
+        {/* ═══════════════════════════════════════════════════════════
+            UGC / INSTAGRAM GRID — #bonjoojoo community
+            ═══════════════════════════════════════════════════════════ */}
+        <UGCGridSection />
 
         {/* ═══════════════════════════════════════════════════════════
             GIFTING — "Give the gift of forever" CTA

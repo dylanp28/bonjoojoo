@@ -11,6 +11,7 @@ import { useCart } from '@/store/useCart'
 import CartSidebar from '@/components/CartSidebar'
 import ChatWidget from '@/components/ChatWidget'
 import { ExitIntentPopup } from '@/components/ExitIntentPopup'
+import { FooterTrustStrip } from '@/components/TrustBadgeStrip'
 
 const EMAIL_LIST_KEY = 'bonjoojoo_newsletter_emails'
 
@@ -576,6 +577,9 @@ export function ClientLayout({ children }: ClientLayoutProps) {
             </div>
           </div>
         </div>
+
+        {/* Footer trust strip */}
+        <FooterTrustStrip />
 
         {/* Footer bottom bar */}
         <div className="bg-white border-t border-gray-200">

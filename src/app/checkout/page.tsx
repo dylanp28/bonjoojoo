@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useCart } from '@/store/useCart'
 import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon } from 'lucide-react'
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
+import { CheckoutTrustStrip } from '@/components/TrustBadgeStrip'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -229,6 +230,8 @@ function OrderSummary({
         <span className="font-serif text-[15px] text-stone-900">Total</span>
         <span className="font-serif text-[18px] text-stone-900">{fmt(total)}</span>
       </div>
+
+      <CheckoutTrustStrip />
     </aside>
   )
 }
