@@ -4,9 +4,23 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/store/useCart'
+import { productGroups } from '@/data/productGroups'
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, clearCart } = useCart()
+  const { items, removeItem, updateQuantity, clearCart, addItem } = useCart()
+  const [lastAddedId, setLastAddedId] = useState<string | null>(null)
+
+  // Pick 3 cross-sell products from different categories, excluding items already in cart
+  const cartProductIds = new Set(items.map(item => item.id.split('-')[0]))
+  const seenCategories = new Set<string>()
+  const crossSellProducts = productGroups
+    .filter(p => !cartProductIds.has(p.id) && (p.featured || p.bestseller))
+    .filter(p => {
+      if (seenCategories.has(p.category)) return false
+      seenCategories.add(p.category)
+      return true
+    })
+    .slice(0, 3)
   const [promoCode, setPromoCode] = useState('')
   const [promoApplied, setPromoApplied] = useState(false)
   const [promoError, setPromoError] = useState('')
@@ -258,6 +272,64 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Customers also bought */}
+      {crossSellProducts.length > 0 && (
+        <div className="mt-16 pt-10 border-t border-gray-100">
+          <h2 className="text-xl font-light text-gray-900 mb-1">Customers Also Bought</h2>
+          <p className="text-sm text-gray-500 mb-8">Pairs beautifully with your selection</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {crossSellProducts.map(product => {
+              const isAdded = lastAddedId === product.id
+              const imageSrc = product.allImages[0] || ''
+              return (
+                <div key={product.id} className="flex gap-4 border border-gray-200 p-4 hover:border-gray-300 transition-colors">
+                  <div className="relative w-20 h-20 bg-gray-50 flex-shrink-0 overflow-hidden">
+                    {imageSrc ? (
+                      <Image src={imageSrc} alt={product.name} fill className="object-cover" sizes="80px" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      href={`/product/${product.id}`}
+                      className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-gray-600 transition-colors leading-snug"
+                    >
+                      {product.name}
+                    </Link>
+                    <p className="text-sm text-gray-700 mt-1">${product.basePrice.toLocaleString()}</p>
+                    <button
+                      onClick={() => {
+                        addItem({
+                          id: product.id,
+                          name: product.name,
+                          price: product.basePrice,
+                          images: product.allImages,
+                          category: product.category,
+                        })
+                        setLastAddedId(product.id)
+                        setTimeout(() => setLastAddedId(null), 2000)
+                      }}
+                      className={`mt-2 text-xs font-medium px-3 py-1.5 transition-colors ${
+                        isAdded
+                          ? 'bg-green-600 text-white'
+                          : 'bg-gray-900 text-white hover:bg-gray-700'
+                      }`}
+                    >
+                      {isAdded ? '✓ Added' : 'Quick Add'}
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -23,6 +23,12 @@ interface GiftOptions {
 }
 
 const GIFT_WRAPPING_PRICE = 8.99
+const GIFT_BOX_PRICE = 15
+
+interface GiftBoxUpsellState {
+  selected: boolean
+  note: string
+}
 
 interface ContactInfo {
   email: string
@@ -159,18 +165,21 @@ function OrderSummary({
   selectedShipping,
   giftOptions,
   appliedPromo,
+  giftBoxUpsell,
 }: {
   items: ReturnType<typeof useCart>['items']
   selectedShipping: ShippingMethod | null
   giftOptions?: GiftOptions
   appliedPromo?: AppliedPromo | null
+  giftBoxUpsell?: GiftBoxUpsellState
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const shippingCost = selectedShipping?.price ?? 0
   const giftWrappingCost = giftOptions?.isGift && giftOptions?.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+  const giftBoxCost = giftBoxUpsell?.selected ? GIFT_BOX_PRICE : 0
   const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingCost + giftWrappingCost + tax - discount
+  const total = subtotal + shippingCost + giftWrappingCost + giftBoxCost + tax - discount
 
   return (
     <aside className="bg-stone-50 border border-stone-200 rounded-lg p-6">
@@ -221,6 +230,12 @@ function OrderSummary({
           <div className="flex justify-between text-[13px] text-stone-600">
             <span className="flex items-center gap-1.5"><Gift size={12} className="text-stone-400" />Gift wrapping</span>
             <span>+{fmt(giftWrappingCost)}</span>
+          </div>
+        )}
+        {giftBoxCost > 0 && (
+          <div className="flex justify-between text-[13px] text-stone-600">
+            <span className="flex items-center gap-1.5"><Gift size={12} className="text-amber-500" />Premium gift box</span>
+            <span>+{fmt(giftBoxCost)}</span>
           </div>
         )}
         <div className="flex justify-between text-[13px] text-stone-600">
@@ -330,6 +345,55 @@ function GiftOptionsSection({
   )
 }
 
+// ─── Gift Box Upsell ─────────────────────────────────────────────────────────
+
+function GiftBoxUpsell({
+  value,
+  onChange,
+}: {
+  value: GiftBoxUpsellState
+  onChange: (v: GiftBoxUpsellState) => void
+}) {
+  return (
+    <div className="mt-6 border border-amber-200 bg-amber-50/40 rounded-lg overflow-hidden">
+      <label className="flex items-start gap-3 px-5 py-4 cursor-pointer hover:bg-amber-50/80 transition-colors select-none">
+        <div
+          className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+            value.selected ? 'bg-stone-900 border-stone-900' : 'border-stone-300 bg-white'
+          }`}
+          onClick={() => onChange({ ...value, selected: !value.selected })}
+        >
+          {value.selected && <Check size={12} strokeWidth={3} className="text-white" />}
+        </div>
+        <input type="checkbox" className="sr-only" checked={value.selected} onChange={() => onChange({ ...value, selected: !value.selected })} />
+        <div className="flex-1">
+          <div className="flex items-baseline justify-between gap-4">
+            <p className="text-[14px] font-medium text-stone-900">Add premium gift box + ribbon + gift note</p>
+            <p className="text-[13px] font-semibold text-stone-900 flex-shrink-0">+{fmt(GIFT_BOX_PRICE)}</p>
+          </div>
+          <p className="text-[12px] text-stone-500 mt-0.5">Luxury rigid box with satin ribbon, tissue paper, and a printed gift note card</p>
+        </div>
+      </label>
+
+      {value.selected && (
+        <div className="border-t border-amber-200 px-5 py-4 bg-amber-50/60">
+          <label className="block text-[12px] font-medium text-stone-600 uppercase tracking-wider mb-2">
+            Gift note <span className="normal-case tracking-normal font-normal text-stone-400">(optional, printed and included in box)</span>
+          </label>
+          <textarea
+            value={value.note}
+            onChange={e => onChange({ ...value, note: e.target.value.slice(0, 200) })}
+            placeholder="Write your message to the recipient…"
+            rows={3}
+            className="w-full border border-stone-200 bg-white px-4 py-2.5 text-[13px] text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors resize-none"
+          />
+          <p className="text-[11px] text-stone-400 mt-1 text-right">{value.note.length}/200</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Step: Cart Review ────────────────────────────────────────────────────────
 
 function CartStep({
@@ -346,6 +410,8 @@ function CartStep({
   appliedPromo,
   onApplyPromo,
   onRemovePromo,
+  giftBoxUpsell,
+  onGiftBoxUpsellChange,
 }: {
   items: ReturnType<typeof useCart>['items']
   updateQuantity: (id: string, qty: number) => void
@@ -360,6 +426,8 @@ function CartStep({
   appliedPromo: AppliedPromo | null
   onApplyPromo: () => void
   onRemovePromo: () => void
+  giftBoxUpsell: GiftBoxUpsellState
+  onGiftBoxUpsellChange: (v: GiftBoxUpsellState) => void
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
 
@@ -432,6 +500,9 @@ function CartStep({
 
       {/* Gift options */}
       <GiftOptionsSection giftOptions={giftOptions} onChange={onGiftOptionsChange} />
+
+      {/* Gift box upsell */}
+      <GiftBoxUpsell value={giftBoxUpsell} onChange={onGiftBoxUpsellChange} />
 
       {/* Promo code */}
       <div className="mt-6">
@@ -712,6 +783,7 @@ function ReviewStep({
   shippingMethod,
   giftOptions,
   appliedPromo,
+  giftBoxUpsell,
   onPlaceOrder,
   onBack,
   placing,
@@ -721,15 +793,17 @@ function ReviewStep({
   shippingMethod: ShippingMethod
   giftOptions: GiftOptions
   appliedPromo: AppliedPromo | null
+  giftBoxUpsell: GiftBoxUpsellState
   onPlaceOrder: () => void
   onBack: () => void
   placing: boolean
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+  const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
   const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingMethod.price + giftWrappingCost + tax - discount
+  const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount
   const [paymentMethod, setPaymentMethod] = useState<'full' | 'afterpay'>('full')
 
   return (
@@ -828,6 +902,11 @@ function ReviewStep({
             <span>Gift wrapping</span><span>+{fmt(giftWrappingCost)}</span>
           </div>
         )}
+        {giftBoxCost > 0 && (
+          <div className="flex justify-between text-[13px] text-stone-600">
+            <span>Premium gift box</span><span>+{fmt(giftBoxCost)}</span>
+          </div>
+        )}
         <div className="flex justify-between text-[13px] text-stone-600">
           <span>Tax (est.)</span><span>{fmt(tax)}</span>
         </div>
@@ -836,6 +915,21 @@ function ReviewStep({
           <span className="font-serif text-[18px] text-stone-900">{fmt(total)}</span>
         </div>
       </section>
+
+      {/* Gift box summary */}
+      {giftBoxUpsell.selected && (
+        <section className="mb-6 border border-amber-200 rounded p-4 bg-amber-50/30">
+          <h3 className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <Gift size={12} className="text-amber-500" />Premium Gift Box
+          </h3>
+          <span className="inline-flex items-center gap-1 text-[12px] text-stone-700 bg-amber-100 px-2.5 py-1 rounded-full">
+            <Check size={10} strokeWidth={2.5} />Luxury gift box + satin ribbon (+{fmt(GIFT_BOX_PRICE)})
+          </span>
+          {giftBoxUpsell.note && (
+            <p className="text-[13px] text-stone-700 italic mt-2">&ldquo;{giftBoxUpsell.note}&rdquo;</p>
+          )}
+        </section>
+      )}
 
       {/* Payment Method */}
       <section className="mb-8">
@@ -974,6 +1068,7 @@ function ConfirmationStep({
   shippingMethod,
   giftOptions,
   appliedPromo,
+  giftBoxUpsell,
 }: {
   orderNumber: string
   items: ReturnType<typeof useCart>['items']
@@ -981,12 +1076,14 @@ function ConfirmationStep({
   shippingMethod: ShippingMethod
   giftOptions: GiftOptions
   appliedPromo: AppliedPromo | null
+  giftBoxUpsell: GiftBoxUpsellState
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+  const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
   const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingMethod.price + giftWrappingCost + tax - discount
+  const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount
 
   return (
     <div className="text-center">
@@ -1063,6 +1160,11 @@ function ConfirmationStep({
               <span>Gift wrapping</span><span>+{fmt(giftWrappingCost)}</span>
             </div>
           )}
+          {giftBoxCost > 0 && (
+            <div className="flex justify-between text-[13px] text-stone-600">
+              <span>Premium gift box</span><span>+{fmt(giftBoxCost)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-[13px] text-stone-600">
             <span>Tax</span><span>{fmt(tax)}</span>
           </div>
@@ -1094,6 +1196,21 @@ function ConfirmationStep({
               </span>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Gift box summary */}
+      {giftBoxUpsell.selected && (
+        <div className="text-left border border-amber-200 rounded p-4 mb-6 bg-amber-50/30">
+          <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <Gift size={12} className="text-amber-500" />Premium Gift Box
+          </p>
+          <span className="inline-flex items-center gap-1 text-[12px] text-stone-700 bg-amber-100 px-2.5 py-1 rounded-full">
+            <Check size={10} strokeWidth={2.5} />Luxury box + satin ribbon included
+          </span>
+          {giftBoxUpsell.note && (
+            <p className="text-[13px] text-stone-700 italic mt-2">&ldquo;{giftBoxUpsell.note}&rdquo;</p>
+          )}
         </div>
       )}
 
@@ -1148,6 +1265,8 @@ export default function CheckoutPage() {
   const [confirmedGiftOptions, setConfirmedGiftOptions] = useState<GiftOptions>({
     isGift: false, giftMessage: '', giftWrapping: false, giftReceipt: false,
   })
+  const [giftBoxUpsell, setGiftBoxUpsell] = useState<GiftBoxUpsellState>({ selected: false, note: '' })
+  const [confirmedGiftBoxUpsell, setConfirmedGiftBoxUpsell] = useState<GiftBoxUpsellState>({ selected: false, note: '' })
   const [orderNumber, setOrderNumber] = useState('')
   const [confirmedItems, setConfirmedItems] = useState<typeof items>([])
   const [placing, setPlacing] = useState(false)
@@ -1204,9 +1323,10 @@ export default function CheckoutPage() {
     const num = generateOrderNumber()
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
     const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
+    const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
     const discount = appliedPromo?.discount ?? 0
     const tax = subtotal * 0.08
-    const total = subtotal + selectedShipping.price + giftWrappingCost + tax - discount
+    const total = subtotal + selectedShipping.price + giftWrappingCost + giftBoxCost + tax - discount
 
     const order = {
       orderId: num,
@@ -1220,6 +1340,7 @@ export default function CheckoutPage() {
       shippingCost: selectedShipping.price,
       shippingMethod: selectedShipping.name,
       giftOptions: giftOptions.isGift ? giftOptions : null,
+      giftBoxUpsell: giftBoxUpsell.selected ? { selected: true, note: giftBoxUpsell.note } : null,
       items: items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity, image: i.image })),
       shippingInfo: contact,
       estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -1230,6 +1351,7 @@ export default function CheckoutPage() {
     setOrderNumber(num)
     setConfirmedItems([...items])
     setConfirmedGiftOptions({ ...giftOptions })
+    setConfirmedGiftBoxUpsell({ ...giftBoxUpsell })
     setConfirmedPromo(appliedPromo)
 
     // Fire purchase conversion events
@@ -1294,6 +1416,8 @@ export default function CheckoutPage() {
                 appliedPromo={appliedPromo}
                 onApplyPromo={handleApplyPromo}
                 onRemovePromo={handleRemovePromo}
+                giftBoxUpsell={giftBoxUpsell}
+                onGiftBoxUpsellChange={setGiftBoxUpsell}
               />
             )}
             {step === 'contact' && (
@@ -1319,6 +1443,7 @@ export default function CheckoutPage() {
                 shippingMethod={selectedShipping}
                 giftOptions={giftOptions}
                 appliedPromo={appliedPromo}
+                giftBoxUpsell={giftBoxUpsell}
                 onPlaceOrder={handlePlaceOrder}
                 onBack={() => goTo('shipping')}
                 placing={placing}
@@ -1332,6 +1457,7 @@ export default function CheckoutPage() {
                 shippingMethod={selectedShipping}
                 giftOptions={confirmedGiftOptions}
                 appliedPromo={confirmedPromo}
+                giftBoxUpsell={confirmedGiftBoxUpsell}
               />
             )}
           </div>
@@ -1344,6 +1470,7 @@ export default function CheckoutPage() {
                 selectedShipping={step === 'cart' ? null : selectedShipping}
                 giftOptions={giftOptions}
                 appliedPromo={appliedPromo}
+                giftBoxUpsell={giftBoxUpsell}
               />
             </div>
           )}
