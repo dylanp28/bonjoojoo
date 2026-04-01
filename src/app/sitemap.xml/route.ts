@@ -1,4 +1,5 @@
 import { productGroups } from '@/data/productGroups'
+import { blogPosts } from '@/data/blog-posts'
 
 export async function GET(): Promise<Response> {
   const baseUrl = 'https://bonjoojoo.com'
@@ -31,9 +32,17 @@ export async function GET(): Promise<Response> {
     priority: product.bestseller ? 0.8 : 0.7,
   }))
 
+  const blogPages = blogPosts.map(post => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: currentDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }))
+
   const allPages = [
     ...staticPages,
     ...productPages,
+    ...blogPages,
   ]
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

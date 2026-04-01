@@ -65,6 +65,7 @@ export default function ProductLayout({ children, params }: LayoutProps) {
             '@type': 'Product',
             name: product.name,
             description: product.description,
+            sku: product.variants.find(v => v.id === product.defaultVariant)?.sku || product.id,
             image: (product.allImages || product.variants.flatMap(v => v.images)).map(img =>
               img.startsWith('http') ? img : `${BASE_URL}${img}`
             ),

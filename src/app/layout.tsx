@@ -40,6 +40,45 @@ export const metadata: Metadata = {
   },
 }
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://bonjoojoo.com/#organization',
+      name: 'Bonjoojoo',
+      url: 'https://bonjoojoo.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://bonjoojoo.com/logos/bonjoojoo-logo-primary.svg',
+        width: 200,
+        height: 60,
+      },
+      sameAs: [
+        'https://www.instagram.com/bonjoojoo',
+        'https://www.facebook.com/bonjoojoo',
+        'https://www.tiktok.com/@bonjoojoo',
+        'https://www.pinterest.com/bonjoojoo',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://bonjoojoo.com/#website',
+      url: 'https://bonjoojoo.com',
+      name: 'Bonjoojoo',
+      publisher: { '@id': 'https://bonjoojoo.com/#organization' },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://bonjoojoo.com/search?q={search_term_string}',
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -49,6 +88,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <CriticalResourceHints />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
