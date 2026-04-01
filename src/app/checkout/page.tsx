@@ -639,23 +639,29 @@ function CartStep({
         </div>
       )}
 
-      <div className="mt-6 pt-6 border-t border-stone-200 flex items-center justify-between">
-        <div>
-          <p className="text-[13px] text-stone-500">Subtotal</p>
-          <p className="font-serif text-xl text-stone-900">{fmt(subtotal)}</p>
-          {appliedPromo && (
-            <p className="text-[13px] text-green-700 font-medium">−{fmt(appliedPromo.discount)} promo</p>
-          )}
-          {loyaltyDiscount > 0 && (
-            <p className="text-[13px] text-amber-700 font-medium">−{fmt(loyaltyDiscount)} loyalty</p>
-          )}
+      <div className="mt-6 pt-6 border-t border-stone-200">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-[13px] text-stone-500">Subtotal</p>
+            <p className="font-serif text-xl text-stone-900">{fmt(subtotal)}</p>
+            {appliedPromo && (
+              <p className="text-[13px] text-green-700 font-medium">−{fmt(appliedPromo.discount)} promo</p>
+            )}
+            {loyaltyDiscount > 0 && (
+              <p className="text-[13px] text-amber-700 font-medium">−{fmt(loyaltyDiscount)} loyalty</p>
+            )}
+          </div>
+          <button
+            onClick={onNext}
+            className="flex items-center gap-2 bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors"
+          >
+            Continue <ChevronRight size={16} />
+          </button>
         </div>
-        <button
-          onClick={onNext}
-          className="flex items-center gap-2 bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors"
-        >
-          Continue <ChevronRight size={16} />
-        </button>
+        <p className="text-[11px] text-stone-500 flex items-center gap-1.5 justify-end">
+          <Check size={10} strokeWidth={2.5} className="text-green-600" />
+          30-day free returns · Ships in 1–3 business days
+        </p>
       </div>
     </div>
   )
@@ -705,7 +711,8 @@ function ContactStep({
     label: string,
     placeholder: string,
     type = 'text',
-    optional = false
+    optional = false,
+    autoComplete?: string
   ) => (
     <div>
       <label htmlFor={id} className="block text-[12px] font-medium text-stone-600 uppercase tracking-wider mb-1.5">
@@ -717,6 +724,7 @@ function ContactStep({
         value={info[id]}
         onChange={e => onChange(id, e.target.value)}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className={`w-full border px-4 py-2.5 text-[14px] text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors ${
           errors[id] ? 'border-red-400 bg-red-50' : 'border-stone-200 bg-white'
         }`}
@@ -729,16 +737,16 @@ function ContactStep({
     <div>
       <h2 className="font-serif text-2xl text-stone-900 mb-6">Contact & Shipping</h2>
       <div className="space-y-4">
-        {field('email', 'Email', 'you@example.com', 'email')}
+        {field('email', 'Email', 'you@example.com', 'email', false, 'email')}
         <div className="grid grid-cols-2 gap-4">
-          {field('firstName', 'First Name', 'Jane')}
-          {field('lastName', 'Last Name', 'Smith')}
+          {field('firstName', 'First Name', 'Jane', 'text', false, 'given-name')}
+          {field('lastName', 'Last Name', 'Smith', 'text', false, 'family-name')}
         </div>
-        {field('phone', 'Phone', '+1 (555) 000-0000', 'tel', true)}
-        {field('addressLine1', 'Address', '123 Maple Street')}
-        {field('addressLine2', 'Apt, Suite, etc.', 'Apt 4B', 'text', true)}
+        {field('phone', 'Phone', '+1 (555) 000-0000', 'tel', true, 'tel')}
+        {field('addressLine1', 'Address', '123 Maple Street', 'text', false, 'address-line1')}
+        {field('addressLine2', 'Apt, Suite, etc.', 'Apt 4B', 'text', true, 'address-line2')}
         <div className="grid grid-cols-2 gap-4">
-          {field('city', 'City', 'New York')}
+          {field('city', 'City', 'New York', 'text', false, 'address-level2')}
           <div>
             <label htmlFor="state" className="block text-[12px] font-medium text-stone-600 uppercase tracking-wider mb-1.5">
               State
@@ -747,6 +755,7 @@ function ContactStep({
               id="state"
               value={info.state}
               onChange={e => onChange('state', e.target.value)}
+              autoComplete="address-level1"
               className={`w-full border px-4 py-2.5 text-[14px] text-stone-900 focus:outline-none focus:border-stone-900 transition-colors ${
                 errors.state ? 'border-red-400 bg-red-50' : 'border-stone-200 bg-white'
               }`}
@@ -758,7 +767,7 @@ function ContactStep({
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          {field('zip', 'ZIP Code', '10001')}
+          {field('zip', 'ZIP Code', '10001', 'text', false, 'postal-code')}
           <div>
             <label htmlFor="country" className="block text-[12px] font-medium text-stone-600 uppercase tracking-wider mb-1.5">
               Country
@@ -767,6 +776,7 @@ function ContactStep({
               id="country"
               value={info.country}
               onChange={e => onChange('country', e.target.value)}
+              autoComplete="country"
               className="w-full border border-stone-200 px-4 py-2.5 text-[14px] text-stone-900 focus:outline-none focus:border-stone-900 transition-colors bg-white"
             >
               <option value="US">United States</option>
@@ -779,16 +789,22 @@ function ContactStep({
           </div>
         </div>
       </div>
-      <div className="mt-8 flex items-center justify-between">
-        <button onClick={onBack} className="text-[13px] text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1">
-          ← Back
-        </button>
-        <button
-          onClick={handleNext}
-          className="flex items-center gap-2 bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors"
-        >
-          Continue <ChevronRight size={16} />
-        </button>
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-3">
+          <button onClick={onBack} className="text-[13px] text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1">
+            ← Back
+          </button>
+          <button
+            onClick={handleNext}
+            className="flex items-center gap-2 bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors"
+          >
+            Continue <ChevronRight size={16} />
+          </button>
+        </div>
+        <p className="text-[11px] text-stone-500 flex items-center gap-1.5 justify-end">
+          <Check size={10} strokeWidth={2.5} className="text-green-600" />
+          30-day free returns · Ships in 1–3 business days
+        </p>
       </div>
     </div>
   )
@@ -848,17 +864,23 @@ function ShippingMethodStep({
           </label>
         ))}
       </div>
-      <div className="mt-8 flex items-center justify-between">
-        <button onClick={onBack} className="text-[13px] text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1">
-          ← Back
-        </button>
-        <button
-          onClick={onNext}
-          disabled={!selected}
-          className="flex items-center gap-2 bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          Continue <ChevronRight size={16} />
-        </button>
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-3">
+          <button onClick={onBack} className="text-[13px] text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1">
+            ← Back
+          </button>
+          <button
+            onClick={onNext}
+            disabled={!selected}
+            className="flex items-center gap-2 bg-stone-900 text-white px-8 py-3 text-sm font-medium hover:bg-stone-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Continue <ChevronRight size={16} />
+          </button>
+        </div>
+        <p className="text-[11px] text-stone-500 flex items-center gap-1.5 justify-end">
+          <Check size={10} strokeWidth={2.5} className="text-green-600" />
+          30-day free returns · Ships in 1–3 business days
+        </p>
       </div>
     </div>
   )
@@ -1086,6 +1108,24 @@ function ReviewStep({
         )}
       </section>
 
+      <div className="mb-3 flex items-center justify-center gap-4 text-[11px] text-stone-500 border border-stone-100 rounded bg-stone-50 px-4 py-2.5">
+        <span className="flex items-center gap-1.5">
+          <Check size={10} strokeWidth={2.5} className="text-green-600" />
+          30-day free returns
+        </span>
+        <span className="w-px h-3 bg-stone-300" />
+        <span className="flex items-center gap-1.5">
+          <Truck size={10} strokeWidth={2} className="text-stone-400" />
+          Ships in 1–3 business days
+        </span>
+        <span className="w-px h-3 bg-stone-300" />
+        <span className="flex items-center gap-1.5">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-stone-400">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          SSL secured
+        </span>
+      </div>
       <div className="flex items-center justify-between">
         <button onClick={onBack} className="text-[13px] text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1">
           ← Back
@@ -1614,14 +1654,16 @@ export default function CheckoutPage() {
           {/* Right: Order summary (hidden on confirmation) */}
           {step !== 'confirmation' && (
             <div className="hidden lg:block w-80 flex-shrink-0">
-              <OrderSummary
-                items={items}
-                selectedShipping={step === 'cart' ? null : selectedShipping}
-                giftOptions={giftOptions}
-                appliedPromo={appliedPromo}
-                giftBoxUpsell={giftBoxUpsell}
-                loyaltyDiscount={loyaltyDiscount}
-              />
+              <div className="sticky top-8">
+                <OrderSummary
+                  items={items}
+                  selectedShipping={step === 'cart' ? null : selectedShipping}
+                  giftOptions={giftOptions}
+                  appliedPromo={appliedPromo}
+                  giftBoxUpsell={giftBoxUpsell}
+                  loyaltyDiscount={loyaltyDiscount}
+                />
+              </div>
             </div>
           )}
         </div>
