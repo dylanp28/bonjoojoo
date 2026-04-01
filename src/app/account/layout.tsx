@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { User, ShoppingBag, Heart, Settings, LogOut, Package, CreditCard, Gift, RefreshCcw } from 'lucide-react'
+import { User, ShoppingBag, Heart, Settings, LogOut, Package, CreditCard, Gift, RefreshCcw, Award } from 'lucide-react'
 import { AuthModal } from '@/components/AuthModal'
 import { useAuthModal } from '@/hooks/useAuth'
 
@@ -177,6 +177,14 @@ export default function AccountLayout({
                 >
                   <RefreshCcw size={18} className="mr-3" />
                   Returns
+                </a>
+
+                <a
+                  href="/account/loyalty"
+                  className="flex items-center px-3 py-2 rounded-md text-stone-700 hover:bg-stone-50 transition-colors"
+                >
+                  <Award size={18} className="mr-3" />
+                  Loyalty Rewards
                 </a>
 
                 <a

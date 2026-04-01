@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
-import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon, Share2, Copy } from 'lucide-react'
+import { ChevronRight, Check, Minus, Plus, Trash2, Package, Truck, Zap, ShoppingBag, Gift, Tag, X as XIcon, Share2, Copy, Award } from 'lucide-react'
 import { useReferral } from '@/hooks/useReferral'
+import { useLoyalty, POINTS_PER_REDEMPTION, REDEMPTION_VALUE, pointsToDiscount, TIER_LABELS, TIER_COLORS, getTier } from '@/hooks/useLoyalty'
 import { validatePromoCode, calculateDiscount, type AppliedPromo } from '@/constants/promo-codes'
 import { CheckoutTrustStrip } from '@/components/TrustBadgeStrip'
 import { trackPurchase } from '@/lib/analytics/events'
@@ -166,20 +167,23 @@ function OrderSummary({
   giftOptions,
   appliedPromo,
   giftBoxUpsell,
+  loyaltyDiscount,
 }: {
   items: ReturnType<typeof useCart>['items']
   selectedShipping: ShippingMethod | null
   giftOptions?: GiftOptions
   appliedPromo?: AppliedPromo | null
   giftBoxUpsell?: GiftBoxUpsellState
+  loyaltyDiscount?: number
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const shippingCost = selectedShipping?.price ?? 0
   const giftWrappingCost = giftOptions?.isGift && giftOptions?.giftWrapping ? GIFT_WRAPPING_PRICE : 0
   const giftBoxCost = giftBoxUpsell?.selected ? GIFT_BOX_PRICE : 0
   const discount = appliedPromo?.discount ?? 0
+  const loyaltyOff = loyaltyDiscount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingCost + giftWrappingCost + giftBoxCost + tax - discount
+  const total = subtotal + shippingCost + giftWrappingCost + giftBoxCost + tax - discount - loyaltyOff
 
   return (
     <aside className="bg-stone-50 border border-stone-200 rounded-lg p-6">
@@ -220,6 +224,15 @@ function OrderSummary({
               {appliedPromo.code}
             </span>
             <span>−{fmt(discount)}</span>
+          </div>
+        )}
+        {loyaltyOff > 0 && (
+          <div className="flex justify-between text-[13px] text-amber-700">
+            <span className="flex items-center gap-1.5">
+              <Award size={11} />
+              Loyalty points
+            </span>
+            <span>−{fmt(loyaltyOff)}</span>
           </div>
         )}
         <div className="flex justify-between text-[13px] text-stone-600">
@@ -412,6 +425,10 @@ function CartStep({
   onRemovePromo,
   giftBoxUpsell,
   onGiftBoxUpsellChange,
+  loyaltyPoints,
+  loyaltyPointsToRedeem,
+  onLoyaltyPointsChange,
+  loyaltyDiscount,
 }: {
   items: ReturnType<typeof useCart>['items']
   updateQuantity: (id: string, qty: number) => void
@@ -428,6 +445,10 @@ function CartStep({
   onRemovePromo: () => void
   giftBoxUpsell: GiftBoxUpsellState
   onGiftBoxUpsellChange: (v: GiftBoxUpsellState) => void
+  loyaltyPoints: number
+  loyaltyPointsToRedeem: number
+  onLoyaltyPointsChange: (pts: number) => void
+  loyaltyDiscount: number
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
 
@@ -553,12 +574,80 @@ function CartStep({
         )}
       </div>
 
+      {/* Loyalty points redemption */}
+      {loyaltyPoints >= POINTS_PER_REDEMPTION && (
+        <div className="mt-4 border border-stone-200 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Award size={15} className="text-amber-600 flex-shrink-0" />
+            <p className="text-[13px] font-semibold text-stone-900">
+              Loyalty Points
+            </p>
+            <span className="ml-auto text-[12px] text-stone-500">
+              Balance: {loyaltyPoints.toLocaleString()} pts
+            </span>
+          </div>
+
+          {loyaltyPointsToRedeem > 0 ? (
+            <div className="flex items-center justify-between bg-amber-50 border border-amber-200 rounded px-3 py-2.5">
+              <div className="flex items-center gap-2">
+                <Check size={13} strokeWidth={2.5} className="text-amber-600 flex-shrink-0" />
+                <div>
+                  <p className="text-[13px] font-medium text-amber-900">
+                    {loyaltyPointsToRedeem} pts redeemed — saving {fmt(loyaltyDiscount)}
+                  </p>
+                  <p className="text-[11px] text-amber-700">
+                    Remaining balance: {(loyaltyPoints - loyaltyPointsToRedeem).toLocaleString()} pts
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => onLoyaltyPointsChange(0)}
+                className="text-amber-600 hover:text-amber-900 transition-colors ml-3 flex-shrink-0"
+                aria-label="Remove loyalty redemption"
+              >
+                <XIcon size={14} />
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-[12px] text-stone-500">
+                Redeem in blocks of {POINTS_PER_REDEMPTION} pts = ${REDEMPTION_VALUE} off.
+                You can redeem up to {Math.floor(loyaltyPoints / POINTS_PER_REDEMPTION) * POINTS_PER_REDEMPTION} pts.
+              </p>
+              <div className="flex items-center gap-2">
+                <select
+                  value={loyaltyPointsToRedeem}
+                  onChange={e => onLoyaltyPointsChange(Number(e.target.value))}
+                  className="flex-1 border border-stone-200 text-[13px] px-3 py-2 outline-none focus:border-stone-400 bg-white"
+                >
+                  <option value={0}>Select points to redeem…</option>
+                  {Array.from({ length: Math.floor(loyaltyPoints / POINTS_PER_REDEMPTION) }, (_, i) => (i + 1) * POINTS_PER_REDEMPTION).map(pts => (
+                    <option key={pts} value={pts}>
+                      {pts} pts = {fmt(pointsToDiscount(pts))} off
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => onLoyaltyPointsChange(Math.floor(loyaltyPoints / POINTS_PER_REDEMPTION) * POINTS_PER_REDEMPTION)}
+                  className="text-[12px] font-medium text-stone-700 border border-stone-200 px-3 py-2 hover:bg-stone-50 transition-colors whitespace-nowrap"
+                >
+                  Use all
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="mt-6 pt-6 border-t border-stone-200 flex items-center justify-between">
         <div>
           <p className="text-[13px] text-stone-500">Subtotal</p>
           <p className="font-serif text-xl text-stone-900">{fmt(subtotal)}</p>
           {appliedPromo && (
             <p className="text-[13px] text-green-700 font-medium">−{fmt(appliedPromo.discount)} promo</p>
+          )}
+          {loyaltyDiscount > 0 && (
+            <p className="text-[13px] text-amber-700 font-medium">−{fmt(loyaltyDiscount)} loyalty</p>
           )}
         </div>
         <button
@@ -784,6 +873,7 @@ function ReviewStep({
   giftOptions,
   appliedPromo,
   giftBoxUpsell,
+  loyaltyDiscount,
   onPlaceOrder,
   onBack,
   placing,
@@ -794,6 +884,7 @@ function ReviewStep({
   giftOptions: GiftOptions
   appliedPromo: AppliedPromo | null
   giftBoxUpsell: GiftBoxUpsellState
+  loyaltyDiscount: number
   onPlaceOrder: () => void
   onBack: () => void
   placing: boolean
@@ -803,7 +894,7 @@ function ReviewStep({
   const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
   const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount
+  const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount - loyaltyDiscount
   const [paymentMethod, setPaymentMethod] = useState<'full' | 'afterpay'>('full')
 
   return (
@@ -892,6 +983,12 @@ function ReviewStep({
           <div className="flex justify-between text-[13px] text-green-700">
             <span className="flex items-center gap-1.5"><Tag size={11} />{appliedPromo.code}</span>
             <span>−{fmt(discount)}</span>
+          </div>
+        )}
+        {loyaltyDiscount > 0 && (
+          <div className="flex justify-between text-[13px] text-amber-700">
+            <span className="flex items-center gap-1.5"><Award size={11} />Loyalty points</span>
+            <span>−{fmt(loyaltyDiscount)}</span>
           </div>
         )}
         <div className="flex justify-between text-[13px] text-stone-600">
@@ -1069,6 +1166,8 @@ function ConfirmationStep({
   giftOptions,
   appliedPromo,
   giftBoxUpsell,
+  earnedPoints,
+  loyaltyDiscount,
 }: {
   orderNumber: string
   items: ReturnType<typeof useCart>['items']
@@ -1077,13 +1176,15 @@ function ConfirmationStep({
   giftOptions: GiftOptions
   appliedPromo: AppliedPromo | null
   giftBoxUpsell: GiftBoxUpsellState
+  earnedPoints: number
+  loyaltyDiscount: number
 }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
   const giftWrappingCost = giftOptions.isGift && giftOptions.giftWrapping ? GIFT_WRAPPING_PRICE : 0
   const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
   const discount = appliedPromo?.discount ?? 0
   const tax = subtotal * 0.08
-  const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount
+  const total = subtotal + shippingMethod.price + giftWrappingCost + giftBoxCost + tax - discount - loyaltyDiscount
 
   return (
     <div className="text-center">
@@ -1107,6 +1208,24 @@ function ConfirmationStep({
         <p className="text-[11px] font-medium text-stone-500 uppercase tracking-widest mb-1">Order Number</p>
         <p className="font-mono text-lg font-bold text-stone-900 tracking-widest">{orderNumber}</p>
       </div>
+
+      {/* Loyalty points earned */}
+      {earnedPoints > 0 && (
+        <div className="inline-flex items-center gap-2.5 bg-amber-50 border border-amber-200 rounded-lg px-5 py-3 mb-4 text-left">
+          <Award size={18} className="text-amber-600 flex-shrink-0" />
+          <div>
+            <p className="text-[13px] font-semibold text-amber-900">
+              +{earnedPoints} loyalty points earned!
+            </p>
+            <p className="text-[11px] text-amber-700">
+              View your balance and redeem at{' '}
+              <a href="/account/loyalty" className="underline hover:text-amber-900">
+                My Loyalty Rewards
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* 30-day free returns reassurance */}
       <div className="flex items-center justify-center gap-2 text-sm text-stone-500 mb-8">
@@ -1149,6 +1268,12 @@ function ConfirmationStep({
             <div className="flex justify-between text-[13px] text-green-700">
               <span className="flex items-center gap-1.5"><Tag size={11} />{appliedPromo.code}</span>
               <span>−{fmt(discount)}</span>
+            </div>
+          )}
+          {loyaltyDiscount > 0 && (
+            <div className="flex justify-between text-[13px] text-amber-700">
+              <span className="flex items-center gap-1.5"><Award size={11} />Loyalty points</span>
+              <span>−{fmt(loyaltyDiscount)}</span>
             </div>
           )}
           <div className="flex justify-between text-[13px] text-stone-600">
@@ -1278,6 +1403,13 @@ export default function CheckoutPage() {
   const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null)
   const [confirmedPromo, setConfirmedPromo] = useState<AppliedPromo | null>(null)
 
+  // Loyalty state
+  const { points: loyaltyPoints, earnPoints, redeemPoints } = useLoyalty()
+  const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0)
+  const loyaltyDiscount = pointsToDiscount(loyaltyPointsToRedeem)
+  const [confirmedLoyaltyDiscount, setConfirmedLoyaltyDiscount] = useState(0)
+  const [earnedPoints, setEarnedPoints] = useState(0)
+
   const selectedShipping = SHIPPING_METHODS.find(m => m.id === selectedShippingId) ?? SHIPPING_METHODS[0]
 
   // Redirect if cart is empty and not on confirmation
@@ -1326,7 +1458,7 @@ export default function CheckoutPage() {
     const giftBoxCost = giftBoxUpsell.selected ? GIFT_BOX_PRICE : 0
     const discount = appliedPromo?.discount ?? 0
     const tax = subtotal * 0.08
-    const total = subtotal + selectedShipping.price + giftWrappingCost + giftBoxCost + tax - discount
+    const total = subtotal + selectedShipping.price + giftWrappingCost + giftBoxCost + tax - discount - loyaltyDiscount
 
     const order = {
       orderId: num,
@@ -1346,6 +1478,16 @@ export default function CheckoutPage() {
       estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       environmentalImpact: { carbonSaved: `${(items.length * 2.5).toFixed(1)}kg`, waterSaved: `${items.length * 890}L` },
     }
+
+    // Redeem loyalty points if any
+    if (loyaltyPointsToRedeem > 0) {
+      redeemPoints(loyaltyPointsToRedeem, `Redeemed for order ${num}`)
+    }
+
+    // Earn 1 point per $1 of subtotal (pre-discount subtotal)
+    const pts = earnPoints(subtotal, `Purchase ${num}`)
+    setEarnedPoints(pts)
+    setConfirmedLoyaltyDiscount(loyaltyDiscount)
 
     saveOrderToLocalStorage(order)
     setOrderNumber(num)
@@ -1418,6 +1560,10 @@ export default function CheckoutPage() {
                 onRemovePromo={handleRemovePromo}
                 giftBoxUpsell={giftBoxUpsell}
                 onGiftBoxUpsellChange={setGiftBoxUpsell}
+                loyaltyPoints={loyaltyPoints}
+                loyaltyPointsToRedeem={loyaltyPointsToRedeem}
+                onLoyaltyPointsChange={setLoyaltyPointsToRedeem}
+                loyaltyDiscount={loyaltyDiscount}
               />
             )}
             {step === 'contact' && (
@@ -1444,6 +1590,7 @@ export default function CheckoutPage() {
                 giftOptions={giftOptions}
                 appliedPromo={appliedPromo}
                 giftBoxUpsell={giftBoxUpsell}
+                loyaltyDiscount={loyaltyDiscount}
                 onPlaceOrder={handlePlaceOrder}
                 onBack={() => goTo('shipping')}
                 placing={placing}
@@ -1458,6 +1605,8 @@ export default function CheckoutPage() {
                 giftOptions={confirmedGiftOptions}
                 appliedPromo={confirmedPromo}
                 giftBoxUpsell={confirmedGiftBoxUpsell}
+                earnedPoints={earnedPoints}
+                loyaltyDiscount={confirmedLoyaltyDiscount}
               />
             )}
           </div>
@@ -1471,6 +1620,7 @@ export default function CheckoutPage() {
                 giftOptions={giftOptions}
                 appliedPromo={appliedPromo}
                 giftBoxUpsell={giftBoxUpsell}
+                loyaltyDiscount={loyaltyDiscount}
               />
             </div>
           )}
