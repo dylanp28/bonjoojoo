@@ -143,7 +143,7 @@ export default function CartSidebar() {
                                   <p className="text-[12px] text-gray-400 mt-0.5">Size: {item.size}</p>
                                 )}
                                 {item.engraving && (
-                                  <p className="text-[12px] text-gray-400">Engraving: &ldquo;{item.engraving}&rdquo;</p>
+                                  <p className="text-[12px] text-gray-400">Engraving: &ldquo;{item.engraving}&rdquo;{item.engravingFont ? ` — ${item.engravingFont}` : ''}</p>
                                 )}
 
                                 <div className="flex items-center justify-between mt-3">

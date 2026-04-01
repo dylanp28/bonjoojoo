@@ -33,6 +33,7 @@ export interface ProductGroup {
   // Product flags
   featured?: boolean
   bestseller?: boolean
+  supportsEngraving?: boolean
   
   // Product gallery - all images from variants
   allImages: string[]
@@ -56,6 +57,9 @@ export interface Product {
   inStock: boolean
   tags: string[]
   
+  // Personalization
+  supportsEngraving?: boolean
+
   // Additional properties for API compatibility
   sku?: string
   short_description?: string

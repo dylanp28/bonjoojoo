@@ -54,7 +54,8 @@ const getAllProducts = (): Product[] => {
         inStock: v.inStock !== false,
         sku: v.sku,
       })),
-      isGrouped: false
+      isGrouped: false,
+      supportsEngraving: ['rings', 'bracelets'].includes(p.category),
     }
   })
 }

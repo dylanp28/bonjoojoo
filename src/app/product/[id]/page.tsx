@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2, RefreshCw, Gift, Phone, Bell, Users, Clock } from 'lucide-react'
+import { Heart, Share2, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight, Truck, Shield, RotateCcw, Check, Star, CheckCircle2, RefreshCw, Gift, Phone, Bell, Users, Clock, Pencil, ChevronDown, ChevronUp } from 'lucide-react'
 import Link from 'next/link'
 import { useCart } from '@/store/useCart'
 import { useWishlist } from '@/store/useWishlist'
@@ -12,6 +12,8 @@ import { LuxuryReveal, LuxuryParallax } from '@/components/animations/LuxuryAnim
 import { PandoraStaggerGrid, PandoraStaggerItem } from '@/components/PandoraAnimations'
 import { getProductReviews, type ProductReviews } from '@/data/reviews'
 import RingSizeGuideModal from '@/components/RingSizeGuideModal'
+import NecklaceLengthGuideModal from '@/components/NecklaceLengthGuideModal'
+import BraceletSizeGuideModal from '@/components/BraceletSizeGuideModal'
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed'
 import RecentlyViewedRow from '@/components/RecentlyViewedRow'
 
@@ -32,6 +34,8 @@ export default function ProductDetailPage() {
   const [shareToast, setShareToast] = useState(false)
   const [reviews, setReviews] = useState<ProductReviews | null>(null)
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
+  const [necklaceGuideOpen, setNecklaceGuideOpen] = useState(false)
+  const [braceletGuideOpen, setBraceletGuideOpen] = useState(false)
   const [crossSellProducts, setCrossSellProducts] = useState<ProductWithVariants[]>([])
   const [alsoViewedProducts, setAlsoViewedProducts] = useState<ProductWithVariants[]>([])
   const [viewerCount, setViewerCount] = useState(0)
@@ -39,6 +43,14 @@ export default function ProductDetailPage() {
   const [notifyEmail, setNotifyEmail] = useState('')
   const [notifySubmitted, setNotifySubmitted] = useState(false)
   const [notifyError, setNotifyError] = useState('')
+
+  // Engraving
+  const ENGRAVING_PRICE = 25
+  const ENGRAVING_FONTS = ['Script', 'Block', 'Roman'] as const
+  type EngravingFont = typeof ENGRAVING_FONTS[number]
+  const [engravingEnabled, setEngravingEnabled] = useState(false)
+  const [engravingText, setEngravingText] = useState('')
+  const [engravingFont, setEngravingFont] = useState<EngravingFont>('Script')
 
   const addItem = useCart(state => state.addItem)
   const { isWishlisted: checkWishlisted, toggleItem: toggleWishlistItem } = useWishlist()
@@ -242,16 +254,22 @@ export default function ProductDetailPage() {
   const isWishlisted = product ? checkWishlisted(product.id) : false
 
   const handleAddToCart = () => {
+    const engravingActive = engravingEnabled && engravingText.trim().length > 0
+    const itemPrice = getCurrentPrice() + (engravingActive ? ENGRAVING_PRICE : 0)
     const productForCart = {
       ...product,
       // Use variant ID so different metals are separate cart items
       id: selectedVariant?.id || product.id,
       name: selectedVariant ? `${product.name} — ${selectedVariant.name}` : product.name,
-      price: getCurrentPrice(),
+      price: itemPrice,
       images: selectedVariant?.images?.length ? selectedVariant.images : product.images,
     }
-    const options: { size?: string } = {}
+    const options: { size?: string; engraving?: string; engravingFont?: string } = {}
     if (selectedSize) options.size = selectedSize
+    if (engravingActive) {
+      options.engraving = engravingText.trim()
+      options.engravingFont = engravingFont
+    }
     for (let i = 0; i < quantity; i++) {
       addItem(productForCart, options)
     }
@@ -315,6 +333,18 @@ export default function ProductDetailPage() {
           setSelectedSize(size)
           setSizeGuideOpen(false)
         }}
+      />
+
+      {/* Necklace Length Guide Modal */}
+      <NecklaceLengthGuideModal
+        open={necklaceGuideOpen}
+        onClose={() => setNecklaceGuideOpen(false)}
+      />
+
+      {/* Bracelet Size Guide Modal */}
+      <BraceletSizeGuideModal
+        open={braceletGuideOpen}
+        onClose={() => setBraceletGuideOpen(false)}
       />
 
       {/* Wishlist toast */}
@@ -465,7 +495,7 @@ export default function ProductDetailPage() {
               <div className="space-y-3">
                 <div className="flex items-baseline space-x-4">
                   <span className="text-display-sm text-bj-black font-light">
-                    {formatPrice(currentPrice)}
+                    {formatPrice(currentPrice + (engravingEnabled && engravingText.trim() ? ENGRAVING_PRICE : 0))}
                   </span>
                   {product.compare_at_price && product.compare_at_price > currentPrice && (
                     <span className="text-body text-bj-gray-400 line-through">
@@ -551,6 +581,76 @@ export default function ProductDetailPage() {
                     >
                       Not sure of your size? Find it in 2 minutes →
                     </button>
+                  )}
+                </div>
+              </LuxuryReveal>
+            )}
+
+            {/* Engraving — rings & bracelets */}
+            {product.supportsEngraving && (
+              <LuxuryReveal direction="right" delay={0.27}>
+                <div className="border border-bj-gray-200 rounded-sm overflow-hidden">
+                  {/* Toggle header */}
+                  <button
+                    onClick={() => setEngravingEnabled(e => !e)}
+                    className="w-full flex items-center justify-between px-4 py-3.5 bg-white hover:bg-bj-offwhite transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Pencil size={15} className="text-bj-pink flex-shrink-0" strokeWidth={1.5} />
+                      <div className="text-left">
+                        <span className="text-[13px] font-medium text-bj-black">Personalize with Engraving</span>
+                        <span className="text-[12px] text-bj-gray-400 ml-2">+${ENGRAVING_PRICE}</span>
+                      </div>
+                    </div>
+                    {engravingEnabled ? <ChevronUp size={16} className="text-bj-gray-400 flex-shrink-0" /> : <ChevronDown size={16} className="text-bj-gray-400 flex-shrink-0" />}
+                  </button>
+
+                  {/* Expanded engraving options */}
+                  {engravingEnabled && (
+                    <div className="px-4 pb-4 pt-3 bg-bj-offwhite border-t border-bj-gray-200 space-y-4">
+                      {/* Text input */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <label className="text-overline text-bj-black">Your Message</label>
+                          <span className="text-[11px] text-bj-gray-400">{engravingText.length}/20</span>
+                        </div>
+                        <input
+                          type="text"
+                          maxLength={20}
+                          value={engravingText}
+                          onChange={e => setEngravingText(e.target.value)}
+                          placeholder="e.g. Forever Yours"
+                          className="w-full border border-bj-gray-300 px-3 py-2.5 text-[13px] text-bj-black placeholder-bj-gray-400 focus:outline-none focus:border-bj-black transition-colors bg-white"
+                        />
+                      </div>
+
+                      {/* Font selector */}
+                      <div className="space-y-1.5">
+                        <label className="text-overline text-bj-black">Font Style</label>
+                        <div className="flex gap-2">
+                          {ENGRAVING_FONTS.map(font => (
+                            <button
+                              key={font}
+                              onClick={() => setEngravingFont(font)}
+                              className={`flex-1 py-2.5 border-2 text-[13px] transition-all duration-200 ${
+                                engravingFont === font
+                                  ? 'border-bj-black bg-bj-black text-white'
+                                  : 'border-bj-gray-200 hover:border-bj-gray-400 text-bj-gray-700'
+                              } ${font === 'Script' ? 'font-serif italic' : font === 'Block' ? 'font-bold tracking-widest uppercase text-[11px]' : 'tracking-wide'}`}
+                            >
+                              {font}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Preview */}
+                      {engravingText.trim() && (
+                        <div className="bg-white border border-bj-gray-200 px-3 py-2.5 text-[12px] text-bj-gray-500">
+                          Your engraving: <span className={`text-bj-black ${engravingFont === 'Script' ? 'font-serif italic' : engravingFont === 'Block' ? 'font-bold tracking-wider uppercase' : 'tracking-wide'}`}>&ldquo;{engravingText}&rdquo;</span> in {engravingFont}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </LuxuryReveal>

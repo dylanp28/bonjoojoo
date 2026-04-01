@@ -190,6 +190,7 @@ function OrderSummary({
             <div className="flex-1 min-w-0">
               <p className="text-[13px] text-stone-900 font-medium leading-snug line-clamp-2">{item.name}</p>
               {item.size && <p className="text-[12px] text-stone-500">Size: {item.size}</p>}
+              {item.engraving && <p className="text-[12px] text-stone-500">Engraving: &ldquo;{item.engraving}&rdquo;{item.engravingFont ? ` — ${item.engravingFont}` : ''}</p>}
             </div>
             <p className="text-[13px] text-stone-900 font-medium flex-shrink-0">{fmt(item.price * item.quantity)}</p>
           </div>
@@ -387,7 +388,8 @@ function CartStep({
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-stone-900 text-[15px] leading-snug mb-1">{item.name}</p>
-              {item.size && <p className="text-[13px] text-stone-500 mb-2">Size: {item.size}</p>}
+              {item.size && <p className="text-[13px] text-stone-500 mb-0.5">Size: {item.size}</p>}
+              {item.engraving && <p className="text-[13px] text-stone-500 mb-2">Engraving: &ldquo;{item.engraving}&rdquo;{item.engravingFont ? ` — ${item.engravingFont}` : ''}</p>}
               <div className="flex items-center gap-3">
                 <div className="flex items-center border border-stone-200 rounded">
                   <button
@@ -746,6 +748,8 @@ function ReviewStep({
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-medium text-stone-900 line-clamp-1">{item.name}</p>
                 <p className="text-[12px] text-stone-500">Qty: {item.quantity}</p>
+                {item.size && <p className="text-[12px] text-stone-400">Size: {item.size}</p>}
+                {item.engraving && <p className="text-[12px] text-stone-400">Engraving: &ldquo;{item.engraving}&rdquo;{item.engravingFont ? ` — ${item.engravingFont}` : ''}</p>}
               </div>
               <p className="text-[13px] font-medium text-stone-900 flex-shrink-0">{fmt(item.price * item.quantity)}</p>
             </div>
@@ -909,6 +913,8 @@ function ConfirmationStep({
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-medium text-stone-900">{item.name}</p>
                 <p className="text-[12px] text-stone-500">Qty: {item.quantity}</p>
+                {item.size && <p className="text-[12px] text-stone-400">Size: {item.size}</p>}
+                {item.engraving && <p className="text-[12px] text-stone-400">Engraving: &ldquo;{item.engraving}&rdquo;{item.engravingFont ? ` — ${item.engravingFont}` : ''}</p>}
               </div>
               <p className="text-[13px] font-medium text-stone-900">{fmt(item.price * item.quantity)}</p>
             </div>
